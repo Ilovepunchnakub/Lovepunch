@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-  <title>Love Dashboard 💗</title>
+  <title>Love Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link rel="preconnect" href="https://www.gstatic.com" crossorigin/>
@@ -20,6 +20,18 @@
     <button class="side-nav-item active" data-view="dashboard" type="button">Dashboard</button>
     <button class="side-nav-item" data-view="anniversary" type="button">Anniversary</button>
   </nav>
+  <section class="menu-section">
+    <h3>Love Features</h3>
+    <button class="menu-action-btn" id="openLoveCardBtn" type="button"><img src="icons/love-card.svg" alt=""/>Love Card</button>
+    <button class="menu-action-btn" id="openSignatureBtn" type="button"><img src="icons/signature.svg" alt=""/>Signature Promise</button>
+    <button class="menu-action-btn" id="blessingBtn" type="button"><img src="icons/blessing.svg" alt=""/>Daily Blessing</button>
+  </section>
+  <section class="menu-section menu-memory">
+    <h3>Memory Playlist</h3>
+    <p class="muted">กดแต่ละช่วงเพื่อเปลี่ยนข้อความ</p>
+    <div class="memory-chips" id="memoryChips"></div>
+    <blockquote id="memoryQuote">"อยู่ด้วยกันนาน ๆ แบบนี้ทุกวันนะ"</blockquote>
+  </section>
 </aside>
 <div class="side-menu-backdrop" id="sideMenuBackdrop" aria-hidden="true"></div>
 
@@ -37,7 +49,7 @@
 <!-- Name tag -->
 <div class="name-tag" aria-label="ชื่อ">
   <div class="ndot"></div>
-  <span>ฑิตยา แซ่อ้วง 💗</span>
+  <span>ฑิตยา แซ่อ้วง</span>
 </div>
 
 
@@ -148,35 +160,6 @@
     </div>
   </section>
 
-  <!-- Actions -->
-  <section class="actions">
-    <button class="neu-btn" id="openLoveCardBtn">
-      <img class="btn-icon" src="icons/love-card.svg" alt=""/>
-      Love Card
-    </button>
-    <button class="neu-btn" id="openSignatureBtn">
-      <img class="btn-icon" src="icons/signature.svg" alt=""/>
-      Signature Promise
-    </button>
-    <button class="neu-btn" id="blessingBtn">
-      <img class="btn-icon" src="icons/blessing.svg" alt=""/>
-      Daily Blessing
-    </button>
-  </section>
-
-  <!-- Ambient floating messages (replaces Love Note) -->
-  <section class="card panel ambient-panel ambient-single" aria-live="polite">
-    <div class="ambient-text" id="ambientTxt"></div>
-  </section>
-
-  <!-- Memory playlist -->
-  <section class="card panel memory-bottom">
-    <h2>Memory Playlist</h2>
-    <p class="muted">กดแต่ละช่วงเพื่อเปลี่ยนข้อความ</p>
-    <div class="memory-chips" id="memoryChips"></div>
-    <blockquote id="memoryQuote">"อยู่ด้วยกันนาน ๆ แบบนี้ทุกวันนะ"</blockquote>
-  </section>
-
 </main>
 
 <section class="anniversary-view" id="anniversaryView" aria-hidden="true">
@@ -204,7 +187,7 @@
   <div class="modal-content love-card">
     <button class="close-btn" data-close="loveCardModal" aria-label="ปิด">×</button>
     <div class="love-card-gate" id="loveCardGate">
-      <p class="love-card-instruction">กดค้างหัวใจให้เต็ม 💗</p>
+      <p class="love-card-instruction">กดค้างหัวใจให้เต็ม</p>
       <button class="heart-charge" id="heartChargeBtn" type="button" aria-label="กดค้างเพื่อเติมหัวใจ">
         <span class="heart-charge-empty">
           <svg fill="#000000" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg" id="memory-heart-empty" aria-hidden="true">
@@ -221,12 +204,12 @@
     <div class="love-card-message" id="loveCardMessage">
       <h2>To คุณ ฑิตยา แซ่อ้วง </h2>
       <p>
-        เค้าดีใจมากๆที่ได้มาพบเจอคนน่ารักเช่นเธอนะคั้บ 🌷<br/>
-        เธอคือคนที่มีความพิเศษมากๆที่หาที่ไหนไม่ได้เลย 🌎<br/>
-        เค้าขอบคุณที่จักรวาลและเพื่อนเธอที่ทำใหัเค้าได้พบเจอเธอนะคั้บ 🫶🏻<br/>
-        ไม่ว่าจะเกิดเหตุการณ์อะไรเค้าอยู่ข้างๆเธอคอยให้กำลังใจเธอเสมอนะคั้บ 💞<br/>
-        แล ขอขอบคุณที่ทำให้ชีวิตเค้าสดใสและมีความสุขมีกำลังใจในทุกๆวันคั้บ 🌤️<br/>
-        เธอคือคนที่น่ารักที่สุดในจักรวาล เธอคือคนเดียวที่ถูกสร้างมาเพื่อมาพบเค้า💫<br/>
+        เค้าดีใจมากๆที่ได้มาพบเจอคนน่ารักเช่นเธอนะคั้บ<br/>
+        เธอคือคนที่มีความพิเศษมากๆที่หาที่ไหนไม่ได้เลย<br/>
+        เค้าขอบคุณที่จักรวาลและเพื่อนเธอที่ทำใหัเค้าได้พบเจอเธอนะคั้บ<br/>
+        ไม่ว่าจะเกิดเหตุการณ์อะไรเค้าอยู่ข้างๆเธอคอยให้กำลังใจเธอเสมอนะคั้บ<br/>
+        แล ขอขอบคุณที่ทำให้ชีวิตเค้าสดใสและมีความสุขมีกำลังใจในทุกๆวันคั้บ<br/>
+        เธอคือคนที่น่ารักที่สุดในจักรวาล เธอคือคนเดียวที่ถูกสร้างมาเพื่อมาพบเค้า<br/>
         
       </p>
     </div>
@@ -238,15 +221,15 @@
   <div class="modal-backdrop" data-close="signatureModal"></div>
   <div class="modal-content signature-card">
     <button class="close-btn" data-close="signatureModal" aria-label="ปิด">×</button>
-    <h2>Sign Our Promise 💍</h2>
-    <p class="hint">วาดลายเซ็นแล้วกด Confirm คั้บคนเก่งของเค้า ❗️</p>
+    <h2>Sign Our Promise</h2>
+    <p class="hint">วาดลายเซ็นแล้วกด Confirm คั้บคนเก่งของเค้า</p>
     <div class="sig-wrap">
       <canvas id="signatureCanvas" width="640" height="260"></canvas>
-      <div class="canvas-placeholder" id="sigPlaceholder">✍️ เขียนลายเซ็นที่นี่คั้บ</div>
+      <div class="canvas-placeholder" id="sigPlaceholder">เขียนลายเซ็นที่นี่คั้บ</div>
     </div>
     <div class="canvas-actions">
       <button class="neu-btn secondary" id="clearSignatureBtn">Clear</button>
-      <button class="neu-btn" id="confirmSignatureBtn">กดตรงนี้นะคั้บคนเก่ง 💗</button>
+      <button class="neu-btn" id="confirmSignatureBtn">กดตรงนี้นะคั้บคนเก่ง</button>
     </div>
   </div>
 </div>

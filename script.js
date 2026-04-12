@@ -2,6 +2,7 @@ import { START, MILESTONE, KEYS, ANNIVERSARY_BASE, HARDCODED_USERS } from "./js/
 import { initLoginGate } from "./js/modules/login-gate.js";
 import { initCounter } from "./js/modules/counter.js";
 import { loadUserState, saveUserState, primeUserState } from "./js/modules/local-storage-sync.js";
+import { bindBlessingButton, initMemoryPlaylist } from "./js/modules/dashboard-menu-features.js";
 
 /*
   Performance-first controller:
@@ -15,7 +16,6 @@ const $ = {
   appMain: document.getElementById("appMain"),
   bgColorPicker: document.getElementById("bgColorPicker"),
   toast: document.getElementById("toast"),
-  ambientTxt: document.getElementById("ambientTxt"),
   memoryChips: document.getElementById("memoryChips"),
   memoryQuote: document.getElementById("memoryQuote"),
   blessingBtn: document.getElementById("blessingBtn"),
@@ -45,7 +45,6 @@ const $ = {
   annivOverlay: document.getElementById("annivOverlay")
 };
 
-const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let currentUserId = localStorage.getItem(KEYS.userId) || "";
 void primeUserState(currentUserId);
 
@@ -113,56 +112,16 @@ $.bgColorPicker?.addEventListener("change", () => {
   playSound("tap");
 }, { passive: true });
 
-/* ------------------------- Ambient messages ------------------------- */
-const ambientMessages = [
-  "เธอคือความสุขของเค้าในทุกวัน 💗",
-  "You are my favorite dream 🌙",
-  "วันนี้ก็ขอให้เธอยิ้มเยอะ ๆ นะ",
-  "เค้าอยู่ข้าง ๆ เธอเสมอ 🫶"
-];
-let ambientIndex = 0;
-
-function updateAmbientMessage(){
-  if(!$.ambientTxt) return;
-  $.ambientTxt.textContent = ambientMessages[ambientIndex];
-  ambientIndex = (ambientIndex + 1) % ambientMessages.length;
-}
-
-/* ---------------------------- Memory chips --------------------------- */
-const memMoments = [
-  { label: "Moment 1", quote: "อยู่ด้วยกันนาน ๆ แบบนี้ทุกวันนะ" },
-  { label: "Moment 2", quote: "ขอบคุณที่ทำให้ทุกวันสดใส" },
-  { label: "Moment 3", quote: "เธอเก่งมาก และน่ารักมาก" }
-];
-let activeMemoryIndex = Number(localStorage.getItem(KEYS.memory) || 0);
-
-function setActiveMemory(index, syncRemote = false){
-  const safe = Math.max(0, Math.min(memMoments.length - 1, index));
-  activeMemoryIndex = safe;
-  localStorage.setItem(KEYS.memory, String(safe));
-  $.memoryQuote && ($.memoryQuote.textContent = `"${memMoments[safe].quote}"`);
-  const chips = $.memoryChips?.querySelectorAll(".memory-chip") || [];
-  chips.forEach((chip, i) => chip.classList.toggle("active", i === safe));
-  if(syncRemote && currentUserId) void saveUserState(currentUserId, { memory_index: safe });
-}
-
-if($.memoryChips){
-  const frag = document.createDocumentFragment();
-  memMoments.forEach((m, i) => {
-    const btn = document.createElement("button");
-    btn.className = "memory-chip";
-    btn.type = "button";
-    btn.textContent = m.label;
-    btn.addEventListener("click", () => {
-      if(i === activeMemoryIndex) return;
-      setActiveMemory(i, true);
-      playSound("tap");
-    }, { passive: true });
-    frag.appendChild(btn);
-  });
-  $.memoryChips.appendChild(frag);
-  setActiveMemory(activeMemoryIndex);
-}
+/* ---------------------------- Menu features -------------------------- */
+const memoryFeature = initMemoryPlaylist({
+  memoryChips: $.memoryChips,
+  memoryQuote: $.memoryQuote,
+  storageKey: KEYS.memory,
+  saveRemote: (safe) => {
+    if(currentUserId) void saveUserState(currentUserId, { memory_index: safe });
+  },
+  playSound
+});
 
 /* ----------------------------- Modals ------------------------------- */
 function openModal(id){
@@ -320,25 +279,18 @@ $.confirmSignatureBtn?.addEventListener("click", () => {
     return;
   }
   closeModal("signatureModal");
-  showToast("Promise confirmed 💜");
+  showToast("Promise confirmed");
   playSound("success");
 }, { passive: true });
 
 window.addEventListener("resize", throttle(resizeCanvas, 250), { passive: true });
 resizeCanvas();
 
-/* -------------------------- Blessing button -------------------------- */
-const blessings = [
-  "ขอให้วันนี้เป็นวันที่ดีนะ 🌸",
-  "พักผ่อนเยอะ ๆ และยิ้มบ่อย ๆ น้า 💖",
-  "ขอให้ทุกอย่างราบรื่นและใจฟู ✨"
-];
-
-$.blessingBtn?.addEventListener("click", () => {
-  const idx = Math.floor(Math.random() * blessings.length);
-  showToast(blessings[idx]);
-  playSound("success");
-}, { passive: true });
+bindBlessingButton({
+  blessingBtn: $.blessingBtn,
+  showToast,
+  playSound
+});
 
 /* ---------------------- Menu + view switching ------------------------ */
 let currentView = "dashboard";
@@ -403,7 +355,7 @@ function updateAnniversary(nowMs){
   if(currentView === "anniversary" && sec <= 3){
     $.annivOverlay?.classList.add("show");
     $.annivOverlay?.setAttribute("aria-hidden", "false");
-    $.annivOverlay && ($.annivOverlay.textContent = "Happy Anniversary 💗");
+    $.annivOverlay && ($.annivOverlay.textContent = "Happy Anniversary");
   }else if($.annivOverlay?.classList.contains("show")){
     $.annivOverlay.classList.remove("show");
     $.annivOverlay.setAttribute("aria-hidden", "true");
@@ -414,21 +366,14 @@ function updateAnniversary(nowMs){
 /* --------------------- Single RAF scheduler loop --------------------- */
 let rafId = 0;
 let lastSecond = -1;
-let lastAmbient = 0;
-const AMBIENT_INTERVAL = reducedMotion ? 5000 : 4000;
 
-function frame(now){
+function frame(){
   const nowMs = Date.now();
   const sec = Math.floor(nowMs / 1000);
 
   if(sec !== lastSecond){
     lastSecond = sec;
     updateAnniversary(nowMs);
-  }
-
-  if(now - lastAmbient >= AMBIENT_INTERVAL){
-    lastAmbient = now;
-    updateAmbientMessage();
   }
 
   rafId = requestAnimationFrame(frame);
@@ -460,7 +405,7 @@ initLoginGate({
     void loadUserState(currentUserId)
       .then((state) => {
         const memoryIdx = Number(state?.memory_index);
-        if(Number.isFinite(memoryIdx)) setActiveMemory(memoryIdx);
+        if(Number.isFinite(memoryIdx)) memoryFeature.setActiveMemory(memoryIdx);
         if(typeof state?.background_color === "string") applyBackgroundColor(state.background_color);
       })
       .catch(() => {});
