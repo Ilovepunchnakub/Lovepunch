@@ -17,21 +17,19 @@
 <aside class="side-menu" id="sideMenu" aria-hidden="true">
   <button class="menu-close" id="menuCloseBtn" aria-label="ปิดเมนู"><img src="icons/pen.svg" alt=""/></button>
   <nav class="side-nav">
-    <button class="side-nav-item active" data-view="dashboard" type="button">Dashboard</button>
-    <button class="side-nav-item" data-view="anniversary" type="button">Anniversary</button>
+    <p class="menu-section-title">Main Views</p>
+    <button class="side-nav-item active" data-view="dashboard" type="button"><span>🏠</span> Dashboard</button>
+    <button class="side-nav-item" data-view="anniversary" type="button"><span>⏳</span> Anniversary</button>
+    <div class="menu-divider"></div>
+    <p class="menu-section-title">Features</p>
+    <button class="side-nav-item" data-view="mood" type="button"><span>💭</span> Mood Check-in</button>
+    <button class="side-nav-item" data-view="memory" type="button"><span>📸</span> Memory Wall</button>
+    <button class="side-nav-item" data-view="wishes" type="button"><span>🌟</span> Bucket List</button>
+    <button class="side-nav-item" data-view="journal" type="button"><span>✍️</span> Daily Journal</button>
+    <button class="side-nav-item" data-view="stats" type="button"><span>💜</span> Love Stats</button>
+    <button class="side-nav-item" data-view="game" type="button"><span>🎮</span> Mini Game</button>
+    <button class="side-nav-item" data-view="settings" type="button"><span>🎨</span> Settings</button>
   </nav>
-  <section class="menu-section">
-    <h3>Love Features</h3>
-    <button class="menu-action-btn" id="openLoveCardBtn" type="button"><img src="icons/love-card.svg" alt=""/>Love Card</button>
-    <button class="menu-action-btn" id="openSignatureBtn" type="button"><img src="icons/signature.svg" alt=""/>Signature Promise</button>
-    <button class="menu-action-btn" id="blessingBtn" type="button"><img src="icons/blessing.svg" alt=""/>Daily Blessing</button>
-  </section>
-  <section class="menu-section menu-memory">
-    <h3>Memory Playlist</h3>
-    <p class="muted">กดแต่ละช่วงเพื่อเปลี่ยนข้อความ</p>
-    <div class="memory-chips" id="memoryChips"></div>
-    <blockquote id="memoryQuote">"อยู่ด้วยกันนาน ๆ แบบนี้ทุกวันนะ"</blockquote>
-  </section>
 </aside>
 <div class="side-menu-backdrop" id="sideMenuBackdrop" aria-hidden="true"></div>
 
@@ -95,7 +93,7 @@
   </div>
 </section>
 
-<main class="page" id="appMain" aria-hidden="true">
+<main class="page view-section active" id="appMain" data-view="dashboard" aria-hidden="false">
   <!-- Topbar -->
   <header class="topbar card">
     <div class="topbar-title">
@@ -121,6 +119,7 @@
         </div>
       </div>
     </div>
+    <div class="day-badge" id="todayDayBadge">Today is Day 1</div>
 
     <h1 class="sweet-title">
       <span class="sweet-title-text">Our Sweet Time</span>
@@ -148,6 +147,20 @@
       </article>
     </div>
 
+    <div class="quick-stats-bar card">
+      <button type="button" data-go-view="memory">📸 <span id="quickPhotos">0</span> รูป</button>
+      <button type="button" data-go-view="wishes">✅ <span id="quickWishes">0/0</span> wishes</button>
+      <button type="button" data-go-view="journal">✍️ <span id="quickJournal">0</span> วันที่บันทึก</button>
+      <button type="button" data-go-view="mood">😊 <span id="quickMood">○</span></button>
+    </div>
+
+    <article class="card dashboard-widget" id="todayMoodWidget"></article>
+    <article class="card dashboard-widget">
+      <h3>Upcoming Wishes</h3>
+      <ul id="wishSneakPeek"></ul>
+      <button type="button" class="link-btn" data-go-view="wishes">ดูทั้งหมด →</button>
+    </article>
+
     <!-- Milestone -->
     <div class="milestone-wrap">
       <div class="milestone-head">
@@ -160,9 +173,19 @@
     </div>
   </section>
 
+  <section class="card dashboard-features-grid">
+    <button class="neu-btn" id="openLoveCardBtn" type="button">💌 Love Card</button>
+    <button class="neu-btn" id="openSignatureBtn" type="button">🖋️ Signature Promise</button>
+    <button class="neu-btn" id="blessingBtn" type="button">✨ Daily Blessing</button>
+  </section>
+
+  <section class="card dashboard-quote">
+    <h3>Random Love Quote</h3>
+    <p id="dailyQuote"></p>
+  </section>
 </main>
 
-<section class="anniversary-view" id="anniversaryView" aria-hidden="true">
+<section class="anniversary-view view-section" id="anniversaryView" data-view="anniversary" aria-hidden="true">
   <div class="anniversary-card">
     <p class="anniversary-kicker">Our Sweet Countdown</p>
     <h2>Anniversary</h2>
@@ -175,6 +198,100 @@
     </div>
   </div>
 </section>
+
+
+<section id="view-mood" class="view-section" data-view="mood" aria-hidden="true">
+  <div class="card feature-shell">
+    <h2>How are you today? 💭</h2><p>บอกเค้าด้วยนะ วันนี้เป็นยังไงบ้าง</p>
+    <div id="moodPicker" class="mood-grid"></div>
+    <textarea id="moodNote" maxlength="200" placeholder="เล่าเพิ่มได้เลยน้า เช่น วันนี้เจออะไรบ้าง..."></textarea>
+    <p class="muted" id="moodCharCount">0/200</p>
+    <button class="neu-btn" id="saveMoodBtn" type="button">บันทึกอารมณ์วันนี้</button>
+    <p id="moodBlessing" class="mood-blessing"></p>
+    <div id="moodWeekStrip" class="week-strip"></div>
+    <div id="moodHistoryPopover" class="popover-note">กดวันที่อยากดูโน้ต</div>
+  </div>
+</section>
+
+<section id="view-memory" class="view-section" data-view="memory" aria-hidden="true">
+  <div class="card feature-shell">
+    <div class="feature-header"><h2>Our Memory Wall 📸</h2><button class="neu-btn" id="memoryAddBtn" type="button">เพิ่มรูป +</button></div>
+    <input id="memoryFileInput" type="file" accept="image/*" multiple hidden/>
+    <div id="memoryFilterBar" class="filter-bar">
+      <button data-filter="all" class="active" type="button">All</button><button data-filter="Date Night" type="button">Date Night</button><button data-filter="Travel" type="button">Travel</button><button data-filter="Food" type="button">Food</button><button data-filter="Everyday" type="button">Everyday</button><button data-filter="Special" type="button">Special</button>
+    </div>
+    <div id="memoryEmpty" class="empty-state">เพิ่มรูปแรกของเราเลยนะ 💕</div>
+    <div id="memoryGrid" class="memory-grid masonry"></div>
+  </div>
+</section>
+
+<section id="view-wishes" class="view-section" data-view="wishes" aria-hidden="true">
+  <div class="card feature-shell">
+    <h2>สิ่งที่อยากทำด้วยกัน 🌟</h2><p>tick แต่ละข้อเมื่อทำสำเร็จ</p>
+    <div class="progress-head"><svg class="progress-ring" width="110" height="110"><circle cx="55" cy="55" r="45" stroke="var(--acc)" stroke-width="8" fill="none" id="wishProgressRing"></circle></svg><div><strong id="wishProgressPct">0%</strong><p id="wishProgressLabel">0/0 รายการสำเร็จ</p></div></div>
+    <form id="wishAddForm" class="wish-form"><input id="wishText" placeholder="เพิ่มความฝัน..." maxlength="120"/><select id="wishCategory"><option>🍜 กิน</option><option>✈️ เที่ยว</option><option>🎬 ดู</option><option>🎮 เล่น</option><option>💝 พิเศษ</option></select><button class="neu-btn" type="submit">เพิ่ม</button></form>
+    <div id="wishFilterBar" class="filter-bar"><button data-filter="all" class="active" type="button">All</button><button data-filter="pending" type="button">Pending</button><button data-filter="completed" type="button">Completed</button><button data-filter="🍜 กิน" type="button">🍜</button><button data-filter="✈️ เที่ยว" type="button">✈️</button><button data-filter="🎬 ดู" type="button">🎬</button><button data-filter="🎮 เล่น" type="button">🎮</button><button data-filter="💝 พิเศษ" type="button">💝</button></div>
+    <ul id="wishesList" class="wishes-list"></ul>
+  </div>
+</section>
+
+<section id="view-journal" class="view-section" data-view="journal" aria-hidden="true">
+  <div class="card feature-shell">
+    <div class="feature-header"><h2>บันทึกประจำวัน ✍️</h2><button id="journalCalendarToggle" class="neu-btn" type="button">📅 ปฏิทิน</button></div>
+    <p>เรื่องราวของวันนี้...</p>
+    <h3 id="journalTodayDate"></h3>
+    <textarea id="journalTodayText" class="journal-input" placeholder="วันนี้เกิดอะไรขึ้นบ้าง..."></textarea>
+    <small id="journalSaveStatus">ยังไม่ได้บันทึก</small>
+    <div id="journalTags" class="filter-bar"><button type="button" data-tag="#อร่อย">#อร่อย</button><button type="button" data-tag="#ตลก">#ตลก</button><button type="button" data-tag="#น่ารัก">#น่ารัก</button><button type="button" data-tag="#ประทับใจ">#ประทับใจ</button><button type="button" data-tag="#ขอบคุณ">#ขอบคุณ</button><button type="button" data-tag="#คิดถึง">#คิดถึง</button></div>
+    <div class="feature-header"><input id="journalSearch" placeholder="ค้นหาข้อความ..."/><button id="journalExportBtn" class="neu-btn" type="button">Export</button></div>
+    <div id="journalCalendar" class="journal-calendar"></div>
+    <div id="journalTimeline" class="journal-timeline"></div>
+  </div>
+</section>
+
+<section id="view-stats" class="view-section" data-view="stats" aria-hidden="true">
+  <div class="card feature-shell">
+    <h2>Love Statistics 💜</h2><p>ทุกอย่างที่นับได้</p>
+    <div class="stats-grid">
+      <article class="stat-card"><span>❤️ อยู่ด้วยกัน</span><strong id="statTogether"></strong></article>
+      <article class="stat-card"><span>📸 รูปความทรงจำ</span><strong id="statPhotos"></strong></article>
+      <article class="stat-card"><span>✅ Bucket List สำเร็จ</span><strong id="statWishes"></strong></article>
+      <article class="stat-card"><span>✍️ บันทึกวัน</span><strong id="statJournal"></strong></article>
+      <article class="stat-card"><span>😊 Mood มากสุด</span><strong id="statMood"></strong></article>
+      <article class="stat-card"><span>🌅 Blessing ที่ส่ง</span><strong id="statBless"></strong></article>
+    </div>
+    <svg id="moodBarChart" viewBox="0 0 340 130"></svg>
+    <div class="streak-wrap"><div class="streak-circle" id="journalStreak">0</div><p id="streakMessage"></p></div>
+    <p>= กาแฟ <span id="breakdownCoffee">0</span> แก้ว • = หนัง <span id="breakdownMovie">0</span> เรื่อง • = เที่ยวบิน BKK→Tokyo <span id="breakdownFlight">0</span> เที่ยว</p>
+    <div id="achievementBadges" class="badge-row"></div>
+  </div>
+</section>
+
+<section id="view-game" class="view-section" data-view="game" aria-hidden="true">
+  <div class="card feature-shell game-shell">
+    <h2>Love Clicker 💝</h2><p>กดหัวใจสะสม Love Points</p>
+    <p id="lpCount">0 LP</p>
+    <button id="loveClickBtn" class="love-click-btn" type="button">💖</button>
+    <p id="lpIncome">0 LP per second</p>
+    <div id="upgradeList" class="upgrade-list"></div>
+    <ul id="milestoneMessages"></ul>
+    <button id="prestigeBtn" class="neu-btn" type="button">Reset &amp; Prestige ✨</button>
+    <p>Prestige Stars: <strong id="prestigeStars">0</strong></p>
+  </div>
+</section>
+
+<section id="view-settings" class="view-section" data-view="settings" aria-hidden="true">
+  <div class="card feature-shell">
+    <h2>ตั้งค่า 🎨</h2>
+    <div id="themePresetGrid" class="theme-grid"></div>
+    <div class="feature-header"><label>Background <input id="customBgPicker" type="color" value="#fff0f5"></label><label>Accent <input id="customAccPicker" type="color" value="#f472b6"></label><label>Text <input id="customTxtPicker" type="color" value="#7a5a95"></label><button id="resetThemeBtn" class="neu-btn" type="button">Reset to Sakura</button></div>
+    <div class="feature-header"><label>Font Size <input id="fontSizeSlider" type="range" min="14" max="18" step="1"></label><span id="fontSizeLabel">16px</span></div>
+    <div class="toggle-grid"><label><input id="toggle-hearts" type="checkbox" checked> floating hearts</label><label><input id="toggle-cursor" type="checkbox" checked> cursor trail</label><label><input id="toggle-blob" type="checkbox" checked> blob animations</label></div>
+    <label>Language <select id="langToggle"><option value="th">TH</option><option value="en">EN</option></select></label>
+  </div>
+</section>
+
+<div class="modal" id="memoryModal" aria-hidden="true"><div class="modal-backdrop" data-close="memoryModal"></div><div class="modal-content"><button class="close-btn" data-close="memoryModal">×</button><img alt="memory preview"/><button class="neu-btn" data-delete type="button">ลบรูป</button></div></div>
 
 <div class="anniv-overlay" id="annivOverlay" aria-hidden="true"></div>
 

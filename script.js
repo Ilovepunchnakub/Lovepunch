@@ -1,438 +1,249 @@
-import { START, MILESTONE, KEYS, ANNIVERSARY_BASE, HARDCODED_USERS } from "./js/config.js";
-import { initLoginGate } from "./js/modules/login-gate.js";
-import { initCounter } from "./js/modules/counter.js";
-import { loadUserState, saveUserState, primeUserState } from "./js/modules/local-storage-sync.js";
-import { bindBlessingButton, initMemoryPlaylist } from "./js/modules/dashboard-menu-features.js";
-
-/*
-  Performance-first controller:
-  - remove heavy audio synthesis (Web Audio API oscillators)
-  - one shared RAF scheduler for UI updates
-  - no particle effects / no nested loops / throttled input handlers
-*/
+import { START, MILESTONE, KEYS, HARDCODED_USERS } from './js/config.js';
+import { initLoginGate } from './js/modules/login-gate.js';
+import { initCounter } from './js/modules/counter.js';
+import { bindBlessingButton } from './js/modules/dashboard-menu-features.js';
+import { createRouter } from './js/modules/router.js';
+import { initTheme } from './js/modules/theme.js';
+import { initMood } from './js/modules/mood.js';
+import { initMemoryWall } from './js/modules/memory-wall.js';
+import { initBucketList } from './js/modules/bucket-list.js';
+import { initJournal } from './js/modules/journal.js';
+import { initStats } from './js/modules/stats.js';
+import { initMiniGame } from './js/modules/mini-game.js';
 
 const $ = {
-  body: document.body,
-  appMain: document.getElementById("appMain"),
-  bgColorPicker: document.getElementById("bgColorPicker"),
-  toast: document.getElementById("toast"),
-  memoryChips: document.getElementById("memoryChips"),
-  memoryQuote: document.getElementById("memoryQuote"),
-  blessingBtn: document.getElementById("blessingBtn"),
-  openLoveCardBtn: document.getElementById("openLoveCardBtn"),
-  openSignatureBtn: document.getElementById("openSignatureBtn"),
-  confirmSignatureBtn: document.getElementById("confirmSignatureBtn"),
-  clearSignatureBtn: document.getElementById("clearSignatureBtn"),
-  signatureModal: document.getElementById("signatureModal"),
-  signatureCanvas: document.getElementById("signatureCanvas"),
-  sigPlaceholder: document.getElementById("sigPlaceholder"),
-  loveCardModal: document.getElementById("loveCardModal"),
-  loveCardGate: document.getElementById("loveCardGate"),
-  loveCardMessage: document.getElementById("loveCardMessage"),
-  heartChargeBtn: document.getElementById("heartChargeBtn"),
-  anniversaryView: document.getElementById("anniversaryView"),
-  anniversaryDateLabel: document.getElementById("anniversaryDateLabel"),
-  annivDays: document.getElementById("annivDays"),
-  annivHours: document.getElementById("annivHours"),
-  annivMinutes: document.getElementById("annivMinutes"),
-  annivSeconds: document.getElementById("annivSeconds"),
-  hamburgerBtn: document.getElementById("hamburgerBtn"),
-  menuCloseBtn: document.getElementById("menuCloseBtn"),
-  sideMenu: document.getElementById("sideMenu"),
-  sideMenuBackdrop: document.getElementById("sideMenuBackdrop"),
-  sideMenuItems: Array.from(document.querySelectorAll(".side-nav-item")),
-  closeButtons: Array.from(document.querySelectorAll("[data-close]")),
-  annivOverlay: document.getElementById("annivOverlay")
+  toast: document.getElementById('toast'),
+  sideMenu: document.getElementById('sideMenu'),
+  sideMenuBackdrop: document.getElementById('sideMenuBackdrop'),
+  hamburgerBtn: document.getElementById('hamburgerBtn'),
+  menuCloseBtn: document.getElementById('menuCloseBtn'),
+  sideMenuItems: Array.from(document.querySelectorAll('.side-nav-item')),
+  closeButtons: Array.from(document.querySelectorAll('[data-close]')),
+  openLoveCardBtn: document.getElementById('openLoveCardBtn'),
+  openSignatureBtn: document.getElementById('openSignatureBtn'),
+  loveCardModal: document.getElementById('loveCardModal'),
+  signatureModal: document.getElementById('signatureModal'),
+  heartChargeBtn: document.getElementById('heartChargeBtn'),
+  loveCardGate: document.getElementById('loveCardGate'),
+  loveCardMessage: document.getElementById('loveCardMessage'),
+  signatureCanvas: document.getElementById('signatureCanvas'),
+  sigPlaceholder: document.getElementById('sigPlaceholder'),
+  clearSignatureBtn: document.getElementById('clearSignatureBtn'),
+  confirmSignatureBtn: document.getElementById('confirmSignatureBtn'),
+  blessingBtn: document.getElementById('blessingBtn')
 };
 
-let currentUserId = localStorage.getItem(KEYS.userId) || "";
-void primeUserState(currentUserId);
-
-/* ------------------------- Audio (MP3 pool) ------------------------- */
-const audioMap = {
-  tap: createPooledAudio("audio/tap.mp3", 3),
-  success: createPooledAudio("audio/success.mp3", 2),
-  beep: createPooledAudio("audio/beep.mp3", 1)
-};
-
-function createPooledAudio(src, poolSize){
-  const pool = [];
-  for(let i = 0; i < poolSize; i += 1){
-    const a = new Audio(src);
-    a.preload = "auto";
-    a.playsInline = true;
-    a.load();
-    pool.push(a);
-  }
-  return { pool, cursor: 0 };
-}
-
-function playSound(name){
-  const group = audioMap[name];
-  if(!group) return;
-  const item = group.pool[group.cursor];
-  group.cursor = (group.cursor + 1) % group.pool.length;
-  item.currentTime = 0;
-  void item.play().catch(() => {});
-}
-
-/* Binary support: allow optional prefetch as ArrayBuffer (non-blocking). */
-["audio/tap.mp3", "audio/success.mp3", "audio/beep.mp3"].forEach((src) => {
-  fetch(src).then((r) => r.arrayBuffer()).catch(() => {});
-});
-
-/* --------------------------- Core counter --------------------------- */
-initCounter({ startDate: START, milestoneDays: MILESTONE });
-
-/* --------------------------- Toast helper --------------------------- */
+let currentUserId = localStorage.getItem(KEYS.userId) || 'guest';
 let toastTimer = 0;
+
+initCounter({ startDate: START, milestoneDays: MILESTONE });
+const router = createRouter({ onChange: handleViewChange });
+router.setView('dashboard');
+
 function showToast(message){
   if(!$.toast) return;
   $.toast.textContent = message;
-  $.toast.classList.add("show");
-  window.clearTimeout(toastTimer);
-  toastTimer = window.setTimeout(() => $.toast?.classList.remove("show"), 2200);
+  $.toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => $.toast.classList.remove('show'), 2000);
 }
 
-/* ----------------------- BG color / user state ---------------------- */
-function applyBackgroundColor(hex){
-  if(!hex) return;
-  document.documentElement.style.setProperty("--bg1", hex);
-  localStorage.setItem(KEYS.bgColor, hex);
+function openMenu(){
+  $.sideMenu?.classList.add('show');
+  $.sideMenuBackdrop?.classList.add('show');
+  $.hamburgerBtn?.setAttribute('aria-expanded', 'true');
+}
+function closeMenu(){
+  $.sideMenu?.classList.remove('show');
+  $.sideMenuBackdrop?.classList.remove('show');
+  $.hamburgerBtn?.setAttribute('aria-expanded', 'false');
 }
 
-const savedBg = localStorage.getItem(KEYS.bgColor);
-if(savedBg) applyBackgroundColor(savedBg);
-
-$.bgColorPicker?.addEventListener("change", () => {
-  const color = $.bgColorPicker?.value;
-  if(!color) return;
-  applyBackgroundColor(color);
-  if(currentUserId) void saveUserState(currentUserId, { background_color: color });
-  playSound("tap");
-}, { passive: true });
-
-/* ---------------------------- Menu features -------------------------- */
-const memoryFeature = initMemoryPlaylist({
-  memoryChips: $.memoryChips,
-  memoryQuote: $.memoryQuote,
-  storageKey: KEYS.memory,
-  saveRemote: (safe) => {
-    if(currentUserId) void saveUserState(currentUserId, { memory_index: safe });
-  },
-  playSound
+$.hamburgerBtn?.addEventListener('click', openMenu, { passive: true });
+$.menuCloseBtn?.addEventListener('click', closeMenu, { passive: true });
+$.sideMenuBackdrop?.addEventListener('click', closeMenu, { passive: true });
+$.sideMenuItems.forEach((item) => {
+  item.addEventListener('click', () => {
+    const view = item.dataset.view || 'dashboard';
+    router.setView(view);
+    $.sideMenuItems.forEach((target) => target.classList.toggle('active', target === item));
+    closeMenu();
+  }, { passive: true });
 });
 
-/* ----------------------------- Modals ------------------------------- */
+document.querySelectorAll('[data-go-view]').forEach((el) => {
+  el.addEventListener('click', () => router.setView(el.dataset.goView), { passive: true });
+});
+
+function handleViewChange(view){
+  if(view === 'stats') initStats({ userId: currentUserId });
+}
+
 function openModal(id){
   const modal = document.getElementById(id);
   if(!modal) return;
-  modal.classList.add("show");
-  modal.setAttribute("aria-hidden", "false");
-  if(id === "signatureModal") resizeCanvas();
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden', 'false');
 }
-
 function closeModal(id){
   const modal = document.getElementById(id);
   if(!modal) return;
-  modal.classList.remove("show");
-  modal.setAttribute("aria-hidden", "true");
-  if(id === "loveCardModal") stopCharge();
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden', 'true');
 }
 
-$.closeButtons.forEach((btn) => {
-  btn.addEventListener("click", () => closeModal(btn.dataset.close || ""), { passive: true });
+$.closeButtons.forEach((btn) => btn.addEventListener('click', () => closeModal(btn.dataset.close || ''), { passive: true }));
+$.openLoveCardBtn?.addEventListener('click', () => {
+  $.loveCardGate.style.display = 'grid';
+  $.loveCardMessage.classList.remove('show');
+  $.heartChargeBtn.style.setProperty('--fill', '0%');
+  openModal('loveCardModal');
 });
+$.openSignatureBtn?.addEventListener('click', () => openModal('signatureModal'));
 
-$.openLoveCardBtn?.addEventListener("click", () => {
-  resetLoveCardGate();
-  openModal("loveCardModal");
-  playSound("tap");
-}, { passive: true });
-
-$.openSignatureBtn?.addEventListener("click", () => {
-  openModal("signatureModal");
-  playSound("tap");
-}, { passive: true });
-
-/* ----------------------- Love card hold-to-fill ---------------------- */
-let chargeRAF = 0;
+let chargeRaf = 0;
 let chargeStart = 0;
-let chargeValue = 0;
 const CHARGE_MS = 1200;
-
-function resetLoveCardGate(){
-  chargeValue = 0;
-  $.heartChargeBtn?.style.setProperty("--fill", "0%");
-  $.loveCardMessage?.classList.remove("show");
-  if($.loveCardGate) $.loveCardGate.style.display = "grid";
-}
-
 function chargeStep(now){
-  const ratio = Math.min(1, (now - chargeStart) / CHARGE_MS);
-  chargeValue = ratio * 100;
-  $.heartChargeBtn?.style.setProperty("--fill", `${chargeValue}%`);
-
-  if(ratio >= 1){
-    chargeRAF = 0;
-    $.heartChargeBtn?.classList.remove("charging");
-    if($.loveCardGate) $.loveCardGate.style.display = "none";
-    $.loveCardMessage?.classList.add("show");
-    playSound("success");
+  const pct = Math.min(1, (now - chargeStart) / CHARGE_MS);
+  $.heartChargeBtn?.style.setProperty('--fill', `${pct * 100}%`);
+  if(pct >= 1){
+    cancelAnimationFrame(chargeRaf);
+    chargeRaf = 0;
+    $.loveCardGate.style.display = 'none';
+    $.loveCardMessage.classList.add('show');
     return;
   }
-  chargeRAF = requestAnimationFrame(chargeStep);
+  chargeRaf = requestAnimationFrame(chargeStep);
 }
+function startCharge(){ if(!chargeRaf){ chargeStart = performance.now(); chargeRaf = requestAnimationFrame(chargeStep); } }
+function stopCharge(){ cancelAnimationFrame(chargeRaf); chargeRaf = 0; }
+$.heartChargeBtn?.addEventListener('mousedown', startCharge);
+$.heartChargeBtn?.addEventListener('touchstart', startCharge, { passive: true });
+['mouseup', 'mouseleave', 'touchend', 'touchcancel'].forEach((evt) => $.heartChargeBtn?.addEventListener(evt, stopCharge, { passive: true }));
 
-function startCharge(){
-  if(chargeRAF || !$.heartChargeBtn) return;
-  chargeStart = performance.now() - (chargeValue / 100) * CHARGE_MS;
-  $.heartChargeBtn.classList.add("charging");
-  chargeRAF = requestAnimationFrame(chargeStep);
-}
-
-function stopCharge(){
-  $.heartChargeBtn?.classList.remove("charging");
-  if(chargeRAF){
-    cancelAnimationFrame(chargeRAF);
-    chargeRAF = 0;
-  }
-}
-
-$.heartChargeBtn?.addEventListener("mousedown", startCharge);
-$.heartChargeBtn?.addEventListener("touchstart", startCharge, { passive: true });
-["mouseup", "mouseleave", "touchend", "touchcancel"].forEach((evt) => {
-  $.heartChargeBtn?.addEventListener(evt, stopCharge, { passive: true });
-});
-
-/* ------------------------- Signature canvas -------------------------- */
 const canvas = $.signatureCanvas;
-const ctx = canvas?.getContext("2d", { alpha: false });
+const ctx = canvas?.getContext('2d');
 let drawing = false;
 let hasSignature = false;
 
 function resizeCanvas(){
   if(!canvas || !ctx) return;
-  const r = canvas.getBoundingClientRect();
-  if(!r.width || !r.height) return;
-  const ratio = Math.max(1, Math.min(window.devicePixelRatio || 1, 2));
-  canvas.width = Math.floor(r.width * ratio);
-  canvas.height = Math.floor(r.height * ratio);
-  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
-  ctx.lineCap = "round";
-  ctx.lineJoin = "round";
-  ctx.lineWidth = 3;
-  ctx.strokeStyle = "#bb4ad4";
-}
-
-function pointFromEvent(event){
-  if(!canvas) return { x: 0, y: 0 };
   const rect = canvas.getBoundingClientRect();
-  const source = event.touches ? event.touches[0] : event;
-  return { x: source.clientX - rect.left, y: source.clientY - rect.top };
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  ctx.lineWidth = 3;
+  ctx.lineCap = 'round';
+  ctx.strokeStyle = 'var(--acc)';
 }
+function point(e){ const r = canvas.getBoundingClientRect(); const t = e.touches?.[0] || e; return { x: t.clientX - r.left, y: t.clientY - r.top }; }
+function startDraw(e){ drawing = true; hasSignature = true; $.sigPlaceholder.style.opacity = 0; const p = point(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }
+function moveDraw(e){ if(!drawing) return; if(e.cancelable) e.preventDefault(); const p = point(e); ctx.lineTo(p.x, p.y); ctx.stroke(); }
+function endDraw(){ drawing = false; ctx.closePath(); }
+canvas?.addEventListener('mousedown', startDraw);
+canvas?.addEventListener('touchstart', startDraw, { passive: true });
+canvas?.addEventListener('mousemove', moveDraw);
+canvas?.addEventListener('touchmove', moveDraw, { passive: false });
+['mouseup', 'mouseleave', 'touchend', 'touchcancel'].forEach((evt) => canvas?.addEventListener(evt, endDraw, { passive: true }));
+window.addEventListener('resize', resizeCanvas, { passive: true });
+resizeCanvas();
 
-function onStart(event){
-  if(!ctx) return;
-  const p = pointFromEvent(event);
-  drawing = true;
-  hasSignature = true;
-  $.sigPlaceholder && ($.sigPlaceholder.style.opacity = "0");
-  ctx.beginPath();
-  ctx.moveTo(p.x, p.y);
-}
-
-function onMove(event){
-  if(!drawing || !ctx) return;
-  if(event.cancelable) event.preventDefault();
-  const p = pointFromEvent(event);
-  ctx.lineTo(p.x, p.y);
-  ctx.stroke();
-}
-
-function onEnd(){
-  if(!ctx) return;
-  drawing = false;
-  ctx.closePath();
-}
-
-canvas?.addEventListener("mousedown", onStart);
-canvas?.addEventListener("touchstart", onStart, { passive: true });
-canvas?.addEventListener("mousemove", onMove);
-canvas?.addEventListener("touchmove", onMove, { passive: false });
-canvas?.addEventListener("mouseup", onEnd);
-canvas?.addEventListener("mouseleave", onEnd);
-canvas?.addEventListener("touchend", onEnd, { passive: true });
-canvas?.addEventListener("touchcancel", onEnd, { passive: true });
-
-$.clearSignatureBtn?.addEventListener("click", () => {
-  if(!canvas || !ctx) return;
+$.clearSignatureBtn?.addEventListener('click', () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   hasSignature = false;
-  $.sigPlaceholder && ($.sigPlaceholder.style.opacity = "1");
-  playSound("tap");
-}, { passive: true });
-
-$.confirmSignatureBtn?.addEventListener("click", () => {
-  if(!hasSignature){
-    showToast("กรุณาเซ็นชื่อก่อนนะคะ");
-    return;
-  }
-  closeModal("signatureModal");
-  showToast("Promise confirmed");
-  playSound("success");
-}, { passive: true });
-
-window.addEventListener("resize", throttle(resizeCanvas, 250), { passive: true });
-resizeCanvas();
+  $.sigPlaceholder.style.opacity = 1;
+});
+$.confirmSignatureBtn?.addEventListener('click', () => {
+  if(!hasSignature){ showToast('กรุณาเซ็นชื่อก่อนนะ'); return; }
+  closeModal('signatureModal');
+  showToast('Promise confirmed');
+});
 
 bindBlessingButton({
   blessingBtn: $.blessingBtn,
-  showToast,
-  playSound
+  showToast: (message) => {
+    const n = Number(localStorage.getItem('soft-love-blessing-count') || 0) + 1;
+    localStorage.setItem('soft-love-blessing-count', String(n));
+    showToast(message);
+  }
 });
 
-/* ---------------------- Menu + view switching ------------------------ */
-let currentView = "dashboard";
-let annivTarget = getNextAnniversary(Date.now());
-
-function openMenu(){
-  $.sideMenu?.classList.add("show");
-  $.sideMenuBackdrop?.classList.add("show");
-  $.hamburgerBtn?.setAttribute("aria-expanded", "true");
-}
-function closeMenu(){
-  $.sideMenu?.classList.remove("show");
-  $.sideMenuBackdrop?.classList.remove("show");
-  $.hamburgerBtn?.setAttribute("aria-expanded", "false");
-}
-function setView(view){
-  currentView = view;
-  const isAnniv = view === "anniversary";
-  $.appMain.style.display = isAnniv ? "none" : "";
-  $.anniversaryView?.classList.toggle("show", isAnniv);
-  $.anniversaryView?.setAttribute("aria-hidden", String(!isAnniv));
-  $.sideMenuItems.forEach((item) => item.classList.toggle("active", item.dataset.view === view));
-  closeMenu();
-}
-
-$.hamburgerBtn?.addEventListener("click", openMenu, { passive: true });
-$.menuCloseBtn?.addEventListener("click", closeMenu, { passive: true });
-$.sideMenuBackdrop?.addEventListener("click", closeMenu, { passive: true });
-$.sideMenuItems.forEach((item) => {
-  item.addEventListener("click", () => setView(item.dataset.view || "dashboard"), { passive: true });
-});
-
-/* ----------------------- Anniversary countdown ----------------------- */
-function pad(n, len = 2){
-  return String(n).padStart(len, "0");
-}
-
-function getNextAnniversary(baseMs){
-  const now = new Date(baseMs);
-  const base = new Date(ANNIVERSARY_BASE);
-  const next = new Date(base);
-  const months = (now.getFullYear() - base.getFullYear()) * 12 + (now.getMonth() - base.getMonth());
-  next.setMonth(base.getMonth() + Math.max(0, months));
-  if(next.getTime() <= now.getTime()) next.setMonth(next.getMonth() + 1);
-  return next;
-}
-
-function updateAnniversary(nowMs){
-  if(nowMs >= annivTarget.getTime()) annivTarget = getNextAnniversary(nowMs + 1000);
-  const sec = Math.max(0, Math.floor((annivTarget.getTime() - nowMs) / 1000));
-  const d = Math.floor(sec / 86400);
-  const h = Math.floor((sec % 86400) / 3600);
-  const m = Math.floor((sec % 3600) / 60);
-  const s = sec % 60;
-
-  $.annivDays && ($.annivDays.textContent = pad(d, 3));
-  $.annivHours && ($.annivHours.textContent = pad(h));
-  $.annivMinutes && ($.annivMinutes.textContent = pad(m));
-  $.annivSeconds && ($.annivSeconds.textContent = pad(s));
-  $.anniversaryDateLabel && ($.anniversaryDateLabel.textContent = `วันครบรอบถัดไป: ${annivTarget.toLocaleString("th-TH")}`);
-
-  if(currentView === "anniversary" && sec <= 3){
-    $.annivOverlay?.classList.add("show");
-    $.annivOverlay?.setAttribute("aria-hidden", "false");
-    $.annivOverlay && ($.annivOverlay.textContent = "Happy Anniversary");
-  }else if($.annivOverlay?.classList.contains("show")){
-    $.annivOverlay.classList.remove("show");
-    $.annivOverlay.setAttribute("aria-hidden", "true");
-    $.annivOverlay.textContent = "";
-  }
-}
-
-/* --------------------- Single RAF scheduler loop --------------------- */
-let rafId = 0;
-let lastSecond = -1;
-
-function frame(){
-  const nowMs = Date.now();
-  const sec = Math.floor(nowMs / 1000);
-
-  if(sec !== lastSecond){
-    lastSecond = sec;
-    updateAnniversary(nowMs);
-  }
-
-  rafId = requestAnimationFrame(frame);
-}
-
-function startLoop(){
-  if(rafId) return;
-  rafId = requestAnimationFrame(frame);
-}
-
-function stopLoop(){
-  if(!rafId) return;
-  cancelAnimationFrame(rafId);
-  rafId = 0;
-}
-
-document.addEventListener("visibilitychange", () => {
-  if(document.hidden) stopLoop();
-  else startLoop();
-}, { passive: true });
-
-/* ----------------------------- Login gate ---------------------------- */
 initLoginGate({
   users: HARDCODED_USERS,
   onLoginSuccess: (user) => {
     currentUserId = user.userId;
     localStorage.setItem(KEYS.userId, currentUserId);
-
-    void loadUserState(currentUserId)
-      .then((state) => {
-        const memoryIdx = Number(state?.memory_index);
-        if(Number.isFinite(memoryIdx)) memoryFeature.setActiveMemory(memoryIdx);
-        if(typeof state?.background_color === "string") applyBackgroundColor(state.background_color);
-      })
-      .catch(() => {});
-
-    playSound("success");
+    initTheme({ userId: currentUserId, showToast });
+    initMood({ userId: currentUserId, showToast });
+    initMemoryWall({ userId: currentUserId, showToast });
+    initBucketList({ userId: currentUserId, showToast });
+    initJournal({ userId: currentUserId, showToast });
+    initStats({ userId: currentUserId });
+    initMiniGame({ userId: currentUserId, showToast });
+    hydrateDashboard(currentUserId);
   }
 });
 
-/* unlock audio only via explicit user interaction */
-window.addEventListener("pointerdown", () => playSound("tap"), { once: true, passive: true });
-startLoop();
+function hydrateDashboard(userId){
+  const photos = JSON.parse(localStorage.getItem(`soft-love-photos:${userId}`) || '[]').length;
+  const wishes = JSON.parse(localStorage.getItem(`soft-love-wishes:${userId}`) || '[]');
+  const completed = wishes.filter((item) => item.done).length;
+  const journalDays = Object.keys(localStorage).filter((key) => key.startsWith(`soft-love-journal:${userId}:`)).length;
+  const today = new Date().toISOString().slice(0, 10);
+  const todayMood = JSON.parse(localStorage.getItem(`soft-love-mood:${userId}:${today}`) || 'null')?.emoji || '○';
 
-function throttle(fn, wait){
-  let last = 0;
-  let timer = 0;
-  return (...args) => {
-    const now = Date.now();
-    const remain = wait - (now - last);
-    if(remain <= 0){
-      last = now;
-      fn(...args);
-      return;
-    }
-    clearTimeout(timer);
-    timer = window.setTimeout(() => {
-      last = Date.now();
-      fn(...args);
-    }, remain);
+  const q = (id, value) => { const el = document.getElementById(id); if(el) el.textContent = value; };
+  q('quickPhotos', photos);
+  q('quickWishes', `${completed}/${wishes.length}`);
+  q('quickJournal', journalDays);
+  q('quickMood', todayMood);
+
+  const sneak = document.getElementById('wishSneakPeek');
+  if(sneak){
+    const upcoming = wishes.filter((item) => !item.done).slice(0, 2);
+    sneak.innerHTML = upcoming.length ? upcoming.map((item) => `<li>${item.category} ${item.text}</li>`).join('') : '<li>เพิ่มความฝันแรกกันเลย 💕</li>';
+  }
+
+  const moodWidget = document.getElementById('todayMoodWidget');
+  if(moodWidget){
+    moodWidget.innerHTML = todayMood === '○'
+      ? '<p>บอกอารมณ์วันนี้หน่อย 🌸</p><div class="mini-moods"><button data-go-view="mood">😊</button><button data-go-view="mood">🥰</button><button data-go-view="mood">😤</button></div>'
+      : `<p>วันนี้เธอรู้สึก ${todayMood}</p>`;
+  }
+
+  const dayBadge = document.getElementById('todayDayBadge');
+  const diffDays = Math.floor((Date.now() - START.getTime()) / 86400000) + 1;
+  animateCount(dayBadge, diffDays);
+
+  const quotes = [
+    'รักคือการเลือกกันทุกวัน', 'วันนี้ก็ยังชอบเธอเหมือนเดิม', 'ขอบคุณที่อยู่ข้างกัน', 'รอยยิ้มเธอคือพลังใจ', 'โตไปด้วยกันนะ',
+    'ทุกวันธรรมดาเพราะเธอเลยพิเศษ', 'กอดแน่น ๆ', 'เราคือทีมเดียวกัน', 'เหนื่อยได้แต่ไม่ท้อนะ', 'รักเธอมากขึ้นทุกวัน',
+    'แค่เธอยิ้มก็โอเคแล้ว', 'คืนนี้ฝันดีนะ', 'อยู่กับปัจจุบันที่มีเรา', 'ความสุขเล็ก ๆ รวมกันเป็นรักใหญ่', 'เธอคือบ้านของใจ',
+    'ขอบคุณที่เข้าใจกัน', 'รักแบบอ่อนโยนที่สุด', 'เดินไปด้วยกันช้า ๆ ก็ได้', 'ภูมิใจในตัวเธอนะ', 'ดีใจที่มีเธอ'
+  ];
+  const seed = Number(today.replaceAll('-', '')) % quotes.length;
+  typewriter(document.getElementById('dailyQuote'), quotes[seed]);
+
+  document.querySelectorAll('[data-go-view]').forEach((el) => {
+    el.addEventListener('click', () => router.setView(el.dataset.goView), { passive: true });
+  });
+}
+
+function typewriter(el, text){
+  if(!el) return;
+  el.textContent = '';
+  [...text].forEach((ch, i) => setTimeout(() => { el.textContent += ch; }, i * 35));
+}
+
+function animateCount(el, target){
+  if(!el) return;
+  let current = 0;
+  const step = () => {
+    current += Math.max(1, Math.ceil((target - current) / 8));
+    el.textContent = `Today is Day ${current}`;
+    if(current < target) requestAnimationFrame(step);
   };
+  step();
 }
