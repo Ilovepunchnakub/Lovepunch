@@ -85,9 +85,10 @@
 .rain-particle.paused { background: #fff2f7; }
 
 #pg-hyper { background: radial-gradient(circle at center, #24365c 0%, #060916 70%); }
-#hCanvas { position: absolute; inset: 0; }
+#hCanvas { position: absolute; inset: 0; pointer-events: none; }
 .h-start { position: absolute; inset: 0; display: grid; place-items: center; z-index: 4; pointer-events: none; opacity: 0; transition: .3s; }
-.h-start.show { pointer-events: auto; opacity: 1; }
+.h-start.show { opacity: 1; }
+.h-start.show .soft-btn { pointer-events: auto; }
 .h-loading {
   position: absolute; left: 50%; top: 18%; transform: translateX(-50%); z-index: 4;
   background: #ffffff20; border: 1px solid #ffffff70; color: #fff; padding: 12px 20px;
@@ -97,6 +98,7 @@
 .h-msgs {
   position: absolute; inset: 0; display: grid; place-items: center; z-index: 3;
   color: #ffd5e4; text-align: center; padding: 20px; opacity: 0; transition: .7s;
+  pointer-events: none;
 }
 .h-msgs.show { opacity: 1; }
 #hText {
@@ -110,6 +112,14 @@
 }
 #hDone { opacity: 0; transition: .4s; margin-top: 12px; color: #fff; }
 #hDone.show { opacity: 1; }
+
+
+#pg-hyper:not(.active) .h-start,
+#pg-hyper:not(.active) .h-loading,
+#pg-hyper:not(.active) .h-msgs,
+#pg-hyper:not(.active) #hCanvas {
+  pointer-events: none !important;
+}
 
 .fp-box { width: min(92vw, 430px); text-align: center; padding: 24px 16px; }
 .fp-box h2 { margin: 0; font-size: 34px; }
