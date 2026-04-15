@@ -64,6 +64,21 @@ export function createPinController({ onUnlock }) {
     else clearAll();
   }
 
+  function bindKeyEvent(btn, key) {
+    const triggerPress = () => pressKey(key);
+
+    if (window.PointerEvent) {
+      btn.addEventListener('pointerup', triggerPress);
+      return;
+    }
+
+    btn.addEventListener('click', triggerPress);
+    btn.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      triggerPress();
+    }, { passive: false });
+  }
+
   function initKeypad() {
     const keys = ['1','2','3','4','5','6','7','8','9','ล้าง','0','⌫'];
     const wrap = qs('keypad');
@@ -74,10 +89,7 @@ export function createPinController({ onUnlock }) {
       btn.type = 'button';
       btn.textContent = k;
       btn.dataset.key = k;
-      btn.addEventListener('pointerdown', (e) => {
-        e.preventDefault();
-        pressKey(k);
-      });
+      bindKeyEvent(btn, k);
       wrap.appendChild(btn);
     });
   }
