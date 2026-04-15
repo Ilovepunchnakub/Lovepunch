@@ -23,7 +23,9 @@
     <div class="menu-divider"></div>
     <p class="menu-section-title">Features</p>
     <button class="side-nav-item" data-view="mood" type="button"><span>💭</span> Mood Check-in</button>
+    <button class="side-nav-item" data-view="notes" type="button"><span>📝</span> Love Notes</button>
     <button class="side-nav-item" data-view="memory" type="button"><span>📸</span> Memory Wall</button>
+    <button class="side-nav-item" data-view="music" type="button"><span>🎶</span> Music</button>
     <button class="side-nav-item" data-view="wishes" type="button"><span>🌟</span> Bucket List</button>
     <button class="side-nav-item" data-view="journal" type="button"><span>✍️</span> Daily Journal</button>
     <button class="side-nav-item" data-view="stats" type="button"><span>💜</span> Love Stats</button>
@@ -228,6 +230,37 @@
   </div>
 </section>
 
+<section id="view-notes" class="view-section" data-view="notes" aria-hidden="true">
+  <div class="card feature-shell">
+    <div class="feature-header">
+      <h2>Love Notes 📝</h2>
+      <p class="muted">เขียนข้อความหวาน ๆ เก็บไว้ดูวันไหนก็ได้</p>
+    </div>
+    <form id="loveNoteForm" class="love-note-form">
+      <input id="loveNoteInput" maxlength="180" placeholder="พิมพ์ข้อความถึงคนที่รัก..." required/>
+      <button class="neu-btn" type="submit">บันทึกโน้ต</button>
+    </form>
+    <div id="loveNotesEmpty" class="empty-state">เริ่มเขียนโน้ตแรกให้กันเลย 💗</div>
+    <ul id="loveNotesList" class="love-notes-list"></ul>
+  </div>
+</section>
+
+<section id="view-music" class="view-section" data-view="music" aria-hidden="true">
+  <div class="card feature-shell">
+    <h2>เพลงของเรา 🎶</h2>
+    <p>เลือกเพลงจากเครื่องของเราได้เลย (ไม่อัปโหลดขึ้นที่ไหน)</p>
+    <div class="music-player-shell">
+      <audio id="musicPlayer" preload="metadata"></audio>
+      <div class="music-actions">
+        <button id="musicPickBtn" class="neu-btn" type="button">เลือกไฟล์เพลง</button>
+        <button id="musicToggleBtn" class="neu-btn secondary" type="button">▶️ เล่น</button>
+      </div>
+      <input id="musicFileInput" type="file" accept="audio/*" hidden/>
+      <p id="musicStatus" class="muted">ยังไม่ได้เลือกเพลง</p>
+    </div>
+  </div>
+</section>
+
 <section id="view-wishes" class="view-section" data-view="wishes" aria-hidden="true">
   <div class="card feature-shell">
     <h2>สิ่งที่อยากทำด้วยกัน 🌟</h2><p>tick แต่ละข้อเมื่อทำสำเร็จ</p>
@@ -370,9 +403,9 @@
 <nav class="mobile-dock" id="mobileDock" aria-label="เมนูด่วน">
   <button type="button" class="dock-item active" data-view="dashboard">🏠<span>Home</span></button>
   <button type="button" class="dock-item" data-view="mood">💭<span>Mood</span></button>
+  <button type="button" class="dock-item" data-view="notes">📝<span>Notes</span></button>
   <button type="button" class="dock-item" data-view="memory">📸<span>Memory</span></button>
-  <button type="button" class="dock-item" data-view="wishes">🌟<span>Wishes</span></button>
-  <button type="button" class="dock-item" data-view="journal">✍️<span>Journal</span></button>
+  <button type="button" class="dock-item" data-view="music">🎶<span>Music</span></button>
 </nav>
 
 <!-- Love words overlay -->

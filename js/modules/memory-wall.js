@@ -20,9 +20,9 @@ export function initMemoryWall({ userId, showToast }){
   function render(){
     const list = items.filter((item) => filter === 'all' || item.tag === filter);
     grid.innerHTML = list.map((item) => `
-      <article class="polaroid" data-id="${item.id}" style="--tilt:${Math.floor(Math.random() * 7) - 3}deg;">
+      <article class="polaroid" data-id="${item.id}" style="--tilt:${item.tilt ?? 0}deg;">
         <span class="date-badge">${item.date}</span>
-        <img src="${item.dataUrl}" alt="memory"/>
+        <img src="${item.dataUrl}" alt="memory" loading="lazy" decoding="async"/>
         <input class="caption-edit" value="${item.caption || ''}" maxlength="50"/>
         <span class="tag-pill">${item.tag}</span>
       </article>`).join('');
@@ -35,7 +35,14 @@ export function initMemoryWall({ userId, showToast }){
     if(items.length + files.length > MAX) showToast?.('แนะนำเก็บไม่เกิน 20 รูป');
     for(const file of files.slice(0, Math.max(0, MAX - items.length))){
       const dataUrl = await compressImage(file);
-      items.unshift({ id: crypto.randomUUID(), dataUrl, caption: '', date: new Date().toLocaleDateString('th-TH'), tag: 'Everyday' });
+      items.unshift({
+        id: crypto.randomUUID(),
+        dataUrl,
+        caption: '',
+        date: new Date().toLocaleDateString('th-TH'),
+        tag: 'Everyday',
+        tilt: Math.floor(Math.random() * 7) - 3
+      });
     }
     persist(); render();
   });
@@ -46,7 +53,10 @@ export function initMemoryWall({ userId, showToast }){
     filter = btn.dataset.filter;
     document.querySelectorAll('#memoryFilterBar button').forEach((item) => item.classList.toggle('active', item === btn));
     grid.classList.add('fade');
-    setTimeout(() => { render(); grid.classList.remove('fade'); }, 180);
+    requestAnimationFrame(() => {
+      render();
+      grid.classList.remove('fade');
+    });
   });
 
   let holdTimer = 0;

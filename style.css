@@ -869,6 +869,19 @@ body{font-size:var(--font-size-base);}
 .date-badge{position:absolute;top:8px;right:8px;background:rgba(0,0,0,.55);color:#fff;padding:.15rem .4rem;border-radius:999px;font-size:.72rem;}
 .tag-pill{display:inline-block;margin-top:.3rem;background:rgba(244,114,182,.15);color:var(--txt);padding:.1rem .45rem;border-radius:999px;font-size:.75rem;}
 .empty-state{padding:1rem;border:1px dashed rgba(0,0,0,.2);border-radius:12px;text-align:center;}
+.love-note-form{display:grid;grid-template-columns:1fr auto;gap:.5rem;margin:.7rem 0;}
+.love-note-form input{border:1px solid rgba(140,113,178,.24);border-radius:12px;padding:.72rem .85rem;background:rgba(255,255,255,.8);}
+.love-notes-list{list-style:none;display:grid;gap:.55rem;}
+.love-note-item{background:rgba(255,255,255,.7);border-radius:14px;padding:.65rem .75rem;display:grid;grid-template-columns:1fr auto;gap:.5rem;align-items:start;animation:noteIn .35s ease;}
+.love-note-item p{white-space:pre-wrap;word-break:break-word;}
+.love-note-item small{font-size:.75rem;opacity:.7;}
+.love-note-remove{border:none;background:rgba(244,114,182,.15);color:var(--txt);border-radius:999px;padding:.3rem .65rem;cursor:pointer;}
+@keyframes noteIn{from{opacity:0;transform:translateY(8px) scale(.98);}to{opacity:1;transform:translateY(0) scale(1);}}
+
+.music-player-shell{margin-top:.8rem;padding:1rem;border-radius:16px;background:rgba(255,255,255,.6);}
+.music-actions{display:flex;gap:.6rem;flex-wrap:wrap;}
+.music-player-shell .neu-btn.secondary{background:rgba(255,255,255,.82);}
+#musicStatus{margin-top:.7rem;}
 
 .progress-ring circle{stroke-dasharray:283;stroke-dashoffset:calc(283 - (283 * var(--pct,0)) / 100);transition:stroke-dashoffset .6s ease;transform:rotate(-90deg);transform-origin:50% 50%;}
 .wish-form{display:grid;grid-template-columns:1.5fr 1fr auto;gap:.5rem;}
@@ -919,6 +932,7 @@ body{font-size:var(--font-size-base);}
   .mood-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
   .wish-form,.stats-grid,.theme-grid,.toggle-grid{grid-template-columns:1fr;}
   .memory-grid{columns:1;}
+  .love-note-form{grid-template-columns:1fr;}
 }
 
 /* ── 2026 UI/UX Upgrade ── */
