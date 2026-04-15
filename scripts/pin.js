@@ -68,7 +68,10 @@ export function createPinController({ onUnlock }) {
     const triggerPress = () => pressKey(key);
 
     if (window.PointerEvent) {
-      btn.addEventListener('pointerup', triggerPress);
+      btn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        triggerPress();
+      });
       return;
     }
 
