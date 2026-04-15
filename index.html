@@ -6,7 +6,7 @@
   <title>💕 For You</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,500&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/main.css" />
 </head>
 <body>
@@ -17,16 +17,17 @@
   <div id="toast"></div>
 
   <div class="page active" id="pg-pin">
-    <div class="pin-card">
+    <div class="pin-card soft-card" id="pinCard">
       <div class="pin-hero">💖</div>
       <h1>ยินดีต้อนรับสู่โลกของเรา</h1>
-      <p>ใส่ PIN เพื่อเข้าสู่หน้ารักของเรา</p>
-      <div class="pin-typed" id="pinTyped">รหัส: _ _ _ _</div>
+      <p>ปลดล็อกเหมือน iOS แล้วปัดขึ้นเพื่อเข้าใช้งาน</p>
       <div class="pin-dots" id="pinDots">
         <span class="pd"></span><span class="pd"></span><span class="pd"></span><span class="pd"></span>
       </div>
       <div class="pin-err" id="pinErr"></div>
       <div class="keypad" id="keypad"></div>
+      <p class="unlock-hint" id="unlockHint">ปัดขึ้นเพื่อเข้าหน้าหลัก</p>
+      <div class="unlock-overlay" id="unlockOverlay">ปลดล็อกสำเร็จ ✓ แตะเพื่อเข้า</div>
     </div>
   </div>
 
@@ -39,8 +40,12 @@
 
       <section class="days-card soft-card">
         <p class="section-tag">เราอยู่ด้วยกันมาแล้ว</p>
-        <p class="days-main"><span id="daysNum">0</span> วัน</p>
-        <div class="duration-grid">
+
+        <button class="profile-toggle" id="profileToggle" aria-label="ดูข้อมูลเพิ่มเติม">
+          <img src="icons/heart.svg" alt="profile" />
+        </button>
+
+        <div class="duration-grid only-time">
           <div><strong id="durD">0</strong><small>วัน</small></div>
           <div><strong id="durH">0</strong><small>ชั่วโมง</small></div>
           <div><strong id="durM">0</strong><small>นาที</small></div>
@@ -68,6 +73,16 @@
     </div>
   </div>
 
+  <div class="profile-panel" id="profilePanel">
+    <h3>My Love Profile</h3>
+    <p><b>ชื่อ:</b> <span id="pf-name"></span></p>
+    <p><b>อายุ:</b> <span id="pf-age"></span></p>
+    <p><b>วันเกิด:</b> <span id="pf-birthday"></span></p>
+    <p><b>กรุ๊ปเลือด:</b> <span id="pf-blood"></span></p>
+    <p><b>งานอดิเรก:</b> <span id="pf-hobby"></span></p>
+    <p><b>ของโปรด:</b> <span id="pf-favorite"></span></p>
+  </div>
+
   <div class="page" id="pg-cards">
     <div class="page-scroll">
       <header class="simple-hdr">
@@ -91,8 +106,9 @@
     <div class="page-scroll center">
       <section class="soft-card rain-box">
         <h2>ความรักจากฉัน 💝</h2>
-        <p>กดปุ่มแล้วข้อความจะตกลงมาน่ารักๆ และหายไปเอง</p>
+        <p>กดปุ่มแล้วข้อความจะตกลงมาแบบไม่บังข้อมูลหลัก</p>
         <button class="soft-btn" id="rainBtn">ปล่อยความรัก</button>
+        <p id="rainStatus">พร้อมส่งข้อความรัก</p>
         <p id="rainCount">กดไปแล้ว: 0 ครั้ง</p>
       </section>
     </div>
@@ -101,12 +117,13 @@
 
   <div class="page" id="pg-hyper">
     <canvas id="hCanvas"></canvas>
+    <div class="h-start show" id="hStartWrap">
+      <button class="soft-btn" id="hStart">เริ่มเดินทาง</button>
+    </div>
+    <div class="h-loading" id="hLoading">กำลังเตรียม hyperspace...</div>
     <div class="h-msgs" id="hMsgs">
-      <div class="hm">— ส่งถึงเธอ จากหัวใจของฉัน —</div>
-      <div class="hm">เธอคือดาวที่สว่างที่สุดในจักรวาลของฉัน</div>
-      <div class="hm">ไม่ว่าจะห่างกันแค่ไหน แสงของเธอยังมาถึงเสมอ</div>
-      <div class="hm">รักเธอมากนะ 💕</div>
-      <button class="soft-btn" id="hRestart">เริ่มอีกครั้ง</button>
+      <p id="hText"></p>
+      <small id="hDone">จบข้อความแล้ว กดเริ่มเพื่อเล่นซ้ำได้</small>
     </div>
   </div>
 
@@ -116,8 +133,16 @@
         <h2>ยืนยันตัวตน</h2>
         <p id="fpHint">แตะเพื่อสแกนลายนิ้วมือ 👆</p>
         <button class="scan-btn" id="fpZone">สแกนตอนนี้</button>
-        <p class="fp-msg" id="fpMsg">ได้ยินไหม? หัวใจฉันเต้นเพื่อเธอคนเดียว 💗</p>
+        <p class="fp-msg" id="fpMsg"></p>
       </section>
+    </div>
+  </div>
+
+  <div class="fp-popup" id="fpPopup">
+    <div class="fp-popup-card">
+      <h3 id="fpPopupTitle"></h3>
+      <div id="fpPopupBody"></div>
+      <button class="soft-btn" id="fpPopupClose">ปิด</button>
     </div>
   </div>
 

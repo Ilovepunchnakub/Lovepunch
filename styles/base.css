@@ -1,0 +1,72 @@
+:root {
+  --bg: #fff9fd;
+  --bg2: #f4f2ff;
+  --card: #ffffffe0;
+  --text: #2f1d2b;
+  --soft: #8f6676;
+  --pink: #f06f96;
+  --pink2: #cf3e77;
+  --radius: 24px;
+  --nav-h: 82px;
+  --shadow: 0 12px 30px rgba(138, 74, 100, 0.22);
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Itim', cursive;
+  color: var(--text);
+  background: radial-gradient(circle at top right, #ffe3f1, transparent 40%), linear-gradient(130deg, var(--bg), var(--bg2));
+}
+button { font: inherit; border: none; cursor: pointer; }
+.page { position: fixed; inset: 0; opacity: 0; pointer-events: none; transition: .35s; }
+.page.active { opacity: 1; pointer-events: auto; }
+.page-scroll { height: 100%; overflow-y: auto; padding: 18px 16px calc(var(--nav-h) + 24px); }
+.page-scroll.center { display: grid; place-items: center; }
+
+.bg-blur { position: fixed; border-radius: 50%; filter: blur(70px); opacity: .42; pointer-events: none; }
+.b1 { width: 220px; height: 220px; background: #ffc0d6; top: -40px; left: -60px; }
+.b2 { width: 180px; height: 180px; background: #ffd9b8; right: -40px; top: 15%; }
+.b3 { width: 240px; height: 240px; background: #d6c9ff; bottom: -80px; left: 30%; }
+
+.soft-card {
+  border-radius: var(--radius);
+  backdrop-filter: blur(14px);
+  background: var(--card);
+  border: 1px solid #ffffffc7;
+  box-shadow: var(--shadow);
+}
+.soft-btn {
+  border-radius: 999px;
+  padding: 10px 18px;
+  background: linear-gradient(130deg, var(--pink), var(--pink2));
+  color: #fff;
+  font-weight: 800;
+}
+
+#mainNav {
+  position: fixed; left: 12px; right: 12px; bottom: 10px; height: var(--nav-h);
+  border-radius: 28px; display: none; align-items: center; justify-content: space-around;
+  background: #ffffffe0; backdrop-filter: blur(18px); box-shadow: var(--shadow); z-index: 99;
+  border: 1px solid #ffffff;
+}
+.ni { flex: 1; background: transparent; color: #a48392; display: flex; flex-direction: column; align-items: center; font-size: 22px; }
+.ni span { font-size: 10px; font-weight: 700; }
+.ni.on { color: var(--pink2); transform: translateY(-2px); }
+
+#toast {
+  position: fixed; left: 50%; bottom: 102px; transform: translateX(-50%);
+  background: #2f1f28; color: #fff; padding: 9px 16px; border-radius: 999px;
+  opacity: 0; transition: .2s; z-index: 300;
+}
+#toast.on { opacity: 1; }
+
+body.profile-open::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  backdrop-filter: blur(8px);
+  background: rgba(20, 10, 30, 0.18);
+  z-index: 60;
+}
