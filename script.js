@@ -10,6 +10,8 @@ import { initBucketList } from './js/modules/bucket-list.js';
 import { initJournal } from './js/modules/journal.js';
 import { initStats } from './js/modules/stats.js';
 import { initMiniGame } from './js/modules/mini-game.js';
+import { initLoveNotes } from './js/modules/love-notes.js';
+import { initMusicPlayer } from './js/modules/music-player.js';
 
 const $ = {
   toast: document.getElementById('toast'),
@@ -48,7 +50,9 @@ const VIEW_META = {
   dashboard: { title: 'Love Dashboard', desc: 'ภาพรวมทั้งหมด' },
   anniversary: { title: 'Anniversary Countdown', desc: 'นับถอยหลังวันพิเศษ' },
   mood: { title: 'Mood Check-in', desc: 'บันทึกความรู้สึกวันนี้' },
+  notes: { title: 'Love Notes', desc: 'ข้อความหวาน ๆ ของเรา' },
   memory: { title: 'Memory Wall', desc: 'ภาพความทรงจำของเรา' },
+  music: { title: 'Our Music', desc: 'เล่นเพลงในเครื่องของเรา' },
   wishes: { title: 'Bucket List', desc: 'สิ่งที่อยากทำด้วยกัน' },
   journal: { title: 'Daily Journal', desc: 'ไดอารี่ของเรา' },
   stats: { title: 'Love Statistics', desc: 'สถิติการเดินทางของเรา' },
@@ -213,6 +217,8 @@ initLoginGate({
     initTheme({ userId: currentUserId, showToast });
     initMood({ userId: currentUserId, showToast });
     initMemoryWall({ userId: currentUserId, showToast });
+    initLoveNotes({ userId: currentUserId, showToast });
+    initMusicPlayer({ userId: currentUserId, showToast });
     initBucketList({ userId: currentUserId, showToast });
     initJournal({ userId: currentUserId, showToast });
     initStats({ userId: currentUserId });
@@ -337,18 +343,35 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
+let scrollRaf = 0;
 window.addEventListener('scroll', () => {
-  if(!$.scrollProgress) return;
-  const scrollTop = window.scrollY || document.documentElement.scrollTop;
-  const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
-  const progress = Math.min(1, scrollTop / max);
-  $.scrollProgress.style.transform = `scaleX(${progress})`;
+  if(scrollRaf || !$.scrollProgress) return;
+  scrollRaf = requestAnimationFrame(() => {
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    const progress = Math.min(1, scrollTop / max);
+    $.scrollProgress.style.transform = `scaleX(${progress})`;
+    scrollRaf = 0;
+  });
 }, { passive: true });
 
 function typewriter(el, text){
   if(!el) return;
   el.textContent = '';
-  [...text].forEach((ch, i) => setTimeout(() => { el.textContent += ch; }, i * 35));
+  const chars = [...text];
+  let index = 0;
+  let lastTime = 0;
+  const interval = 35;
+
+  const step = (time) => {
+    if(time - lastTime >= interval){
+      el.textContent += chars[index] || '';
+      index += 1;
+      lastTime = time;
+    }
+    if(index < chars.length) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
 }
 
 function animateCount(el, target){
