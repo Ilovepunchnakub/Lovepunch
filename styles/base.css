@@ -18,9 +18,8 @@ html, body {
   font-family: 'Itim', cursive;
   color: var(--text);
   background: radial-gradient(circle at top right, #ffe3f1, transparent 40%), linear-gradient(130deg, var(--bg), var(--bg2));
-  touch-action: manipulation;
 }
-button { font: inherit; border: none; cursor: pointer; touch-action: manipulation; }
+button { font: inherit; border: none; cursor: pointer; }
 .page { position: fixed; inset: 0; opacity: 0; pointer-events: none; transition: .35s; }
 .page.active { opacity: 1; pointer-events: auto; }
 .page-scroll { height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 18px 16px calc(var(--nav-h) + 24px); }
@@ -47,14 +46,52 @@ button { font: inherit; border: none; cursor: pointer; touch-action: manipulatio
 }
 
 #mainNav {
-  position: fixed; left: 12px; right: 12px; bottom: 10px; height: var(--nav-h);
-  border-radius: 28px; display: flex; align-items: center; justify-content: space-around;
-  background: #ffffffe0; backdrop-filter: blur(18px); box-shadow: var(--shadow); z-index: 99;
-  border: 1px solid #ffffff;
+  position: fixed;
+  left: 14px;
+  right: 14px;
+  bottom: 12px;
+  height: var(--nav-h);
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px;
+  background: linear-gradient(135deg, #fffffff2, #fff8fce8);
+  backdrop-filter: blur(20px) saturate(130%);
+  -webkit-backdrop-filter: blur(20px) saturate(130%);
+  box-shadow:
+    0 16px 32px rgba(138, 74, 100, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  z-index: 99;
+  border: 1px solid rgba(255, 255, 255, 0.95);
 }
-.ni { flex: 1; background: transparent; color: #a48392; display: flex; flex-direction: column; align-items: center; font-size: 22px; }
-.ni span { font-size: 10px; font-weight: 700; }
-.ni.on { color: var(--pink2); transform: translateY(-2px); }
+.ni {
+  flex: 1;
+  height: 100%;
+  border-radius: 18px;
+  background: transparent;
+  color: #a48392;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  font-size: 20px;
+  transition: background .25s ease, color .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+.ni span {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+.ni.on {
+  color: var(--pink2);
+  background: linear-gradient(145deg, #ffffff, #ffeef5);
+  box-shadow: 0 10px 18px rgba(221, 116, 156, 0.22);
+  transform: translateY(-1px);
+}
+.ni:active { transform: scale(.97); }
 
 #toast {
   position: fixed; left: 50%; bottom: 102px; transform: translateX(-50%);
