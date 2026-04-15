@@ -13,18 +13,47 @@
   100% { transform: translate(-50%, -50%) perspective(600px) rotateX(0) scale(1); opacity: 1; }
 }
 @keyframes cosmicFade {
-  0% { opacity: 0; transform: translateY(8px) scale(.985); }
-  28% { opacity: 1; transform: translateY(0) scale(1); }
-  74% { opacity: 1; }
-  100% { opacity: 0; transform: translateY(-8px) scale(1.01); }
+  0% { opacity: 0; transform: translateY(10px) scale(.985); }
+  25% { opacity: 1; transform: translateY(0) scale(1); }
+  76% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-10px) scale(1.01); }
 }
 @keyframes scanGlow {
   0% { box-shadow: 0 0 0 rgba(240, 111, 150, 0.2); }
   50% { box-shadow: 0 0 30px rgba(240, 111, 150, 0.55); }
   100% { box-shadow: 0 0 0 rgba(240, 111, 150, 0.2); }
 }
+@keyframes loadingPulse {
+  0% { transform: scale(.7); opacity: .5; }
+  60% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(.72); opacity: .5; }
+}
+@keyframes radarSpin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes clickBurst {
+  from { transform: translate(-50%, -50%) scale(.3); opacity: .55; }
+  to { transform: translate(-50%, -50%) scale(1.8); opacity: 0; }
+}
+@keyframes tapPop {
+  0% { transform: scale(1); }
+  50% { transform: scale(.96); }
+  100% { transform: scale(1); }
+}
 
 .modal-card.flip-in { animation: flipOpen .45s ease both; }
-#hText.show { animation: cosmicFade 3.35s ease both; }
+#hText.show { animation: cosmicFade 2.9s ease both; }
 .scan-btn.scanning { animation: scanGlow .85s infinite; }
 .soft-btn.loading { opacity: .7; pointer-events: none; }
+.tap-pop { animation: tapPop .24s ease; }
+.click-burst {
+  position: fixed;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 800;
+  background: radial-gradient(circle, rgba(255, 181, 216, 0.95), rgba(255, 105, 160, 0.1));
+  animation: clickBurst .52s ease forwards;
+}

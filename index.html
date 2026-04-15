@@ -10,6 +10,19 @@
   <link rel="stylesheet" href="styles/main.css" />
 </head>
 <body>
+  <div id="entryGate" class="entry-gate show" aria-live="polite">
+    <div class="entry-gate-card">
+      <p class="entry-gate-tag">secure love verification</p>
+      <h1>แตะค้างเพื่อเติมหัวใจ</h1>
+      <p class="entry-gate-sub">กดค้างไว้ให้หัวใจเต็มเพื่อเข้าสู่โลกของเรา</p>
+      <button id="entryHeartBtn" class="entry-heart" aria-label="กดค้างเพื่อเติมหัวใจ">
+        <span class="entry-heart-shape">💗</span>
+        <span id="entryPercent" class="entry-heart-percent">0%</span>
+      </button>
+      <p id="entryHint" class="entry-gate-hint">กดค้างประมาณ 10 วินาที</p>
+    </div>
+  </div>
+
   <div class="bg-blur b1"></div>
   <div class="bg-blur b2"></div>
   <div class="bg-blur b3"></div>
@@ -105,7 +118,10 @@
     <div class="h-start show" id="hStartWrap">
       <button class="soft-btn" id="hStart">เริ่มเดินทาง</button>
     </div>
-    <div class="h-loading" id="hLoading">กำลังเตรียม hyperspace...</div>
+    <div class="h-loading" id="hLoading">
+      <span class="loading-dot"></span>
+      กำลังเตรียม hyperspace...
+    </div>
     <div class="h-msgs" id="hMsgs">
       <p id="hText"></p>
       <small id="hDone">จบข้อความแล้ว กดเริ่มเพื่อเล่นซ้ำได้</small>
@@ -127,11 +143,14 @@
     <div class="fp-popup-card">
       <h3 id="fpPopupTitle"></h3>
       <div id="fpPopupBody"></div>
-      <button class="soft-btn" id="fpPopupClose">ปิด</button>
     </div>
   </div>
 
-  <nav id="mainNav">
+  <button id="navDockToggle" class="nav-dock-toggle" aria-label="เปิด/เก็บทางลัด">
+    <span>＋</span>
+  </button>
+
+  <nav id="mainNav" class="collapsed">
     <button class="ni on" data-page="home">🏠<span>หน้าแรก</span></button>
     <button class="ni" data-page="cards">💌<span>การ์ด</span></button>
     <button class="ni" data-page="rain">🌸<span>ความรัก</span></button>

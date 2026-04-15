@@ -4,6 +4,9 @@ import { initCards } from './cards.js';
 import { createRainController } from './rain.js';
 import { createHyperController } from './hyper.js';
 import { createFingerController } from './finger.js';
+import { initEntryGate } from './entryGate.js';
+import { initNavDock } from './navDock.js';
+import { initInteractionEffects } from './effects.js';
 
 const home = createHomeController();
 const rain = createRainController();
@@ -21,10 +24,22 @@ const nav = createNavigator({
     if (page === 'finger') finger.reset();
   }
 });
-home.init();
-initCards();
-rain.init();
-hyper.init();
-finger.init();
-nav.init();
-nav.go('home');
+
+function bootMainApp() {
+  home.init();
+  initCards();
+  rain.init();
+  hyper.init();
+  finger.init();
+  nav.init();
+  initNavDock();
+  initInteractionEffects();
+  nav.go('home');
+}
+
+bootMainApp();
+initEntryGate({
+  onUnlocked: () => {
+    document.body.classList.add('unlocked');
+  }
+});
