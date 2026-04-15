@@ -12,9 +12,11 @@
   0% { transform: translate(-50%, -50%) perspective(600px) rotateX(-60deg) scale(.88); opacity: 0; }
   100% { transform: translate(-50%, -50%) perspective(600px) rotateX(0) scale(1); opacity: 1; }
 }
-@keyframes typing {
-  from { clip-path: inset(0 100% 0 0); }
-  to { clip-path: inset(0 0 0 0); }
+@keyframes cosmicFade {
+  0% { opacity: 0; transform: translateY(8px) scale(.985); }
+  28% { opacity: 1; transform: translateY(0) scale(1); }
+  74% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-8px) scale(1.01); }
 }
 @keyframes scanGlow {
   0% { box-shadow: 0 0 0 rgba(240, 111, 150, 0.2); }
@@ -28,7 +30,7 @@
 }
 
 .modal-card.flip-in { animation: flipOpen .45s ease both; }
-#hText.typing { animation: typing 1.4s steps(30, end); }
+#hText.show { animation: cosmicFade 3.35s ease both; }
 .scan-btn.scanning { animation: scanGlow .85s infinite; }
 .pin-card.shake { animation: shake .35s ease; }
 .soft-btn.loading { opacity: .7; pointer-events: none; }

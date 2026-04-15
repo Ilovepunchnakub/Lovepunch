@@ -37,6 +37,11 @@ export function createHomeController() {
     qs('daysSince').textContent = `เริ่มคบกันตั้งแต่ ${CFG.START.getDate()}/${CFG.START.getMonth() + 1}/${thYear}`;
   }
 
+  function closeProfile() {
+    document.body.classList.remove('profile-open');
+    qs('profilePanel').classList.remove('show');
+  }
+
   function fillProfile() {
     qs('homeTitle').textContent = `สวัสดี${CFG.HER_NAME} 🌸`;
     Object.entries(CFG.PROFILE).forEach(([key, value]) => {
@@ -44,9 +49,16 @@ export function createHomeController() {
       if (el) el.textContent = value;
     });
 
-    qs('profileToggle').addEventListener('click', () => {
+    qs('profileToggle').addEventListener('click', (e) => {
+      e.stopPropagation();
       const opened = document.body.classList.toggle('profile-open');
       qs('profilePanel').classList.toggle('show', opened);
+    });
+
+    document.addEventListener('pointerdown', (e) => {
+      if (!document.body.classList.contains('profile-open')) return;
+      if (e.target.closest('#profilePanel') || e.target.closest('#profileToggle')) return;
+      closeProfile();
     });
   }
 
@@ -58,6 +70,7 @@ export function createHomeController() {
 
   function stop() {
     clearInterval(timer);
+    closeProfile();
   }
 
   function init() {
@@ -65,5 +78,5 @@ export function createHomeController() {
     start();
   }
 
-  return { init, start, stop };
+  return { init, start, stop, closeProfile };
 }
