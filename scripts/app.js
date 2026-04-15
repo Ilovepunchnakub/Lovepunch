@@ -21,14 +21,6 @@ const nav = createNavigator({
     if (page === 'finger') finger.reset();
   }
 });
-
-let lastTouchEnd = 0;
-document.addEventListener('touchend', (e) => {
-  const now = Date.now();
-  if (now - lastTouchEnd <= 320) e.preventDefault();
-  lastTouchEnd = now;
-}, { passive: false });
-
 home.init();
 initCards();
 rain.init();
