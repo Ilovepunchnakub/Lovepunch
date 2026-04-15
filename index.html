@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>💕 For You</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ===== VARIABLES ===== */
+:root {
+  --bg:        #FFF4F6;
+  --bg2:       #FFE8EF;
+  --card:      #FFFFFF;
+  --pink-pale: #FFD6E3;
+  --pink:      #F4899A;
+  --pink-mid:  #EE6B82;
+  --pink-deep: #E0455F;
+  --text:      #2D1A22;
+  --text-mid:  #7A4D5C;
+  --text-soft: #B88F9B;
+  --white:     #FFFFFF;
+  --sh-sm:     0 2px 16px rgba(224,69,95,0.10);
+  --sh-md:     0 4px 28px rgba(224,69,95,0.16);
+  --sh-lg:     0 8px 48px rgba(224,69,95,0.22);
+  --r:         20px;
+  --r-sm:      12px;
+  --nav-h:     70px;
+}
+
+/* ===== RESET ===== */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { width:100%; height:100%; overflow:hidden; background:var(–bg); font-family:‘Nunito’,sans-serif; color:var(–text); touch-action:manipulation; }
+button { font-family:inherit; border:none; cursor:pointer; background:none; }
+
+/* ===== PAGE SYSTEM ===== */
+.page {
+position:fixed; inset:0;
+display:flex; flex-direction:column;
+opacity:0; pointer-events:none;
+transition:opacity 0.35s ease;
+overflow:hidden;
+}
+.page.active { opacity:1; pointer-events:all; }
+.page-scroll {
+flex:1; overflow-y:auto; overflow-x:hidden;
+padding:20px 18px calc(var(–nav-h) + 24px);
+}
+.page-scroll::-webkit-scrollbar { display:none; }
+
+/* ===== BOTTOM NAV ===== */
+#mainNav {
+position:fixed; bottom:0; left:0; right:0;
+height:var(–nav-h);
+background:rgba(255,255,255,0.94);
+backdrop-filter:blur(24px);
+-webkit-backdrop-filter:blur(24px);
+border-top:1px solid rgba(244,137,154,0.12);
+box-shadow:0 -4px 28px rgba(224,69,95,0.08);
+display:none;
+align-items:center; justify-content:space-around;
+z-index:100;
+padding-bottom:env(safe-area-inset-bottom,0);
+}
+.ni {
+flex:1; display:flex; flex-direction:column;
+align-items:center; gap:3px; padding:8px 4px;
+cursor:pointer; transition:transform 0.18s ease;
+position:relative;
+}
+.ni:active { transform:scale(0.88); }
+.ni-ico { font-size:22px; transition:transform 0.3s cubic-bezier(.34,1.56,.64,1); }
+.ni-lbl { font-size:10px; font-weight:700; color:var(–text-soft); letter-spacing:0.3px; transition:color 0.2s; }
+.ni.on .ni-ico { transform:translateY(-4px) scale(1.18); }
+.ni.on .ni-lbl { color:var(–pink-deep); }
+.ni.on::after {
+content:’’; position:absolute; bottom:4px;
+width:4px; height:4px; border-radius:50%;
+background:var(–pink-deep);
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes floatUp {
+0%   { transform:translateY(0) scale(1); opacity:0; }
+10%  { opacity:0.35; }
+90%  { opacity:0.2; }
+100% { transform:translateY(-100vh) scale(0.7); opacity:0; }
+}
+@keyframes fadeSlideUp {
+from { opacity:0; transform:translateY(24px); }
+to   { opacity:1; transform:translateY(0); }
+}
+@keyframes popIn {
+from { opacity:0; transform:scale(0.85); }
+to   { opacity:1; transform:scale(1); }
+}
+@keyframes pulseSoft {
+0%,100% { transform:scale(1); }
+50%      { transform:scale(1.04); }
+}
+@keyframes scanLine {
+0%   { top:0; }
+100% { top:100%; }
+}
+@keyframes blinkLoop {
+0%,100% { opacity:1; }
+50%      { opacity:0.35; }
+}
+@keyframes shake {
+0%,100% { transform:translateX(0); }
+20%      { transform:translateX(-8px); }
+40%      { transform:translateX(8px); }
+60%      { transform:translateX(-6px); }
+80%      { transform:translateX(5px); }
+}
+@keyframes heartBeat {
+0%,100% { transform:scale(1); }
+14%      { transform:scale(1.15); }
+28%      { transform:scale(1); }
+42%      { transform:scale(1.1); }
+70%      { transform:scale(1); }
+}
+@keyframes ambFloat {
+0%   { opacity:0; transform:translateY(0) rotate(0deg) scale(0.5); }
+10%  { opacity:0.4; }
+90%  { opacity:0.15; }
+100% { opacity:0; transform:translateY(-110vh) rotate(30deg) scale(1); }
+}
+@keyframes rainDrop {
+0%   { top:-60px; opacity:1; }
+80%  { opacity:1; }
+100% { top:110vh; opacity:0; }
+}
+@keyframes ringPulse {
+0%,100% { transform:scale(1); opacity:0.7; }
+50%      { transform:scale(1.06); opacity:0.3; }
+}
+
+/* ===== PIN PAGE ===== */
+#pg-pin {
+background:linear-gradient(150deg,#FFF0F4 0%,#FFE4EC 60%,#FFCFDF 100%);
+align-items:center; justify-content:center;
+z-index:200;
+}
+.pin-box {
+display:flex; flex-direction:column;
+align-items:center; gap:28px;
+padding:40px 28px; width:100%; max-width:320px;
+}
+.pin-emoji { font-size:60px; animation:heartBeat 2.4s ease-in-out infinite; }
+.pin-title {
+font-family:‘Cormorant Garamond’,serif;
+font-size:30px; font-style:italic; font-weight:600;
+color:var(–text); text-align:center; line-height:1.3;
+}
+.pin-hint { font-size:13px; color:var(–text-soft); margin-top:-14px; text-align:center; }
+.pin-dots { display:flex; gap:14px; }
+.pd {
+width:13px; height:13px; border-radius:50%;
+border:2px solid var(–pink);
+background:transparent;
+transition:all 0.22s cubic-bezier(.34,1.56,.64,1);
+}
+.pd.on { background:var(–pink-deep); border-color:var(–pink-deep); transform:scale(1.25); }
+.pin-err { height:18px; font-size:12px; font-weight:700; color:var(–pink-deep); text-align:center; }
+.pin-err.shake { animation:shake 0.45s ease; }
+.keypad { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; width:100%; }
+.kb {
+height:60px; border-radius:16px;
+background:rgba(255,255,255,0.82);
+box-shadow:0 3px 14px rgba(224,69,95,0.13), inset 0 1px 0 rgba(255,255,255,0.9);
+font-size:22px; font-weight:800; color:var(–text);
+transition:all 0.14s ease;
+}
+.kb:active { transform:scale(0.91); box-shadow:0 1px 6px rgba(224,69,95,0.1); }
+.kb.del { font-size:19px; color:var(–text-mid); }
+.kb.void { visibility:hidden; }
+
+/* ===== HOME PAGE ===== */
+#pg-home { background:var(–bg); }
+.home-bg-hearts { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+.amb { position:absolute; font-size:16px; opacity:0; animation:ambFloat var(–d) ease-in-out infinite var(–dl); }
+
+.home-hdr { text-align:center; padding:16px 0 12px; position:relative; z-index:1; }
+.home-tag {
+font-size:11px; letter-spacing:2.5px; text-transform:uppercase;
+color:var(–pink); font-weight:700;
+}
+.home-name {
+font-family:‘Cormorant Garamond’,serif;
+font-size:38px; font-style:italic; font-weight:600;
+color:var(–text); line-height:1.15; margin-top:4px;
+}
+
+/* Days card */
+.days-card {
+background:linear-gradient(135deg,var(–pink-deep) 0%,var(–pink-mid) 100%);
+border-radius:var(–r); padding:26px 22px;
+text-align:center; position:relative; overflow:hidden;
+box-shadow:0 8px 36px rgba(224,69,95,0.38);
+margin-bottom:14px; z-index:1;
+}
+.days-card::before,
+.days-card::after {
+content:’’; position:absolute; border-radius:50%;
+background:rgba(255,255,255,0.07);
+}
+.days-card::before { width:130px; height:130px; top:-40px; right:-30px; }
+.days-card::after  { width:90px;  height:90px;  bottom:-30px; left:-20px; }
+.dc-label { font-size:11px; letter-spacing:2px; color:rgba(255,255,255,0.7); font-weight:700; text-transform:uppercase; }
+.dc-num {
+font-family:‘Cormorant Garamond’,serif;
+font-size:78px; font-weight:600; line-height:0.95;
+color:#fff; margin:8px 0;
+}
+.dc-sub { font-size:16px; font-weight:700; color:rgba(255,255,255,0.9); }
+.dc-since { font-size:11px; color:rgba(255,255,255,0.55); margin-top:8px; }
+
+/* Countdown card */
+.cd-card {
+background:var(–card); border-radius:var(–r);
+padding:18px 20px; box-shadow:var(–sh-sm);
+margin-bottom:14px; z-index:1; position:relative;
+}
+.cd-title { font-size:11px; letter-spacing:1.5px; color:var(–text-soft); text-transform:uppercase; font-weight:700; margin-bottom:14px; }
+.cd-units { display:flex; align-items:center; justify-content:center; gap:8px; }
+.cd-unit { text-align:center; background:var(–bg); padding:10px 14px; border-radius:10px; min-width:58px; }
+.cd-n { font-family:‘Cormorant Garamond’,serif; font-size:30px; font-weight:600; color:var(–pink-deep); line-height:1; }
+.cd-l { font-size:9px; color:var(–text-soft); font-weight:700; margin-top:3px; text-transform:uppercase; }
+.cd-sep { font-size:22px; color:var(–pink-pale); font-family:‘Cormorant Garamond’,serif; margin-bottom:6px; }
+
+/* Stat grid */
+.stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px; z-index:1; position:relative; }
+.stat-card {
+background:var(–card); border-radius:var(–r-sm);
+padding:14px 12px; box-shadow:var(–sh-sm);
+text-align:center;
+}
+.sc-ico  { font-size:26px; margin-bottom:6px; }
+.sc-lbl  { font-size:11px; color:var(–text-mid); font-weight:600; line-height:1.35; }
+.sc-val  { font-family:‘Cormorant Garamond’,serif; font-size:20px; font-weight:600; color:var(–text); margin-top:3px; }
+
+/* Quote banner */
+.quote-banner {
+background:linear-gradient(135deg,#FFF0F4,#FFE8EF);
+border-radius:var(–r-sm); padding:18px 20px;
+border-left:3px solid var(–pink);
+box-shadow:var(–sh-sm);
+z-index:1; position:relative;
+}
+.qb-text {
+font-family:‘Cormorant Garamond’,serif;
+font-style:italic; font-size:17px; line-height:1.6;
+color:var(–text-mid);
+}
+.qb-by { font-size:11px; color:var(–text-soft); margin-top:6px; font-weight:600; }
+
+/* ===== CARDS PAGE ===== */
+#pg-cards { background:var(–bg); }
+.pg-hdr { padding:16px 0 4px; }
+.pg-title { font-family:‘Cormorant Garamond’,serif; font-size:26px; font-style:italic; font-weight:600; color:var(–text); }
+.pg-sub   { font-size:11px; color:var(–text-soft); letter-spacing:1.5px; text-transform:uppercase; font-weight:700; margin-top:2px; margin-bottom:18px; }
+
+.cards-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+.fc { height:155px; cursor:pointer; perspective:900px; }
+.fc-wide { grid-column:1/-1; height:120px; }
+.fc-inner {
+width:100%; height:100%;
+position:relative; transform-style:preserve-3d;
+transition:transform 0.55s cubic-bezier(.4,0,.2,1);
+}
+.fc.flipped .fc-inner { transform:rotateY(180deg); }
+.fc-f, .fc-b {
+position:absolute; inset:0;
+backface-visibility:hidden;
+-webkit-backface-visibility:hidden;
+border-radius:var(–r);
+display:flex; flex-direction:column;
+align-items:center; justify-content:center;
+padding:14px; text-align:center;
+}
+.fc-f { background:var(–card); box-shadow:var(–sh-md); }
+.fc-b {
+transform:rotateY(180deg);
+box-shadow:var(–sh-md);
+}
+.fc-wide .fc-f, .fc-wide .fc-b { flex-direction:row; gap:14px; }
+
+.f-ico { font-size:36px; margin-bottom:6px; }
+.f-title { font-family:‘Cormorant Garamond’,serif; font-size:17px; font-style:italic; color:var(–text); }
+.f-hint  { font-size:9px; color:var(–text-soft); margin-top:5px; letter-spacing:0.8px; }
+.b-text  { font-size:12.5px; color:#fff; line-height:1.65; font-weight:400; }
+.b-ico   { font-size:22px; margin-top:8px; }
+.fc-wide .f-ico  { font-size:32px; margin-bottom:0; }
+.fc-wide .f-title { font-size:19px; }
+.fc-wide .b-text  { font-size:13px; }
+
+/* card color themes */
+.t1 .fc-b { background:linear-gradient(135deg,#F4899A,#E0455F); }
+.t2 .fc-b { background:linear-gradient(135deg,#E991B4,#C9547A); }
+.t3 .fc-b { background:linear-gradient(135deg,#F7A8B8,#E0607E); }
+.t4 .fc-b { background:linear-gradient(135deg,#EE6B96,#C94070); }
+.t5 .fc-b { background:linear-gradient(135deg,#FF8FAB,#E04060); }
+.t6 .fc-b { background:linear-gradient(135deg,#F499A8,#D94F6A); }
+.t7 .fc-b { background:linear-gradient(135deg,#EC7A9E,#C84470); }
+
+/* ===== RAIN PAGE ===== */
+#pg-rain {
+background:linear-gradient(170deg,var(–bg) 0%,var(–bg2) 100%);
+align-items:center; justify-content:center;
+}
+.rain-wrap { display:flex; flex-direction:column; align-items:center; gap:28px; padding:24px; padding-bottom:calc(var(–nav-h)+24px); }
+.rain-ttl {
+font-family:‘Cormorant Garamond’,serif;
+font-size:30px; font-style:italic; font-weight:600;
+color:var(–text); text-align:center; line-height:1.3;
+}
+.rain-sub { font-size:13px; color:var(–text-soft); text-align:center; max-width:220px; line-height:1.7; }
+.rain-btn {
+width:148px; height:148px; border-radius:50%;
+background:linear-gradient(135deg,var(–pink),var(–pink-deep));
+display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+box-shadow:0 8px 36px rgba(224,69,95,0.4), 0 0 0 14px rgba(244,137,154,0.14);
+transition:all 0.2s cubic-bezier(.34,1.56,.64,1);
+color:#fff;
+}
+.rain-btn:active { transform:scale(0.9); box-shadow:0 4px 18px rgba(224,69,95,0.3), 0 0 0 6px rgba(244,137,154,0.1); }
+.rb-ico  { font-size:42px; }
+.rb-lbl  { font-size:12px; font-weight:800; letter-spacing:1px; }
+.rain-counter { font-size:13px; color:var(–text-soft); font-weight:600; }
+
+.rain-particle {
+position:fixed; pointer-events:none; z-index:55;
+font-size:13px; font-weight:700; color:var(–pink-deep);
+background:rgba(255,255,255,0.92);
+padding:6px 13px; border-radius:100px;
+box-shadow:0 2px 14px rgba(224,69,95,0.18);
+white-space:nowrap;
+animation:rainDrop var(–dur) ease-in forwards;
+transform:translateX(-50%);
+}
+
+/* ===== HYPERSPACE PAGE ===== */
+#pg-hyper { background:#080005; align-items:center; justify-content:center; }
+#hCanvas { position:absolute; inset:0; }
+.h-msgs {
+position:relative; z-index:10;
+display:flex; flex-direction:column;
+align-items:center; gap:18px;
+padding:28px 32px;
+text-align:center;
+opacity:0; pointer-events:none;
+transition:opacity 0.5s ease;
+}
+.h-msgs.vis { opacity:1; }
+.hm {
+font-family:‘Cormorant Garamond’,serif;
+color:rgba(255,215,225,0.88);
+opacity:0; transform:translateY(22px);
+transition:all 0.75s ease;
+line-height:1.5;
+}
+.hm.s { opacity:1; transform:translateY(0); }
+.hm:nth-child(1) { font-size:12px; letter-spacing:3px; color:rgba(255,180,195,0.5); text-transform:uppercase; }
+.hm:nth-child(2) { font-size:30px; font-style:italic; font-weight:600; }
+.hm:nth-child(3) { font-size:21px; }
+.hm:nth-child(4) { font-size:17px; color:rgba(255,200,215,0.75); }
+.hm:nth-child(5) { font-size:34px; font-style:italic; font-weight:600; color:var(–pink); }
+.h-restart {
+margin-top:26px; padding:11px 26px;
+background:rgba(244,137,154,0.13);
+border:1px solid rgba(244,137,154,0.28);
+border-radius:100px; color:rgba(255,200,215,0.75);
+font-size:12px; letter-spacing:1px;
+opacity:0; transition:opacity 0.5s;
+}
+.h-restart.s { opacity:1; pointer-events:all; }
+
+/* ===== FINGERPRINT PAGE ===== */
+#pg-finger {
+background:linear-gradient(155deg,#FFF4F6,#FFE0EA);
+align-items:center; justify-content:center;
+overflow-y:auto;
+}
+.fp-wrap {
+display:flex; flex-direction:column;
+align-items:center; gap:22px;
+padding:32px 24px calc(var(–nav-h)+32px);
+text-align:center; width:100%;
+}
+.fp-ttl { font-family:‘Cormorant Garamond’,serif; font-size:32px; font-style:italic; font-weight:600; color:var(–text); }
+.fp-sub  { font-size:12px; color:var(–text-soft); margin-top:-14px; letter-spacing:0.5px; }
+
+.fp-zone { position:relative; width:175px; height:175px; cursor:pointer; flex-shrink:0; }
+.fp-ring {
+position:absolute; inset:0; border-radius:50%;
+border:2px solid var(–pink-pale);
+animation:ringPulse 2.2s ease-in-out infinite;
+}
+.fp-ring:nth-child(2) { inset:-13px; animation-delay:0.35s; opacity:0.55; }
+.fp-ring:nth-child(3) { inset:-26px; animation-delay:0.7s;  opacity:0.28; }
+.fp-inner {
+position:absolute; inset:0;
+background:var(–white); border-radius:50%;
+box-shadow:var(–sh-md); overflow:hidden;
+display:flex; align-items:center; justify-content:center;
+}
+.fp-glow {
+position:absolute; inset:0; border-radius:50%;
+background:radial-gradient(circle at 50% 100%, rgba(244,137,154,0.0) 0%, transparent 70%);
+transition:background 0.4s ease;
+}
+.fp-inner.scanning .fp-glow { background:radial-gradient(circle at 50% 50%, rgba(244,137,154,0.18) 0%, transparent 70%); }
+.fp-inner.scanned  .fp-glow { background:radial-gradient(circle at 50% 50%, rgba(224,69,95,0.12) 0%, transparent 70%); }
+
+.fp-scanline {
+position:absolute; left:0; right:0; height:2px;
+background:linear-gradient(90deg,transparent,var(–pink),transparent);
+top:0; opacity:0;
+}
+.fp-inner.scanning .fp-scanline { animation:scanLine 0.75s linear infinite; opacity:1; }
+
+.fp-ico { opacity:0.3; transition:opacity 0.3s; width:88px; height:88px; }
+.fp-inner.scanning .fp-ico { opacity:0.7; }
+.fp-inner.scanned  .fp-ico { opacity:0.12; }
+
+.fp-hint { font-size:12px; color:var(–text-soft); letter-spacing:0.5px; animation:blinkLoop 1.6s ease-in-out infinite; }
+
+/* Heart */
+.fp-heart { width:115px; height:105px; opacity:0; transition:opacity 0.5s; flex-shrink:0; }
+.fp-heart.show { opacity:1; }
+
+.fp-msg {
+font-family:‘Cormorant Garamond’,serif;
+font-size:25px; font-style:italic;
+color:var(–pink-deep); line-height:1.45;
+opacity:0; transform:scale(0.78);
+transition:all 0.6s cubic-bezier(.34,1.56,.64,1);
+}
+.fp-msg.show { opacity:1; transform:scale(1); }
+
+/* ===== TOAST ===== */
+#toast {
+position:fixed; bottom:calc(var(–nav-h)+18px); left:50%;
+transform:translateX(-50%) translateY(16px);
+background:var(–text); color:#fff;
+font-size:13px; font-weight:700;
+padding:9px 20px; border-radius:100px;
+opacity:0; transition:all 0.3s ease;
+z-index:400; pointer-events:none; white-space:nowrap;
+}
+#toast.on { opacity:1; transform:translateX(-50%) translateY(0); }
+
+/* Utility */
+.ent { animation:fadeSlideUp 0.45s ease both; }
+.ent:nth-child(1){animation-delay:0.04s}
+.ent:nth-child(2){animation-delay:0.09s}
+.ent:nth-child(3){animation-delay:0.14s}
+.ent:nth-child(4){animation-delay:0.19s}
+.ent:nth-child(5){animation-delay:0.24s}
+</style>
+
+</head>
+<body>
+
+<!-- AMBIENT BG HEARTS (home) -->
+
+<div class="home-bg-hearts" id="ambHrts"></div>
+
+<!-- TOAST -->
+
+<div id="toast"></div>
+
+<!-- ════════════════════ PIN PAGE ════════════════════ -->
+
+<div class="page active" id="pg-pin">
+  <div class="pin-box">
+    <div class="pin-emoji">💝</div>
+    <div class="pin-title">ยินดีต้อนรับ<br>สู่โลกของเรา</div>
+    <div class="pin-hint">ใส่ PIN เพื่อเข้าสู่ระบบ</div>
+    <div class="pin-dots" id="pinDots">
+      <div class="pd"></div><div class="pd"></div>
+      <div class="pd"></div><div class="pd"></div>
+    </div>
+    <div class="pin-err" id="pinErr"></div>
+    <div class="keypad">
+      <button class="kb" onclick="kp('1')">1</button>
+      <button class="kb" onclick="kp('2')">2</button>
+      <button class="kb" onclick="kp('3')">3</button>
+      <button class="kb" onclick="kp('4')">4</button>
+      <button class="kb" onclick="kp('5')">5</button>
+      <button class="kb" onclick="kp('6')">6</button>
+      <button class="kb" onclick="kp('7')">7</button>
+      <button class="kb" onclick="kp('8')">8</button>
+      <button class="kb" onclick="kp('9')">9</button>
+      <button class="kb void"></button>
+      <button class="kb" onclick="kp('0')">0</button>
+      <button class="kb del" onclick="kd()">⌫</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ HOME PAGE ════════════════════ -->
+
+<div class="page" id="pg-home">
+  <div class="page-scroll">
+    <div class="home-hdr ent">
+      <div class="home-tag">✨ เพื่อเธอ คนเดียวเท่านั้น ✨</div>
+      <div class="home-name" id="homeTitle">สวัสดีที่รัก 🌸</div>
+    </div>
+
+```
+<div class="days-card ent">
+  <div class="dc-label">🌺 เราอยู่ด้วยกันมาแล้ว</div>
+  <div class="dc-num" id="daysNum">0</div>
+  <div class="dc-sub">วัน แห่งความสุข</div>
+  <div class="dc-since" id="daysSince"></div>
+</div>
+
+<div class="cd-card ent">
+  <div class="cd-title">💕 อีกกี่วันจะครบเดือน</div>
+  <div class="cd-units">
+    <div class="cd-unit"><div class="cd-n" id="cdD">00</div><div class="cd-l">วัน</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-n" id="cdH">00</div><div class="cd-l">ชั่วโมง</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-n" id="cdM">00</div><div class="cd-l">นาที</div></div>
+    <div class="cd-sep">:</div>
+    <div class="cd-unit"><div class="cd-n" id="cdS">00</div><div class="cd-l">วินาที</div></div>
+  </div>
+</div>
+
+<div class="stat-grid ent">
+  <div class="stat-card">
+    <div class="sc-ico">📅</div>
+    <div class="sc-lbl">เดือนที่ผ่านมาแล้ว</div>
+    <div class="sc-val" id="stM">0 เดือน</div>
+  </div>
+  <div class="stat-card">
+    <div class="sc-ico">🌙</div>
+    <div class="sc-lbl">คืนที่คิดถึงกัน</div>
+    <div class="sc-val" id="stN">0 คืน</div>
+  </div>
+  <div class="stat-card">
+    <div class="sc-ico">☀️</div>
+    <div class="sc-lbl">เช้าที่ตื่นนึกถึงกัน</div>
+    <div class="sc-val" id="stMr">0 เช้า</div>
+  </div>
+  <div class="stat-card">
+    <div class="sc-ico">💗</div>
+    <div class="sc-lbl">หัวใจเต้นเพื่อเธอ</div>
+    <div class="sc-val">∞ ครั้ง</div>
+  </div>
+</div>
+
+<div class="quote-banner ent">
+  <div class="qb-text" id="quoteText">"เธอคือเหตุผลที่ทำให้ทุกวันมีความหมาย"</div>
+  <div class="qb-by" id="quoteBy">— จากหัวใจของฉัน</div>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- ════════════════════ CARDS PAGE ════════════════════ -->
+
+<div class="page" id="pg-cards">
+  <div class="page-scroll">
+    <div class="pg-hdr ent">
+      <div class="pg-title">การ์ดสำหรับเธอ 💌</div>
+      <div class="pg-sub">แตะการ์ดเพื่อเปิดอ่าน</div>
+    </div>
+    <div class="cards-grid">
+      <div class="fc t1 ent" onclick="flipCard(this)">
+        <div class="fc-inner">
+          <div class="fc-f"><div class="f-ico">🌸</div><div class="f-title">วันนี้</div><div class="f-hint">tap to open</div></div>
+          <div class="fc-b"><div class="b-text">วันนี้มีเธออยู่<br>ทุกอย่างดูสดใสขึ้นมาก</div><div class="b-ico">🌸</div></div>
+        </div>
+      </div>
+      <div class="fc t2 ent" onclick="flipCard(this)">
+        <div class="fc-inner">
+          <div class="fc-f"><div class="f-ico">💕</div><div class="f-title">ความรัก</div><div class="f-hint">tap to open</div></div>
+          <div class="fc-b"><div class="b-text">รักเธอมากกว่า<br>ที่จะบรรยายเป็น<br>คำพูดได้เลย</div><div class="b-ico">💕</div></div>
+        </div>
+      </div>
+      <div class="fc t3 ent" onclick="flipCard(this)">
+        <div class="fc-inner">
+          <div class="fc-f"><div class="f-ico">✨</div><div class="f-title">ความฝัน</div><div class="f-hint">tap to open</div></div>
+          <div class="fc-b"><div class="b-text">เธอคือความฝัน<br>ที่กลายเป็น<br>ความจริงของฉัน</div><div class="b-ico">✨</div></div>
+        </div>
+      </div>
+      <div class="fc t4 ent" onclick="flipCard(this)">
+        <div class="fc-inner">
+          <div class="fc-f"><div class="f-ico">🙏</div><div class="f-title">ขอบคุณ</div><div class="f-hint">tap to open</div></div>
+          <div class="fc-b"><div class="b-text">ขอบคุณที่เลือกฉัน<br>ขอบคุณที่รักฉัน<br>ขอบคุณที่มีอยู่</div><div class="b-ico">🙏</div></div>
+        </div>
+      </div>
+      <div class="fc fc-wide t5 ent" onclick="flipCard(this)">
+        <div class="fc-inner">
+          <div class="fc-f"><div class="f-ico">🌙</div><div><div class="f-title">สัญญา</div><div class="f-hint">tap to open</div></div></div>
+          <div class="fc-b"><div class="b-text">สัญญาว่าจะอยู่เคียงข้างเธอทุกวัน ทุกคืน ไม่ว่าจะเกิดอะไรขึ้น</div><div class="b-ico">🌙</div></div>
+        </div>
+      </div>
+      <div class="fc t6 ent" onclick="flipCard(this)">
+        <div class="fc-inner">
+          <div class="fc-f"><div class="f-ico">🌍</div><div class="f-title">โลก</div><div class="f-hint">tap to open</div></div>
+          <div class="fc-b"><div class="b-text">โลกนี้สวยขึ้นมาก<br>เพราะมีเธออยู่ในนั้น</div><div class="b-ico">🌍</div></div>
+        </div>
+      </div>
+      <div class="fc t7 ent" onclick="flipCard(this)">
+        <div class="fc-inner">
+          <div class="fc-f"><div class="f-ico">💗</div><div class="f-title">หัวใจ</div><div class="f-hint">tap to open</div></div>
+          <div class="fc-b"><div class="b-text">ทุกการเต้น<br>ของหัวใจฉัน<br>มีชื่อเธออยู่ด้วย</div><div class="b-ico">💗</div></div>
+        </div>
+      </div>
+      <div class="fc t1 ent" onclick="flipCard(this)">
+        <div class="fc-inner">
+          <div class="fc-f"><div class="f-ico">⭐</div><div class="f-title">ดาว</div><div class="f-hint">tap to open</div></div>
+          <div class="fc-b"><div class="b-text">เธอคือดาว<br>ที่สว่างที่สุด<br>ในชีวิตฉัน</div><div class="b-ico">⭐</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════ RAIN PAGE ════════════════════ -->
+
+<div class="page" id="pg-rain">
+  <div class="rain-wrap">
+    <div class="rain-ttl">กดเพื่อรับ<br>ความรักจากฉัน 💝</div>
+    <button class="rain-btn" onclick="doRain()">
+      <div class="rb-ico">💌</div>
+      <div class="rb-lbl">กดเลย!</div>
+    </button>
+    <div class="rain-sub">กดปุ่มแล้วรับความรักที่ฉันส่งถึงเธอ ยิ่งกดมาก ความรักยิ่งมาก ✨</div>
+    <div class="rain-counter" id="rainCount">กดไปแล้ว: 0 ครั้ง</div>
+  </div>
+</div>
+
+<!-- ════════════════════ HYPERSPACE PAGE ════════════════════ -->
+
+<div class="page" id="pg-hyper">
+  <canvas id="hCanvas"></canvas>
+  <div class="h-msgs" id="hMsgs">
+    <div class="hm">— ส่งถึงเธอ จากหัวใจของฉัน —</div>
+    <div class="hm">เธอคือดาวที่สว่างที่สุด<br>ในจักรวาลของฉัน</div>
+    <div class="hm">ไม่ว่าจะห่างกันแค่ไหน</div>
+    <div class="hm">แสงของเธอยังส่องถึงหัวใจฉันเสมอ</div>
+    <div class="hm">รักเธอมากนะ 💕</div>
+    <button class="h-restart" id="hRestart" onclick="startWarp()">✨ เริ่มอีกครั้ง</button>
+  </div>
+</div>
+
+<!-- ════════════════════ FINGERPRINT PAGE ════════════════════ -->
+
+<div class="page" id="pg-finger">
+  <div class="fp-wrap" id="fpWrap">
+    <div class="fp-ttl">ยืนยันตัวตน</div>
+    <div class="fp-sub">สำหรับคนพิเศษเท่านั้น 🔐</div>
+
+```
+<div class="fp-zone" id="fpZone" onclick="doScan()">
+  <div class="fp-ring"></div>
+  <div class="fp-ring"></div>
+  <div class="fp-ring"></div>
+  <div class="fp-inner" id="fpInner">
+    <div class="fp-glow"></div>
+    <div class="fp-scanline" id="fpScanline"></div>
+    <!-- Fingerprint SVG icon -->
+    <svg class="fp-ico" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 12C35 12 24 23 24 38C24 46 26 53 30 59" stroke="#F4899A" stroke-width="2.8" stroke-linecap="round"/>
+      <path d="M50 20C39 20 32 27 32 38C32 48 37 57 44 63" stroke="#F4899A" stroke-width="2.8" stroke-linecap="round"/>
+      <path d="M50 28C43 28 40 33 40 38C40 50 45 59 50 65C55 59 60 50 60 38C60 33 57 28 50 28Z" stroke="#F4899A" stroke-width="2.8" stroke-linecap="round"/>
+      <path d="M50 36C47 36 48 38 48 38C48 45 49 51 50 54C51 51 52 45 52 38C52 38 53 36 50 36Z" stroke="#F4899A" stroke-width="2.8" stroke-linecap="round"/>
+      <path d="M76 59C80 53 76 46 76 38C76 23 65 12 50 12" stroke="#F4899A" stroke-width="2.8" stroke-linecap="round"/>
+      <path d="M68 67C74 61 68 53 68 38C68 27 60 20 50 20" stroke="#F4899A" stroke-width="2.8" stroke-linecap="round"/>
+      <path d="M56 68C60 64 56 57 56 50" stroke="#F4899A" stroke-width="2.8" stroke-linecap="round"/>
+      <path d="M32 66C28 60 28 53 28 46" stroke="#F4899A" stroke-width="2.8" stroke-linecap="round"/>
+      <path d="M44 70C42 66 40 62 40 58" stroke="#F4899A" stroke-width="2.8" stroke-linecap="round"/>
+    </svg>
+  </div>
+</div>
+
+<div class="fp-hint" id="fpHint">แตะเพื่อสแกนลายนิ้วมือ 👆</div>
+
+<!-- Heart SVG (hidden until scan done) -->
+<svg class="fp-heart" id="fpHeart" viewBox="0 0 100 90" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <clipPath id="hClip">
+      <path d="M50 84 C50 84 8 57 8 30 C8 14 18 6 29 6 C37 6 44 11 50 18 C56 11 63 6 71 6 C82 6 92 14 92 30 C92 57 50 84 50 84Z"/>
+    </clipPath>
+  </defs>
+  <path d="M50 84 C50 84 8 57 8 30 C8 14 18 6 29 6 C37 6 44 11 50 18 C56 11 63 6 71 6 C82 6 92 14 92 30 C92 57 50 84 50 84Z" fill="none" stroke="#FFD6E3" stroke-width="2.5"/>
+  <rect id="hFill" x="0" y="90" width="100" height="92" fill="url(#hGrad)" clip-path="url(#hClip)"/>
+  <defs>
+    <linearGradient id="hGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#F4899A"/>
+      <stop offset="100%" stop-color="#E0455F"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<div class="fp-msg" id="fpMsg">
+  ได้ยินไหม? 💗<br>หัวใจฉันเต้นเพื่อเธอ<br>คนเดียวเลยนะ
+</div>
+```
+
+  </div>
+</div>
+
+<!-- ════════════════════ BOTTOM NAV ════════════════════ -->
+
+<nav id="mainNav">
+  <div class="ni on" id="ni-home" onclick="go('home',this)">
+    <div class="ni-ico">🏠</div>
+    <div class="ni-lbl">หน้าแรก</div>
+  </div>
+  <div class="ni" id="ni-cards" onclick="go('cards',this)">
+    <div class="ni-ico">💌</div>
+    <div class="ni-lbl">การ์ด</div>
+  </div>
+  <div class="ni" id="ni-rain" onclick="go('rain',this)">
+    <div class="ni-ico">🌸</div>
+    <div class="ni-lbl">ความรัก</div>
+  </div>
+  <div class="ni" id="ni-hyper" onclick="go('hyper',this)">
+    <div class="ni-ico">✨</div>
+    <div class="ni-lbl">จักรวาล</div>
+  </div>
+  <div class="ni" id="ni-finger" onclick="go('finger',this)">
+    <div class="ni-ico">💝</div>
+    <div class="ni-lbl">หัวใจ</div>
+  </div>
+</nav>
+
+<script>
+/* ════════════════ CONFIG ════════════════ */
+const CFG = {
+  PIN:          "0614",                       // ← เปลี่ยน PIN ที่นี่
+  START:        new Date("2024-06-14T00:00"), // ← วันที่เริ่มคบกัน
+  HER_NAME:     "ที่รัก",                    // ← ชื่อแฟน
+};
+
+const QUOTES = [
+  ["เธอคือเหตุผลที่ทำให้ทุกวันมีความหมาย","— จากหัวใจของฉัน"],
+  ["ฉันอาจไม่สมบูรณ์แบบ แต่รักเธออย่างสมบูรณ์","— ความรู้สึกที่แท้จริง"],
+  ["มีเธอ ก็เพียงพอแล้วสำหรับทุกอย่าง","— คำสัญญาของฉัน"],
+  ["ทุกเช้าที่ตื่นมา ความคิดแรกคือเธอ","— ความจริงที่ไม่เปลี่ยนแปลง"],
+];
+
+const RAIN_MSGS = [
+  "รักเธอมาก 💕","คิดถึงเธอ 🌸","เธอสวยมากเลยนะ ✨",
+  "ขอบคุณที่มาเป็นของฉัน 💝","หัวใจฉันเต็มไปด้วยเธอ 💗",
+  "โชคดีมากที่มีเธอ 🍀","ยิ้มหน่อยนะ 😊","เธอคือทุกอย่างของฉัน 💖",
+  "อยากกอดเธออยู่เลย 🤗","นึกถึงเธอตลอดเวลา 🌙",
+  "เธอทำให้ฉันมีความสุข ☀️","รักเธอมากกว่าเมื่อวาน 🌺",
+  "ขอบคุณที่เลือกฉัน 🙏","เธอคือดาวดวงโปรดของฉัน ⭐",
+  "ไม่มีใครสำคัญเท่าเธอ 💗","เธอทำให้โลกสวยขึ้น 🌍",
+];
+
+/* ════════════════ PIN ════════════════ */
+let pinVal = "";
+
+function kp(d) {
+  if (pinVal.length >= 4) return;
+  pinVal += d;
+  renderDots();
+  if (pinVal.length === 4) setTimeout(checkPin, 100);
+}
+
+function kd() {
+  pinVal = pinVal.slice(0,-1);
+  renderDots();
+}
+
+function renderDots() {
+  document.querySelectorAll('.pd').forEach((el,i) => el.classList.toggle('on', i < pinVal.length));
+}
+
+function checkPin() {
+  if (pinVal === CFG.PIN) {
+    const pg = document.getElementById('pg-pin');
+    pg.style.transition = 'opacity 0.5s ease';
+    pg.style.opacity = '0';
+    setTimeout(() => {
+      pg.style.display = 'none';
+      document.getElementById('mainNav').style.display = 'flex';
+      go('home', document.getElementById('ni-home'));
+      initHome();
+    }, 520);
+  } else {
+    const dotsEl = document.getElementById('pinDots');
+    const errEl  = document.getElementById('pinErr');
+    dotsEl.style.animation = 'shake 0.45s ease';
+    errEl.textContent = '❌ PIN ไม่ถูกต้อง ลองอีกครั้ง';
+    if (navigator.vibrate) navigator.vibrate([60,30,60]);
+    setTimeout(() => {
+      dotsEl.style.animation = '';
+      errEl.textContent = '';
+      pinVal = ""; renderDots();
+    }, 650);
+  }
+}
+
+/* ════════════════ NAVIGATION ════════════════ */
+let curPage = 'pin';
+let warpActive = false, warpRAF = null;
+
+function go(page, navEl) {
+  document.querySelectorAll('.page:not(#pg-pin)').forEach(p => p.classList.remove('active'));
+  document.getElementById('pg-' + page).classList.add('active');
+  curPage = page;
+  document.querySelectorAll('.ni').forEach(n => n.classList.remove('on'));
+  if (navEl) navEl.classList.add('on');
+  if (page === 'hyper') startWarp();
+  else stopWarp();
+  if (page === 'finger') resetFP();
+}
+
+/* ════════════════ HOME ════════════════ */
+let homeInited = false;
+
+function initHome() {
+  if (!homeInited) {
+    homeInited = true;
+    buildAmbient();
+    const q = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+    document.getElementById('quoteText').textContent = `"${q[0]}"`;
+    document.getElementById('quoteBy').textContent   = q[1];
+    document.getElementById('homeTitle').textContent  = `สวัสดี${CFG.HER_NAME} 🌸`;
+  }
+  updateHome();
+  clearInterval(window._homeTimer);
+  window._homeTimer = setInterval(updateHome, 1000);
+}
+
+function updateHome() {
+  const now   = new Date();
+  const start = CFG.START;
+  const ms    = now - start;
+  const days  = Math.floor(ms / 86400000);
+
+  document.getElementById('daysNum').textContent  = days.toLocaleString('th-TH');
+  document.getElementById('stM').textContent      = Math.floor(days / 30) + ' เดือน';
+  document.getElementById('stN').textContent      = days + ' คืน';
+  document.getElementById('stMr').textContent     = days + ' เช้า';
+
+  const d = start.getDate(), mo = start.getMonth();
+  let next = new Date(now.getFullYear(), now.getMonth(), d,
+    start.getHours(), start.getMinutes(), start.getSeconds());
+  if (next <= now) next = new Date(now.getFullYear(), now.getMonth()+1, d,
+    start.getHours(), start.getMinutes(), start.getSeconds());
+  const diff = next - now;
+  const cd = {
+    d: Math.floor(diff/86400000),
+    h: Math.floor((diff%86400000)/3600000),
+    m: Math.floor((diff%3600000)/60000),
+    s: Math.floor((diff%60000)/1000)
+  };
+  document.getElementById('cdD').textContent = String(cd.d).padStart(2,'0');
+  document.getElementById('cdH').textContent = String(cd.h).padStart(2,'0');
+  document.getElementById('cdM').textContent = String(cd.m).padStart(2,'0');
+  document.getElementById('cdS').textContent = String(cd.s).padStart(2,'0');
+
+  const th = start.getFullYear()+543;
+  document.getElementById('daysSince').textContent =
+    `ตั้งแต่ ${start.getDate()}/${start.getMonth()+1}/${th}`;
+}
+
+function buildAmbient() {
+  const cont = document.getElementById('ambHrts');
+  const items = ['💕','💗','🌸','💖','✨','🌺','💝','🫧'];
+  for (let i=0;i<14;i++) {
+    const el = document.createElement('div');
+    el.className = 'amb';
+    el.textContent = items[i % items.length];
+    const dur  = (7 + Math.random()*9).toFixed(1) + 's';
+    const del  = (Math.random()*9).toFixed(1) + 's';
+    const sz   = (13 + Math.random()*13).toFixed(0) + 'px';
+    const left = (Math.random()*100).toFixed(1) + '%';
+    el.style.cssText = `left:${left};--d:${dur};--dl:${del};font-size:${sz}`;
+    cont.appendChild(el);
+  }
+}
+
+/* ════════════════ CARDS ════════════════ */
+function flipCard(el) { el.classList.toggle('flipped'); }
+
+/* ════════════════ RAIN ════════════════ */
+let rainCount = 0;
+let rainIntvl = null;
+
+function doRain() {
+  rainCount++;
+  document.getElementById('rainCount').textContent = `กดไปแล้ว: ${rainCount} ครั้ง`;
+  if (navigator.vibrate) navigator.vibrate(40);
+  if (rainIntvl) { clearInterval(rainIntvl); rainIntvl = null; }
+  let n = 0;
+  rainIntvl = setInterval(() => {
+    if (n++ >= 28) { clearInterval(rainIntvl); rainIntvl = null; return; }
+    spawnRain();
+  }, 90);
+}
+
+function spawnRain() {
+  const el = document.createElement('div');
+  el.className = 'rain-particle';
+  el.textContent = RAIN_MSGS[Math.floor(Math.random()*RAIN_MSGS.length)];
+  const dur = (1.8 + Math.random()*1.8).toFixed(2) + 's';
+  el.style.cssText = `left:${10+Math.random()*80}%;--dur:${dur}`;
+  document.body.appendChild(el);
+  el.addEventListener('animationend', () => el.remove());
+}
+
+/* ════════════════ HYPERSPACE ════════════════ */
+let stars = [], hCtx, hW, hH, hPhase = 'warp', hT0 = 0, hMsgsDone = false;
+
+function startWarp() {
+  const cv = document.getElementById('hCanvas');
+  hW = cv.width  = window.innerWidth;
+  hH = cv.height = window.innerHeight;
+  hCtx = cv.getContext('2d');
+
+  // Reset messages
+  document.querySelectorAll('.hm').forEach(m => m.classList.remove('s'));
+  const msgs = document.getElementById('hMsgs');
+  msgs.classList.remove('vis');
+  document.getElementById('hRestart').classList.remove('s');
+  hMsgsDone = false;
+
+  stars = Array.from({length:320}, () => ({
+    x: (Math.random()-.5)*hW*2,
+    y: (Math.random()-.5)*hH*2,
+    z: Math.random()*hW, pz:0
+  }));
+  hPhase = 'warp'; hT0 = Date.now(); warpActive = true;
+  if (warpRAF) cancelAnimationFrame(warpRAF);
+  loopWarp();
+}
+
+function loopWarp() {
+  if (!warpActive) return;
+  const t = (Date.now()-hT0)/1000;
+  let spd;
+  if      (hPhase==='warp' && t<3.5) spd = 18 + t*6;
+  else if (hPhase==='warp')           { hPhase='slow'; spd=36; }
+  else if (hPhase==='slow')           { spd = Math.max(0.4, 38-(t-3.5)*14); if(t>5.5&&!hMsgsDone){ hMsgsDone=true; revealMsgs(); } }
+  else spd = 0.4;
+
+  hCtx.fillStyle='rgba(8,0,5,0.22)';
+  hCtx.fillRect(0,0,hW,hH);
+  const cx=hW/2, cy=hH/2;
+
+  stars.forEach(s => {
+    s.pz = s.z; s.z -= spd;
+    if(s.z<=0){
+      s.x=(Math.random()-.5)*hW*2;
+      s.y=(Math.random()-.5)*hH*2;
+      s.z=hW; s.pz=hW;
+    }
+    const sx=(s.x/s.z)*hW+cx, sy=(s.y/s.z)*hH+cy;
+    const px=(s.x/s.pz)*hW+cx, py=(s.y/s.pz)*hH+cy;
+    const b=Math.min(1,(1-s.z/hW)*1.6);
+    const sz=Math.max(0.4,(1-s.z/hW)*3);
+    hCtx.beginPath(); hCtx.moveTo(px,py); hCtx.lineTo(sx,sy);
+    hCtx.strokeStyle=`rgba(255,${Math.floor(170*b)},${Math.floor(190*b)},${b})`;
+    hCtx.lineWidth=sz; hCtx.stroke();
+  });
+  warpRAF = requestAnimationFrame(loopWarp);
+}
+
+function revealMsgs() {
+  const wrap = document.getElementById('hMsgs');
+  wrap.classList.add('vis');
+  document.querySelectorAll('.hm').forEach((m,i) => setTimeout(()=>m.classList.add('s'), i*850+200));
+  const n = document.querySelectorAll('.hm').length;
+  setTimeout(() => document.getElementById('hRestart').classList.add('s'), n*850+1200);
+}
+
+function stopWarp() { warpActive=false; if(warpRAF){cancelAnimationFrame(warpRAF);warpRAF=null;} }
+
+/* ════════════════ FINGERPRINT ════════════════ */
+let fpState='idle';
+
+function resetFP() {
+  fpState='idle';
+  const inn=document.getElementById('fpInner');
+  inn.classList.remove('scanning','scanned');
+  document.getElementById('fpHint').textContent='แตะเพื่อสแกนลายนิ้วมือ 👆';
+  document.getElementById('fpHint').style.animation='blinkLoop 1.6s ease-in-out infinite';
+  const hrt=document.getElementById('fpHeart');
+  hrt.classList.remove('show');
+  document.getElementById('fpMsg').classList.remove('show');
+  document.getElementById('hFill').setAttribute('y','90');
+}
+
+function doScan() {
+  if (fpState!=='idle') return;
+  fpState='scanning';
+  if (navigator.vibrate) navigator.vibrate([50,30,50]);
+  const inn=document.getElementById('fpInner');
+  inn.classList.add('scanning');
+  const hint=document.getElementById('fpHint');
+  hint.style.animation='none'; hint.textContent='กำลังสแกน...';
+
+  setTimeout(() => {
+    inn.classList.remove('scanning'); inn.classList.add('scanned');
+    hint.textContent='✓ ระบุตัวตนสำเร็จ';
+    if (navigator.vibrate) navigator.vibrate([80,40,80]);
+
+    const hrt=document.getElementById('fpHeart');
+    hrt.classList.add('show');
+    setTimeout(() => animateHeart(), 300);
+    setTimeout(() => {
+      document.getElementById('fpMsg').classList.add('show');
+      if (navigator.vibrate) navigator.vibrate([100,50,100,50,200]);
+      fpState='done';
+    }, 3600);
+  }, 2000);
+}
+
+function animateHeart() {
+  const rect=document.getElementById('hFill');
+  const start=Date.now(), dur=3200;
+  function step(){
+    const p=Math.min(1,(Date.now()-start)/dur);
+    const ease=p<.5?4*p*p*p:1-Math.pow(-2*p+2,3)/2;
+    rect.setAttribute('y', String(90*(1-ease)));
+    if(p<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
+/* ════════════════ TOAST ════════════════ */
+function toast(msg) {
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('on');
+  setTimeout(()=>t.classList.remove('on'),2000);
+}
+
+/* ════════════════ RESIZE ════════════════ */
+window.addEventListener('resize',()=>{
+  if(curPage==='hyper'&&warpActive){
+    const cv=document.getElementById('hCanvas');
+    cv.width=hW=window.innerWidth; cv.height=hH=window.innerHeight;
+  }
+});
+</script>
+
+</body>
+</html>
