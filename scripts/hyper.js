@@ -1,13 +1,14 @@
 import { CFG } from './config.js';
 import { qs, wait } from './utils.js';
+import { playHyperTimeline } from './hyperTimeline.js';
 
 export function createHyperController() {
   let warpRAF = null;
   let stars = [];
   let active = false;
   let runningSequence = false;
-  let speed = 0.12;
-  let targetSpeed = 0.12;
+  let speed = 1;
+  let targetSpeed = 1;
   let lastTs = 0;
 
   function resizeCanvas() {
@@ -18,12 +19,12 @@ export function createHyperController() {
 
   function initStars() {
     const cv = qs('hCanvas');
-    const count = Math.floor(Math.min(900, Math.max(420, cv.width * 0.55)));
+    const count = Math.floor(Math.min(980, Math.max(460, cv.width * 0.62)));
     stars = Array.from({ length: count }, () => ({
-      x: (Math.random() - 0.5) * cv.width * 2.8,
-      y: (Math.random() - 0.5) * cv.height * 2.8,
+      x: (Math.random() - 0.5) * cv.width * 3.1,
+      y: (Math.random() - 0.5) * cv.height * 3.1,
       z: Math.random(),
-      glow: 0.5 + Math.random() * 0.7
+      glow: 0.55 + Math.random() * 0.7
     }));
   }
 
@@ -36,42 +37,48 @@ export function createHyperController() {
     const dt = Math.min(0.05, (ts - lastTs) / 1000);
     lastTs = ts;
 
-    speed += (targetSpeed - speed) * 0.06;
+    speed += (targetSpeed - speed) * 0.05;
 
     const cx = cv.width / 2;
     const cy = cv.height / 2;
-    ctx.fillStyle = 'rgba(5, 8, 23, 0.38)';
+    const blur = Math.max(0.25, 0.56 - Math.min(0.25, speed * 0.07));
+    ctx.fillStyle = `rgba(5, 8, 23, ${blur})`;
     ctx.fillRect(0, 0, cv.width, cv.height);
 
     for (const s of stars) {
-      s.z -= speed * dt;
+      s.z -= speed * 0.14 * dt;
       if (s.z <= 0.001) {
-        s.x = (Math.random() - 0.5) * cv.width * 2.8;
-        s.y = (Math.random() - 0.5) * cv.height * 2.8;
+        s.x = (Math.random() - 0.5) * cv.width * 3.1;
+        s.y = (Math.random() - 0.5) * cv.height * 3.1;
         s.z = 1;
       }
 
       const depth = 1 / s.z;
       const px = cx + s.x * depth;
       const py = cy + s.y * depth;
-      const trail = Math.min(24, 3 + depth * 0.03);
-      const tx = px - (s.x * speed * 0.45 * dt * trail);
-      const ty = py - (s.y * speed * 0.45 * dt * trail);
+      const trail = Math.min(60, 2 + depth * (0.014 + speed * 0.008));
+      const tx = px - s.x * speed * 0.05 * dt * trail;
+      const ty = py - s.y * speed * 0.05 * dt * trail;
 
       ctx.beginPath();
       ctx.moveTo(tx, ty);
       ctx.lineTo(px, py);
-      ctx.strokeStyle = `rgba(255, ${220 + Math.floor(depth * 0.03)}, 244, ${Math.min(0.95, 0.25 + depth * 0.0007)})`;
-      ctx.lineWidth = Math.max(0.5, Math.min(2.8, depth * 0.0028));
+      ctx.strokeStyle = `rgba(255, ${218 + Math.floor(depth * 0.03)}, 244, ${Math.min(0.92, 0.2 + depth * 0.0006)})`;
+      ctx.lineWidth = Math.max(0.5, Math.min(3.2, depth * (0.002 + speed * 0.0007)));
       ctx.stroke();
 
       ctx.beginPath();
-      ctx.arc(px, py, Math.min(2.8, 0.55 + depth * 0.0016 * s.glow), 0, Math.PI * 2);
+      ctx.arc(px, py, Math.min(3.1, 0.55 + depth * 0.0015 * s.glow), 0, Math.PI * 2);
       ctx.fillStyle = '#ffe6f3';
       ctx.fill();
     }
 
     warpRAF = requestAnimationFrame(drawFrame);
+  }
+
+  function setSpeed(multiplier, immediate = false) {
+    targetSpeed = Math.max(0.05, multiplier);
+    if (immediate) speed = targetSpeed;
   }
 
   function showMessage(msg) {
@@ -82,36 +89,44 @@ export function createHyperController() {
     text.classList.add('show');
   }
 
+  async function showLoading() {
+    const loading = qs('hLoading');
+    loading.classList.add('show');
+    setSpeed(0.2);
+    await wait(8500);
+    loading.classList.remove('show');
+  }
+
   async function runSequence() {
     if (runningSequence) return;
     runningSequence = true;
-    const start = qs('hStartWrap');
-    const loading = qs('hLoading');
-    const box = qs('hMsgs');
 
+    const start = qs('hStartWrap');
+    const box = qs('hMsgs');
     start.classList.remove('show');
     qs('hDone').classList.remove('show');
 
-    loading.classList.add('show');
-    targetSpeed = 0.2;
-    await wait(1200);
-    loading.classList.remove('show');
+    await showLoading();
+    if (!active) return;
 
     box.classList.add('show');
 
-    for (const msg of CFG.HYPER_MESSAGES) {
-      targetSpeed = 0.55;
-      await wait(480);
-      showMessage(msg);
-      await wait(2600);
-      targetSpeed = 0.22;
-      await wait(700);
-    }
+    await playHyperTimeline({
+      messages: CFG.HYPER_MESSAGES,
+      showMessage,
+      setSpeed,
+      isCancelled: () => !active || !runningSequence,
+      onBeforeStart: () => {
+        showMessage('เตรียมตัวเข้าสู่ hyperspace ของเรา ✨');
+      },
+      onDone: () => {
+        qs('hDone').classList.add('show');
+        start.classList.add('show');
+      }
+    });
 
-    qs('hDone').classList.add('show');
-    start.classList.add('show');
-    targetSpeed = 0.14;
     runningSequence = false;
+    setSpeed(1);
   }
 
   function enterPage() {
@@ -128,6 +143,8 @@ export function createHyperController() {
 
     cancelAnimationFrame(warpRAF);
     lastTs = 0;
+    speed = 1;
+    targetSpeed = 1;
     resizeCanvas();
     initStars();
     drawFrame(performance.now());
