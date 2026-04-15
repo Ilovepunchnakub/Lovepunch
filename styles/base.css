@@ -48,7 +48,7 @@ button { font: inherit; border: none; cursor: pointer; touch-action: manipulatio
 
 #mainNav {
   position: fixed; left: 12px; right: 12px; bottom: 10px; height: var(--nav-h);
-  border-radius: 28px; display: none; align-items: center; justify-content: space-around;
+  border-radius: 28px; display: flex; align-items: center; justify-content: space-around;
   background: #ffffffe0; backdrop-filter: blur(18px); box-shadow: var(--shadow); z-index: 99;
   border: 1px solid #ffffff;
 }

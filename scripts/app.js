@@ -1,5 +1,4 @@
 import { createNavigator } from './navigation.js';
-import { createPinController } from './pin.js';
 import { createHomeController } from './home.js';
 import { initCards } from './cards.js';
 import { createRainController } from './rain.js';
@@ -23,8 +22,6 @@ const nav = createNavigator({
   }
 });
 
-const pin = createPinController({ onUnlock: () => nav.go('home') });
-
 let lastTouchEnd = 0;
 document.addEventListener('touchend', (e) => {
   const now = Date.now();
@@ -32,8 +29,8 @@ document.addEventListener('touchend', (e) => {
   lastTouchEnd = now;
 }, { passive: false });
 
-pin.init();
 home.init();
+home.start();
 initCards();
 rain.init();
 hyper.init();

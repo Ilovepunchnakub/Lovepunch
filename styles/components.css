@@ -1,36 +1,3 @@
-#pg-pin { display: grid; place-items: center; }
-.pin-card { width: min(92vw, 360px); padding: 28px 20px; text-align: center; position: relative; overflow: hidden; }
-.pin-card h1 { font-size: 34px; margin: 8px 0; }
-.pin-card p { color: var(--soft); margin: 0 0 10px; }
-.pin-hero { font-size: 56px; animation: pulse 2s infinite; }
-.pin-dots { display: flex; justify-content: center; gap: 12px; margin: 10px 0; }
-.pd { width: 14px; height: 14px; border-radius: 20px; border: 2px solid var(--pink); background: #fff; transition: .2s; }
-.pd.on { background: var(--pink2); transform: scale(1.1); }
-.pin-err { min-height: 20px; color: #c32957; font-weight: 700; font-size: 13px; }
-.keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 4px; position: relative; z-index: 3; }
-.kb { height: 54px; border-radius: 16px; background: #fff; box-shadow: 0 4px 14px #eea2be73; font-weight: 800; touch-action: manipulation; }
-.unlock-hint { opacity: 0; transition: .25s; margin-top: 8px; }
-.unlock-hint.show { opacity: 1; }
-.unlock-overlay {
-  position: absolute;
-  left: 12px;
-  right: 12px;
-  bottom: 14px;
-  display: grid;
-  place-items: center;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid #ffd3e3;
-  border-radius: 14px;
-  min-height: 56px;
-  opacity: 0;
-  pointer-events: none;
-  transition: .25s;
-  font-weight: 700;
-  color: #9d3d66;
-  z-index: 4;
-}
-.unlock-overlay.show { opacity: 1; pointer-events: auto; }
-
 .home-hdr { text-align: center; margin-bottom: 12px; }
 .home-tag { letter-spacing: 1.4px; color: #c05f80; font-size: 11px; font-weight: 700; }
 .home-hdr h2 { margin: 4px 0 0; font-size: 36px; }
