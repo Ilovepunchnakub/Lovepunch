@@ -18,14 +18,23 @@ html, body {
   font-family: 'Itim', cursive;
   color: var(--text);
   background: radial-gradient(circle at top right, #ffe3f1, transparent 40%), linear-gradient(130deg, var(--bg), var(--bg2));
+  -webkit-user-select: text;
+  user-select: text;
 }
 button { font: inherit; border: none; cursor: pointer; }
 .page { position: fixed; inset: 0; opacity: 0; pointer-events: none; transition: .35s; }
 .page.active { opacity: 1; pointer-events: auto; }
-.page-scroll { height: 100%; overflow-y: auto; -webkit-overflow-scrolling: touch; padding: 18px 16px calc(var(--nav-h) + 24px); }
+.page-scroll {
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y;
+  overscroll-behavior-y: contain;
+  padding: 18px 16px calc(var(--nav-h) + 24px);
+}
 .page-scroll.center { display: grid; place-items: center; }
 
-.bg-blur { position: fixed; border-radius: 50%; filter: blur(70px); opacity: .42; pointer-events: none; }
+.bg-blur { position: fixed; border-radius: 50%; filter: blur(70px); opacity: .42; pointer-events: none; z-index: -1; }
 .b1 { width: 220px; height: 220px; background: #ffc0d6; top: -40px; left: -60px; }
 .b2 { width: 180px; height: 180px; background: #ffd9b8; right: -40px; top: 15%; }
 .b3 { width: 240px; height: 240px; background: #d6c9ff; bottom: -80px; left: 30%; }
@@ -107,4 +116,5 @@ body.profile-open::after {
   backdrop-filter: blur(8px);
   background: rgba(20, 10, 30, 0.18);
   z-index: 60;
+  pointer-events: none;
 }

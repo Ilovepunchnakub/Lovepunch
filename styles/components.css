@@ -78,7 +78,9 @@
   border-radius: 999px; padding: 8px 12px; box-shadow: var(--shadow);
   animation: dropFade var(--dur) linear forwards;
   animation-delay: var(--delay);
-  pointer-events: auto;
+  pointer-events: none;
+  -webkit-user-select: text;
+  user-select: text;
 }
 .rain-particle.paused { background: #fff2f7; }
 

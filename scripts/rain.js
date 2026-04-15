@@ -4,17 +4,6 @@ import { qs, wait } from './utils.js';
 export function createRainController() {
   let rainCount = 0;
 
-  function bindParticleEvents(el) {
-    let paused = false;
-    const toggle = () => {
-      paused = !paused;
-      el.style.animationPlayState = paused ? 'paused' : 'running';
-      el.classList.toggle('paused', paused);
-    };
-    el.addEventListener('click', toggle);
-    el.addEventListener('touchstart', toggle, { passive: true });
-  }
-
   function spawnRain() {
     const particle = document.createElement('button');
     particle.className = 'rain-particle';
@@ -23,7 +12,6 @@ export function createRainController() {
     particle.style.setProperty('--delay', `${Math.random() * 0.2}s`);
     particle.textContent = CFG.RAIN_MSGS[Math.floor(Math.random() * CFG.RAIN_MSGS.length)];
     qs('rainLayer').appendChild(particle);
-    bindParticleEvents(particle);
     particle.addEventListener('animationend', () => particle.remove());
   }
 
@@ -36,7 +24,7 @@ export function createRainController() {
 
     rainCount += 1;
     qs('rainCount').textContent = `กดไปแล้ว: ${rainCount} ครั้ง`;
-    qs('rainStatus').textContent = 'แตะข้อความเพื่อหยุด/เล่นต่อได้';
+    qs('rainStatus').textContent = 'พร้อมส่งข้อความรอบถัดไปแล้ว';
 
     for (let i = 0; i < 12; i += 1) {
       setTimeout(spawnRain, i * 140);
