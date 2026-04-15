@@ -58,6 +58,12 @@ export function createPinController({ onUnlock }) {
     onUnlock();
   }
 
+  function pressKey(k) {
+    if (/^\d$/.test(k)) append(k);
+    else if (k === '⌫') removeLast();
+    else clearAll();
+  }
+
   function initKeypad() {
     const keys = ['1','2','3','4','5','6','7','8','9','ล้าง','0','⌫'];
     const wrap = qs('keypad');
@@ -65,11 +71,12 @@ export function createPinController({ onUnlock }) {
     keys.forEach((k) => {
       const btn = document.createElement('button');
       btn.className = 'kb';
+      btn.type = 'button';
       btn.textContent = k;
-      btn.addEventListener('click', () => {
-        if (/^\d$/.test(k)) append(k);
-        else if (k === '⌫') removeLast();
-        else clearAll();
+      btn.dataset.key = k;
+      btn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        pressKey(k);
       });
       wrap.appendChild(btn);
     });

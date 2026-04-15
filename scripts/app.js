@@ -16,7 +16,7 @@ const nav = createNavigator({
     if (page === 'home') home.start();
     else home.stop();
 
-    if (page === 'hyper') hyper.startExperience();
+    if (page === 'hyper') hyper.enterPage();
     else hyper.stop();
 
     if (page === 'finger') finger.reset();
@@ -24,6 +24,13 @@ const nav = createNavigator({
 });
 
 const pin = createPinController({ onUnlock: () => nav.go('home') });
+
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e) => {
+  const now = Date.now();
+  if (now - lastTouchEnd <= 320) e.preventDefault();
+  lastTouchEnd = now;
+}, { passive: false });
 
 pin.init();
 home.init();
