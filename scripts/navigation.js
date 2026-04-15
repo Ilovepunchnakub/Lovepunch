@@ -1,7 +1,7 @@
 import { qs } from './utils.js';
 
 export function createNavigator({ onPage }) {
-  let current = 'pin';
+  let current = 'home';
 
   function go(page) {
     document.querySelectorAll('.page').forEach((el) => el.classList.remove('active'));
