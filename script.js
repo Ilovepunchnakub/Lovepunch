@@ -30,13 +30,35 @@ const $ = {
   sigPlaceholder: document.getElementById('sigPlaceholder'),
   clearSignatureBtn: document.getElementById('clearSignatureBtn'),
   confirmSignatureBtn: document.getElementById('confirmSignatureBtn'),
-  blessingBtn: document.getElementById('blessingBtn')
+  blessingBtn: document.getElementById('blessingBtn'),
+  currentViewTitle: document.getElementById('currentViewTitle'),
+  scrollProgress: document.getElementById('scrollProgress'),
+  quickJumpBtn: document.getElementById('quickJumpBtn'),
+  quickJumpModal: document.getElementById('quickJumpModal'),
+  quickJumpInput: document.getElementById('quickJumpInput'),
+  quickJumpList: document.getElementById('quickJumpList'),
+  mobileDockItems: Array.from(document.querySelectorAll('#mobileDock .dock-item'))
 };
 
 let currentUserId = localStorage.getItem(KEYS.userId) || 'guest';
 let toastTimer = 0;
 
 initCounter({ startDate: START, milestoneDays: MILESTONE });
+const VIEW_META = {
+  dashboard: { title: 'Love Dashboard', desc: 'ภาพรวมทั้งหมด' },
+  anniversary: { title: 'Anniversary Countdown', desc: 'นับถอยหลังวันพิเศษ' },
+  mood: { title: 'Mood Check-in', desc: 'บันทึกความรู้สึกวันนี้' },
+  memory: { title: 'Memory Wall', desc: 'ภาพความทรงจำของเรา' },
+  wishes: { title: 'Bucket List', desc: 'สิ่งที่อยากทำด้วยกัน' },
+  journal: { title: 'Daily Journal', desc: 'ไดอารี่ของเรา' },
+  stats: { title: 'Love Statistics', desc: 'สถิติการเดินทางของเรา' },
+  game: { title: 'Love Clicker', desc: 'มินิเกมเก็บแต้ม' },
+  settings: { title: 'Settings', desc: 'ปรับแต่งการใช้งาน' }
+};
+
+let quickJumpIndex = 0;
+let quickJumpEntries = [];
+
 const router = createRouter({ onChange: handleViewChange });
 router.setView('dashboard');
 
@@ -75,8 +97,21 @@ document.querySelectorAll('[data-go-view]').forEach((el) => {
   el.addEventListener('click', () => router.setView(el.dataset.goView), { passive: true });
 });
 
+$.mobileDockItems.forEach((item) => {
+  item.addEventListener('click', () => router.setView(item.dataset.view || 'dashboard'), { passive: true });
+});
+
 function handleViewChange(view){
   if(view === 'stats') initStats({ userId: currentUserId });
+
+  const meta = VIEW_META[view] || VIEW_META.dashboard;
+  if($.currentViewTitle) $.currentViewTitle.textContent = meta.title;
+  document.title = `${meta.title} • Love Dashboard`;
+
+  $.sideMenuItems.forEach((item) => item.classList.toggle('active', item.dataset.view === view));
+  $.mobileDockItems.forEach((item) => item.classList.toggle('active', item.dataset.view === view));
+
+  requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
 function openModal(id){
@@ -230,6 +265,85 @@ function hydrateDashboard(userId){
     el.addEventListener('click', () => router.setView(el.dataset.goView), { passive: true });
   });
 }
+
+function openQuickJump(){
+  renderQuickJump($.quickJumpInput?.value || '');
+  openModal('quickJumpModal');
+  setTimeout(() => $.quickJumpInput?.focus(), 30);
+}
+
+function renderQuickJump(query = ''){
+  if(!$.quickJumpList) return;
+  const text = query.trim().toLowerCase();
+  quickJumpEntries = Object.entries(VIEW_META)
+    .filter(([view, meta]) => (`${view} ${meta.title} ${meta.desc}`).toLowerCase().includes(text))
+    .map(([view, meta]) => ({ view, ...meta }));
+
+  if(!quickJumpEntries.length){
+    $.quickJumpList.innerHTML = '<p class="muted">ไม่พบเมนูที่ค้นหา</p>';
+    return;
+  }
+
+  quickJumpIndex = Math.min(quickJumpIndex, quickJumpEntries.length - 1);
+  $.quickJumpList.innerHTML = quickJumpEntries.map((entry, index) => `
+    <button type="button" class="quick-jump-option ${index === quickJumpIndex ? 'active' : ''}" data-view="${entry.view}">
+      <span>${entry.title}</span>
+      <small>${entry.desc}</small>
+    </button>
+  `).join('');
+}
+
+$.quickJumpBtn?.addEventListener('click', openQuickJump, { passive: true });
+$.quickJumpInput?.addEventListener('input', (event) => {
+  quickJumpIndex = 0;
+  renderQuickJump(event.target.value);
+});
+$.quickJumpList?.addEventListener('click', (event) => {
+  const btn = event.target.closest('[data-view]');
+  if(!btn) return;
+  router.setView(btn.dataset.view);
+  closeModal('quickJumpModal');
+});
+
+document.addEventListener('keydown', (event) => {
+  const key = event.key.toLowerCase();
+  if((event.metaKey || event.ctrlKey) && key === 'k'){
+    event.preventDefault();
+    openQuickJump();
+    return;
+  }
+
+  if(!$.quickJumpModal?.classList.contains('show')) return;
+
+  if(key === 'escape'){
+    closeModal('quickJumpModal');
+    return;
+  }
+
+  if(key === 'arrowdown'){
+    event.preventDefault();
+    quickJumpIndex = Math.min(quickJumpEntries.length - 1, quickJumpIndex + 1);
+    renderQuickJump($.quickJumpInput?.value || '');
+  }
+  if(key === 'arrowup'){
+    event.preventDefault();
+    quickJumpIndex = Math.max(0, quickJumpIndex - 1);
+    renderQuickJump($.quickJumpInput?.value || '');
+  }
+  if(key === 'enter' && quickJumpEntries[quickJumpIndex]){
+    event.preventDefault();
+    router.setView(quickJumpEntries[quickJumpIndex].view);
+    closeModal('quickJumpModal');
+  }
+});
+
+window.addEventListener('scroll', () => {
+  if(!$.scrollProgress) return;
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+  const progress = Math.min(1, scrollTop / max);
+  $.scrollProgress.style.transform = `scaleX(${progress})`;
+}, { passive: true });
 
 function typewriter(el, text){
   if(!el) return;

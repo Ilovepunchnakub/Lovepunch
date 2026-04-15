@@ -93,14 +93,17 @@
   </div>
 </section>
 
+
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 <main class="page view-section active" id="appMain" data-view="dashboard" aria-hidden="false">
   <!-- Topbar -->
   <header class="topbar card">
     <div class="topbar-title">
 <img class="topbar-icon" src="icons/dashboard.svg" alt=""/>
-      <span>Love Dashboard</span>
+      <span id="currentViewTitle">Love Dashboard</span>
     </div>
     <div class="topbar-actions">
+      <button class="chip-btn" id="quickJumpBtn" type="button" aria-label="เปิดเมนูลัด">⚡ Quick Jump</button>
       <label class="color-picker-wrap" for="bgColorPicker">
         <span>BG</span>
         <input type="color" id="bgColorPicker" value="#f5eeff" aria-label="เปลี่ยนสีพื้นหลัง"/>
@@ -350,6 +353,27 @@
     </div>
   </div>
 </div>
+
+
+
+<div class="modal" id="quickJumpModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close="quickJumpModal"></div>
+  <div class="modal-content quick-jump-card">
+    <button class="close-btn" data-close="quickJumpModal" aria-label="ปิด">×</button>
+    <h2>Quick Jump</h2>
+    <p class="hint">พิมพ์เพื่อค้นหาเมนู แล้วกด Enter เพื่อไปหน้าใช้งาน</p>
+    <input id="quickJumpInput" class="quick-jump-input" type="search" placeholder="ค้นหาเช่น mood, memory, wishes..." autocomplete="off"/>
+    <div id="quickJumpList" class="quick-jump-list" role="listbox" aria-label="Quick jump options"></div>
+  </div>
+</div>
+
+<nav class="mobile-dock" id="mobileDock" aria-label="เมนูด่วน">
+  <button type="button" class="dock-item active" data-view="dashboard">🏠<span>Home</span></button>
+  <button type="button" class="dock-item" data-view="mood">💭<span>Mood</span></button>
+  <button type="button" class="dock-item" data-view="memory">📸<span>Memory</span></button>
+  <button type="button" class="dock-item" data-view="wishes">🌟<span>Wishes</span></button>
+  <button type="button" class="dock-item" data-view="journal">✍️<span>Journal</span></button>
+</nav>
 
 <!-- Love words overlay -->
 <div class="overlay" id="loveWordsOverlay" aria-hidden="true"></div>
