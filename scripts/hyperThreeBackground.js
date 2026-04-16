@@ -9,7 +9,6 @@ import {
 } from './hyper/constants.js';
 import { starFragmentShader, starVertexShader } from './hyper/shaders.js';
 import { createStarBuffers } from './hyper/starfield.js';
-import { createConstellationLayer } from './hyper/constellations.js';
 
 export function createHyperThreeBackground({ canvas }) {
   if (!canvas) throw new Error('createHyperThreeBackground requires a canvas');
@@ -47,9 +46,7 @@ export function createHyperThreeBackground({ canvas }) {
   });
 
   const stars = new THREE.Points(geometry, material);
-  const constellations = createConstellationLayer();
   scene.add(stars);
-  scene.add(constellations);
 
   const speedState = { value: 1 };
   let speedTween;
@@ -75,8 +72,6 @@ export function createHyperThreeBackground({ canvas }) {
     material.uniforms.uSpeed.value = speedState.value;
 
     stars.rotation.z += dt * 0.01;
-    constellations.rotation.z -= dt * 0.006;
-    constellations.material.opacity = 0.12 + Math.min(0.2, speedState.value * 0.01);
     renderer.render(scene, camera);
     raf = requestAnimationFrame(render);
   }
