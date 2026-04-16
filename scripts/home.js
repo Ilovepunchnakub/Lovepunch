@@ -1,5 +1,5 @@
 import { CFG } from './config.js';
-import { qs, pad } from './utils.js';
+import { qs, pad, toast } from './utils.js';
 import { createHourCelebration } from './homeCelebrations.js';
 import { createAnniversaryExperience } from './anniversaryExperience.js';
 import { attachSecretTapTest } from './homeSecretTests.js';
@@ -86,14 +86,28 @@ export function createHomeController() {
     detachDurationSecret = attachSecretTapTest({
       element: durationCard,
       onTrigger: () => {
+        toast('ปลดล็อกเอฟเฟกต์สำเร็จ ✨');
         hourCelebration.show(durationCard, 1);
+      },
+      onProgress: ({ count, target }) => {
+        if (!count || count >= target) return;
+        if (count === 1 || count % 3 === 0) {
+          toast(`ทดสอบเอฟเฟกต์: ${count}/${target}`);
+        }
       }
     });
 
     detachCountdownSecret = attachSecretTapTest({
       element: countdownCard,
       onTrigger: () => {
+        toast('เริ่มนับถอยหลังทดสอบแล้ว 💫');
         anniversary.playTestCountdown();
+      },
+      onProgress: ({ count, target }) => {
+        if (!count || count >= target) return;
+        if (count === 1 || count % 3 === 0) {
+          toast(`ทดสอบนับถอยหลัง: ${count}/${target}`);
+        }
       }
     });
   }
