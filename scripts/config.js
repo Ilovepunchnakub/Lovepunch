@@ -1,6 +1,6 @@
 export const CFG = {
   PIN: '0614',
-  START: new Date('2024-06-14T00:00:00'),
+  START: new Date('2024-06-16T15:48:00'),
   HER_NAME: 'ที่รัก',
   PROFILE: {
     name: 'Babe',
