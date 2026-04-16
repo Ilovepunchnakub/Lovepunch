@@ -71,3 +71,24 @@
   background: radial-gradient(circle, rgba(255, 181, 216, 0.95), rgba(255, 105, 160, 0.1));
   animation: clickBurst .52s ease forwards;
 }
+@keyframes badgePop {
+  from { opacity: 0; transform: translate(-50%, -85%) scale(.7); }
+  to { opacity: 1; transform: translate(-50%, -100%) scale(1); }
+}
+@keyframes badgeOut {
+  to { opacity: 0; transform: translate(-50%, -125%) scale(.92); }
+}
+@keyframes hourSpark {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(.3); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(1.05) rotate(12deg); }
+}
+@keyframes countPulse {
+  0% { transform: scale(.9); opacity: .7; }
+  50% { transform: scale(1.06); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+@keyframes popupRise {
+  from { opacity: 0; transform: translateY(18px) scale(.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}

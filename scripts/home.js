@@ -1,8 +1,14 @@
 import { CFG } from './config.js';
 import { qs, pad } from './utils.js';
+import { createHourCelebration } from './homeCelebrations.js';
+import { createAnniversaryExperience } from './anniversaryExperience.js';
 
 export function createHomeController() {
   let timer;
+  let lastHourMilestone = -1;
+
+  const hourCelebration = createHourCelebration();
+  const anniversary = createAnniversaryExperience({ blessings: CFG.ANNIV_BLESSINGS });
 
   function updateHome() {
     const now = new Date();
@@ -13,11 +19,17 @@ export function createHomeController() {
     const hours = Math.floor((diff % 86400000) / 3600000);
     const mins = Math.floor((diff % 3600000) / 60000);
     const secs = Math.floor((diff % 60000) / 1000);
+    const totalHours = Math.floor(diff / 3600000);
 
     qs('durD').textContent = totalDays.toLocaleString('th-TH');
     qs('durH').textContent = hours.toLocaleString('th-TH');
     qs('durM').textContent = mins.toLocaleString('th-TH');
     qs('durS').textContent = secs.toLocaleString('th-TH');
+
+    if (totalHours > 0 && totalHours !== lastHourMilestone) {
+      hourCelebration.show(document.querySelector('.days-card'), totalHours);
+      lastHourMilestone = totalHours;
+    }
 
     qs('stM').textContent = `${Math.floor(dayFloor / 30)} เดือน`;
     qs('stN').textContent = `${totalDays} คืน`;
@@ -32,6 +44,8 @@ export function createHomeController() {
     qs('cdH').textContent = pad(Math.floor((left % 86400000) / 3600000));
     qs('cdM').textContent = pad(Math.floor((left % 3600000) / 60000));
     qs('cdS').textContent = pad(Math.floor((left % 60000) / 1000));
+
+    anniversary.tick(left);
 
     const thYear = CFG.START.getFullYear() + 543;
     qs('daysSince').textContent = `เริ่มคบกันตั้งแต่ ${CFG.START.getDate()}/${CFG.START.getMonth() + 1}/${thYear}`;
@@ -75,6 +89,7 @@ export function createHomeController() {
 
   function init() {
     fillProfile();
+    anniversary.init();
     start();
   }
 

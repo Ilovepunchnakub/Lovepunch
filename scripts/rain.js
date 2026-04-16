@@ -9,7 +9,6 @@ export function createRainController() {
     particle.className = 'rain-particle';
     particle.style.left = `${8 + Math.random() * 84}%`;
     particle.style.setProperty('--dur', `${7 + Math.random() * 2.8}s`);
-    particle.style.setProperty('--delay', `${Math.random() * 0.35}s`);
     particle.textContent = CFG.RAIN_MSGS[Math.floor(Math.random() * CFG.RAIN_MSGS.length)];
     qs('rainLayer').appendChild(particle);
     particle.addEventListener('animationend', () => particle.remove());
@@ -27,8 +26,8 @@ export function createRainController() {
     qs('rainCount').textContent = `กดไปแล้ว: ${rainCount} ครั้ง`;
     qs('rainStatus').textContent = 'พร้อมส่งข้อความรอบถัดไปแล้ว';
 
-    for (let i = 0; i < 12; i += 1) {
-      setTimeout(spawnRain, i * 250);
+    for (let i = 0; i < 14; i += 1) {
+      setTimeout(spawnRain, i * 180);
     }
 
     setTimeout(() => document.body.classList.remove('rain-focus'), 9300);
