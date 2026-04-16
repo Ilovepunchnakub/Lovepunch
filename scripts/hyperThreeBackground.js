@@ -1,16 +1,15 @@
 import * as THREE from 'https://unpkg.com/three@0.165.0/build/three.module.js';
 import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js';
-
-const STAR_COUNT = 2600;
-const DEPTH = 2200;
-const SPREAD = 980;
-
-function respawnStar(positions, i) {
-  const idx = i * 3;
-  positions[idx] = (Math.random() - 0.5) * SPREAD;
-  positions[idx + 1] = (Math.random() - 0.5) * SPREAD;
-  positions[idx + 2] = -Math.random() * DEPTH - 40;
-}
+import { advanceStarfield } from './hyper/motion.js';
+import {
+  DEPTH,
+  MAX_SPEED,
+  MIN_SPEED,
+  STAR_COUNT
+} from './hyper/constants.js';
+import { starFragmentShader, starVertexShader } from './hyper/shaders.js';
+import { createStarBuffers } from './hyper/starfield.js';
+import { createConstellationLayer } from './hyper/constellations.js';
 
 export function createHyperThreeBackground({ canvas }) {
   if (!canvas) throw new Error('createHyperThreeBackground requires a canvas');
@@ -24,64 +23,33 @@ export function createHyperThreeBackground({ canvas }) {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x03050f, 0.0016);
+  scene.fog = new THREE.FogExp2(0x02040c, 0.0012);
 
-  const camera = new THREE.PerspectiveCamera(72, 1, 0.1, DEPTH + 400);
+  const camera = new THREE.PerspectiveCamera(72, 1, 0.1, DEPTH + 500);
   camera.position.z = 7;
 
   const geometry = new THREE.BufferGeometry();
-  const positions = new Float32Array(STAR_COUNT * 3);
-  const sizes = new Float32Array(STAR_COUNT);
-
-  for (let i = 0; i < STAR_COUNT; i += 1) {
-    respawnStar(positions, i);
-    sizes[i] = 0.8 + Math.random() * 1.2;
-  }
+  const { positions, sizes, seeds } = createStarBuffers(STAR_COUNT);
 
   geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
   geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+  geometry.setAttribute('seed', new THREE.BufferAttribute(seeds, 1));
 
   const material = new THREE.ShaderMaterial({
     transparent: true,
     depthWrite: false,
     blending: THREE.AdditiveBlending,
     uniforms: {
-      uSpeed: { value: 1 },
-      uColorA: { value: new THREE.Color('#9ed5ff') },
-      uColorB: { value: new THREE.Color('#ffd2ec') }
+      uSpeed: { value: 1 }
     },
-    vertexShader: `
-      attribute float size;
-      uniform float uSpeed;
-      varying float vMix;
-
-      void main() {
-        vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
-        float depth = clamp((-mvPosition.z) / 2200.0, 0.0, 1.0);
-        vMix = depth;
-        float stretch = 1.0 + uSpeed * 0.05;
-        gl_PointSize = size * (250.0 / -mvPosition.z) * stretch;
-        gl_Position = projectionMatrix * mvPosition;
-      }
-    `,
-    fragmentShader: `
-      uniform vec3 uColorA;
-      uniform vec3 uColorB;
-      varying float vMix;
-
-      void main() {
-        vec2 p = gl_PointCoord - vec2(0.5);
-        float d = length(p);
-        if (d > 0.5) discard;
-        float glow = smoothstep(0.5, 0.0, d);
-        vec3 col = mix(uColorA, uColorB, vMix);
-        gl_FragColor = vec4(col, glow * (0.45 + vMix * 0.8));
-      }
-    `
+    vertexShader: starVertexShader,
+    fragmentShader: starFragmentShader
   });
 
   const stars = new THREE.Points(geometry, material);
+  const constellations = createConstellationLayer();
   scene.add(stars);
+  scene.add(constellations);
 
   const speedState = { value: 1 };
   let speedTween;
@@ -95,27 +63,20 @@ export function createHyperThreeBackground({ canvas }) {
     const dt = Math.min(0.05, (ts - lastTs) / 1000 || 0.016);
     lastTs = ts;
 
-    const velocity = 60 + speedState.value * 240;
-    const depthRatio = Math.min(1, speedState.value / 8);
-
-    for (let i = 0; i < STAR_COUNT; i += 1) {
-      const idx = i * 3;
-      positions[idx + 2] += velocity * dt;
-
-      if (positions[idx + 2] > camera.position.z + 8) {
-        respawnStar(positions, i);
-        continue;
-      }
-
-      const drift = (1 + depthRatio * 2.2) * dt;
-      positions[idx] += positions[idx] * 0.00065 * drift;
-      positions[idx + 1] += positions[idx + 1] * 0.00065 * drift;
-    }
+    advanceStarfield({
+      positions,
+      starCount: STAR_COUNT,
+      dt,
+      speed: speedState.value,
+      cameraZ: camera.position.z
+    });
 
     geometry.attributes.position.needsUpdate = true;
     material.uniforms.uSpeed.value = speedState.value;
 
-    stars.rotation.z += dt * 0.02;
+    stars.rotation.z += dt * 0.01;
+    constellations.rotation.z -= dt * 0.006;
+    constellations.material.opacity = 0.12 + Math.min(0.2, speedState.value * 0.01);
     renderer.render(scene, camera);
     raf = requestAnimationFrame(render);
   }
@@ -129,7 +90,7 @@ export function createHyperThreeBackground({ canvas }) {
   }
 
   function setSpeed(nextSpeed, immediate = false) {
-    const target = Math.max(0.2, nextSpeed);
+    const target = Math.min(MAX_SPEED, Math.max(MIN_SPEED, nextSpeed));
     speedTween?.kill();
 
     if (immediate) {
@@ -139,7 +100,7 @@ export function createHyperThreeBackground({ canvas }) {
 
     speedTween = gsap.to(speedState, {
       value: target,
-      duration: 1.05,
+      duration: 0.95,
       ease: 'power3.out'
     });
   }

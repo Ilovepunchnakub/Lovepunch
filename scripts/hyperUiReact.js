@@ -5,9 +5,15 @@ import { AnimatePresence, motion } from 'https://esm.sh/framer-motion@11.2.10';
 const baseState = {
   mode: 'idle',
   message: 'กดเริ่มเดินทาง แล้วออกท่องไปในจักรวาลของเรา ✨',
+  messageKey: 0,
   done: false,
   loadingText: 'กำลังเตรียม hyperspace...',
-  loadingProgress: 0
+  loadingProgress: 0,
+  messageTiming: {
+    holdMs: 5600,
+    fadeInMs: 1100,
+    fadeOutMs: 1000
+  }
 };
 
 export function createHyperUiReact({ mount, onStart }) {
@@ -40,7 +46,13 @@ export function createHyperUiReact({ mount, onStart }) {
       loadingProgress: progress ?? state.loadingProgress,
       done: false
     }),
-    showMessage: (message) => setState({ mode: 'message', message, done: false }),
+    showMessage: (message, timing = {}) => setState({
+      mode: 'message',
+      message,
+      messageTiming: { ...state.messageTiming, ...timing },
+      messageKey: state.messageKey + 1,
+      done: false
+    }),
     showDone: () => setState({ mode: 'message', done: true }),
     destroy: () => root.unmount()
   };
@@ -96,11 +108,19 @@ function HyperOverlay({ state, onStart }) {
         React.createElement(
           motion.p,
           {
-            key: state.message,
+            key: `${state.messageKey}-${state.message}`,
             className: 'hyper-message-text',
-            initial: { opacity: 0, y: 24, filter: 'blur(6px)' },
-            animate: { opacity: 1, y: 0, filter: 'blur(0px)' },
-            transition: { duration: 0.45 }
+            initial: { opacity: 0, y: 20, filter: 'blur(8px)' },
+            animate: {
+              opacity: [0, 1, 1, 0],
+              y: [20, 0, 0, -10],
+              filter: ['blur(8px)', 'blur(0px)', 'blur(0px)', 'blur(6px)']
+            },
+            transition: {
+              duration: (state.messageTiming.fadeInMs + state.messageTiming.holdMs + state.messageTiming.fadeOutMs) / 1000,
+              times: [0, 0.14, 0.82, 1],
+              ease: 'easeInOut'
+            }
           },
           state.message
         ),

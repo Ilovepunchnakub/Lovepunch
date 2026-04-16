@@ -15,10 +15,10 @@ export function createHyperController() {
   });
 
   async function showLoading() {
-    renderer.setSpeed(0.45, true);
+    renderer.setSpeed(1, true);
 
-    const totalMs = 4200;
-    const tick = 140;
+    const totalMs = 3600;
+    const tick = 120;
     const loops = Math.ceil(totalMs / tick);
 
     for (let i = 0; i <= loops; i += 1) {
@@ -42,7 +42,11 @@ export function createHyperController() {
       return;
     }
 
-    ui.showMessage('เตรียมตัวเข้าสู่ hyperspace ของเรา ✨');
+    ui.showMessage('เตรียมตัวเข้าสู่ hyperspace ของเรา ✨', {
+      holdMs: 3000,
+      fadeInMs: 850,
+      fadeOutMs: 950
+    });
 
     await playHyperTimeline({
       messages: CFG.HYPER_MESSAGES,
@@ -50,7 +54,7 @@ export function createHyperController() {
       setSpeed: renderer.setSpeed,
       isCancelled: () => !active || !runningSequence,
       onBeforeStart: () => {
-        renderer.setSpeed(1.4, true);
+        renderer.setSpeed(1, true);
       },
       onDone: () => {
         ui.showDone();
@@ -58,7 +62,7 @@ export function createHyperController() {
     });
 
     runningSequence = false;
-    renderer.setSpeed(1.1);
+    renderer.setSpeed(1.2);
     await wait(1200);
     if (active) ui.setIdle();
   }
@@ -71,7 +75,7 @@ export function createHyperController() {
   }
 
   function startExperience() {
-    if (!active) return;
+    if (!active || runningSequence) return;
     runSequence();
   }
 
