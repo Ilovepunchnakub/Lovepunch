@@ -54,8 +54,8 @@
 }
 .profile-panel h3 { margin: 0; font-size: 31px; }
 .profile-mini-photo {
-  width: 62px;
-  height: 62px;
+  width: 86px;
+  height: 86px;
   border-radius: 16px;
   object-fit: cover;
   border: 2px solid #ffd9ea;
@@ -197,52 +197,43 @@
 .fp-box h2 { margin: 0; font-size: 34px; }
 .scan-btn {
   --hold-progress: 0%;
-  margin-top: 10px;
-  border-radius: 16px;
-  padding: 14px 16px;
-  background: #fff;
-  box-shadow: var(--shadow);
-  width: 100%;
-  font-weight: 700;
-  display: grid;
-  gap: 8px;
+  --scan-size: clamp(104px, 26vw, 136px);
+  margin: 14px auto 8px;
+  border-radius: 50%;
+  width: var(--scan-size);
+  height: var(--scan-size);
+  border: 0;
+  background: transparent;
+  display: inline-grid;
   place-items: center;
   position: relative;
-  overflow: hidden;
+  touch-action: none;
+  -webkit-touch-callout: none;
+  user-select: none;
+  outline: none;
 }
-.scan-btn::after {
-  content: '';
+.scan-btn:focus,
+.scan-btn:focus-visible { outline: none; }
+.scan-btn-ring {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 4px;
-  background: linear-gradient(90deg, #ff8abb, #cb3e76);
-  width: var(--hold-progress);
-  transition: width .12s linear;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, #fff 64%, transparent 65%),
+    conic-gradient(from -90deg, #ff73ad var(--hold-progress), #ffd8e9 0);
+  box-shadow:
+    0 16px 28px rgba(198, 84, 133, 0.24),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.92);
+  transition: filter .25s ease, transform .25s ease;
 }
-.scan-btn-icon-wrap {
-  width: 58px;
-  height: 58px;
-  border-radius: 18px;
-  background: linear-gradient(180deg, #fff8fc, #ffe9f3);
+.scan-btn-icon {
+  width: calc(var(--scan-size) * .5);
+  height: calc(var(--scan-size) * .5);
   position: relative;
-  display: grid;
-  place-items: center;
-  border: 1px solid #ffd4e7;
-  overflow: hidden;
-}
-.scan-btn-icon { width: 38px; height: 38px; position: relative; z-index: 2; }
-.scan-btn-progress { color: #b34c74; font-size: 13px; font-weight: 700; }
-.scan-btn-sweep {
-  position: absolute;
-  left: -35%;
-  right: -35%;
-  height: 42%;
-  top: -35%;
-  background: linear-gradient(180deg, rgba(255, 153, 196, 0.02), rgba(255, 84, 149, 0.45), rgba(255, 153, 196, 0.02));
-  transform: rotate(-8deg);
-  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
 }
 .fp-msg { color: #8e6373; }
 .fp-popup { position: fixed; inset: 0; z-index: 220; display: none; place-items: center; background: rgba(20, 9, 30, 0.3); backdrop-filter: blur(8px); }

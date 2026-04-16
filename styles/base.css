@@ -180,6 +180,9 @@ body.profile-open::after {
   position: relative;
   background: transparent;
   touch-action: none;
+  border-radius: 50%;
+  outline: none;
+  -webkit-touch-callout: none;
 }
 .entry-heart::after {
   content: '';
@@ -238,8 +241,12 @@ body.profile-open::after {
   user-select: none;
   -webkit-touch-callout: none;
 }
-.entry-heart-percent { position: absolute; z-index: 2; font-size: clamp(28px, 6vw, 42px); color: #fff; text-shadow: 0 3px 10px rgba(151, 41, 84, 0.4); }
 .entry-heart.holding { box-shadow: 0 0 0 8px rgba(245, 131, 176, 0.24); }
+.entry-heart:focus,
+.entry-heart:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 5px rgba(248, 145, 186, 0.36);
+}
 .entry-gate-hint { margin: 18px 0 0; color: #9c7284; }
 
 body.rain-focus #pg-rain .page-scroll > *:not(#rainLayer) {
