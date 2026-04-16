@@ -1,5 +1,8 @@
 import { CFG } from './config.js';
 import { qs } from './utils.js';
+import { pickCardTheme, startModalThemeFx } from './cardEffects.js';
+
+let stopModalFx = null;
 
 export function initCards() {
   const grid = qs('cardsGrid');
@@ -7,8 +10,12 @@ export function initCards() {
     const card = document.createElement('button');
     card.className = 'fc';
     card.style.setProperty('--d', `${idx * 40}ms`);
+    card.style.setProperty('--tilt', `${idx % 2 === 0 ? -1 : 1}`);
     card.innerHTML = `<div><div class="emoji">${emoji}</div><h4>${title}</h4></div>`;
-    card.addEventListener('click', () => openCard(title, text));
+    card.addEventListener('pointerdown', () => card.classList.add('pressing'));
+    card.addEventListener('pointerup', () => card.classList.remove('pressing'));
+    card.addEventListener('pointerleave', () => card.classList.remove('pressing'));
+    card.addEventListener('click', () => openCard({ title, text, idx, icon: emoji }));
     grid.appendChild(card);
   });
 
@@ -16,14 +23,28 @@ export function initCards() {
   qs('modalBtn').addEventListener('click', closeCard);
 }
 
-function openCard(title, text) {
-  qs('modalTitle').textContent = title;
+function openCard({ title, text, idx, icon }) {
+  const theme = pickCardTheme(idx);
+  qs('modalTitle').textContent = `${icon} ${title}`;
   qs('modalText').textContent = text;
   qs('cardModal').classList.add('show');
-  qs('modalCard').classList.remove('flip-in');
-  requestAnimationFrame(() => qs('modalCard').classList.add('flip-in'));
+
+  const card = qs('modalCard');
+  card.classList.remove('flip-in');
+  void card.offsetWidth;
+  card.classList.add('flip-in');
+
+  if (stopModalFx) stopModalFx();
+  stopModalFx = startModalThemeFx({
+    layer: qs('cardFxLayer'),
+    theme
+  });
 }
 
 function closeCard() {
   qs('cardModal').classList.remove('show');
+  if (stopModalFx) {
+    stopModalFx();
+    stopModalFx = null;
+  }
 }
