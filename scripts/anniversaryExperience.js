@@ -2,6 +2,7 @@ import { wait } from './utils.js';
 
 export function createAnniversaryExperience({ blessings }) {
   const overlay = document.getElementById('annivOverlay');
+  const countBox = document.getElementById('annivCountBox');
   const counter = document.getElementById('annivCountdown');
   const popup = document.getElementById('annivPopup');
   const text = document.getElementById('annivTypedText');
@@ -15,21 +16,30 @@ export function createAnniversaryExperience({ blessings }) {
     return blessings[Math.floor(Math.random() * blessings.length)] || 'สุขสันต์วันครบรอบนะคนเก่งของฉัน 💕';
   }
 
+  function setStage(stage) {
+    if (!overlay) return;
+    overlay.classList.toggle('countdown-mode', stage === 'countdown');
+    overlay.classList.toggle('popup-mode', stage === 'popup');
+  }
+
   async function typeText(message) {
     text.textContent = '';
     for (let i = 0; i < message.length; i += 1) {
       text.textContent += message[i];
-      await wait(42 + Math.random() * 24);
+      await wait(40 + Math.random() * 22);
     }
   }
 
-  async function showPopup() {
+  async function revealPopup() {
+    setStage('popup');
     popup.classList.add('show');
     await typeText(pickBlessing());
+
     for (let i = 3; i >= 1; i -= 1) {
       exit.textContent = `แตะที่ไหนก็ได้เพื่อปิด (พร้อมใน ${i} วินาที)`;
       await wait(1000);
     }
+
     unlockedClose = true;
     exit.textContent = 'แตะที่ไหนก็ได้เพื่อกลับสู่หน้าแรก 💫';
   }
@@ -38,6 +48,7 @@ export function createAnniversaryExperience({ blessings }) {
     if (!active || !unlockedClose) return;
     overlay.classList.remove('show');
     popup.classList.remove('show');
+    setStage('countdown');
     document.body.classList.remove('anniv-focus');
     active = false;
   }
@@ -45,8 +56,11 @@ export function createAnniversaryExperience({ blessings }) {
   async function runCountdownAndPopup() {
     popup.classList.remove('show');
     text.textContent = '';
+    exit.textContent = 'เตรียมแสดงข้อความ...';
+
     document.body.classList.add('anniv-focus');
     overlay.classList.add('show');
+    setStage('countdown');
 
     for (let sec = 10; sec >= 0; sec -= 1) {
       counter.textContent = sec.toString().padStart(2, '0');
@@ -56,7 +70,7 @@ export function createAnniversaryExperience({ blessings }) {
       await wait(1000);
     }
 
-    await showPopup();
+    await revealPopup();
   }
 
   async function startSequence({ markCompleted }) {
@@ -83,6 +97,12 @@ export function createAnniversaryExperience({ blessings }) {
 
   function init() {
     overlay?.addEventListener('click', close);
+    countBox?.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
+    popup?.addEventListener('click', (event) => {
+      event.stopPropagation();
+    });
   }
 
   return { init, tick, playTestCountdown };
