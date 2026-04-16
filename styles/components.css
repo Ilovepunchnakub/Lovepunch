@@ -160,8 +160,13 @@
 }
 .rain-particle.paused { background: #fff2f7; }
 
-#pg-hyper { background: radial-gradient(circle at center, #24365c 0%, #060916 70%); }
-#hCanvas { position: absolute; inset: 0; pointer-events: none; }
+#pg-hyper {
+  background:
+    radial-gradient(circle at 50% 32%, rgba(105, 153, 255, 0.32), transparent 42%),
+    radial-gradient(circle at 50% 65%, rgba(111, 58, 176, 0.28), transparent 58%),
+    linear-gradient(170deg, #080b1f 0%, #060813 44%, #010207 100%);
+}
+#hCanvas { position: absolute; inset: 0; pointer-events: none; filter: saturate(116%) contrast(108%); }
 .h-start { position: absolute; inset: 0; display: grid; place-items: center; z-index: 4; pointer-events: none; opacity: 0; transition: .3s; }
 .h-start.show { opacity: 1; }
 .h-start.show .soft-btn { pointer-events: auto; }
@@ -237,7 +242,9 @@
   font-size: clamp(24px, 4.4vw, 44px);
   min-height: 130px;
   line-height: 1.35;
-  text-shadow: 0 0 30px rgba(255, 174, 215, 0.48);
+  text-shadow:
+    0 0 40px rgba(255, 174, 215, 0.42),
+    0 0 64px rgba(131, 190, 255, 0.22);
   opacity: 0;
 }
 #hDone { opacity: 0; transition: .4s; margin-top: 12px; color: #fff; }
@@ -269,12 +276,24 @@
   background: radial-gradient(circle, #fff3f8, #ffe1ef);
   position: relative;
   overflow: hidden;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.88),
+    0 12px 28px rgba(192, 80, 129, 0.24);
 }
-.scan-radar {
+.scan-radar-canvas {
   position: absolute;
   inset: 0;
-  background: conic-gradient(from 10deg, transparent, rgba(255, 144, 190, 0.36), transparent 45%);
-  animation: radarSpin 4.2s linear infinite;
+  width: 100%;
+  height: 100%;
+}
+.scan-radar-grid {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(transparent 49.2%, rgba(177, 72, 117, 0.18) 50%, transparent 50.8%),
+    linear-gradient(90deg, transparent 49.2%, rgba(177, 72, 117, 0.18) 50%, transparent 50.8%);
+  mix-blend-mode: multiply;
+  opacity: 0.48;
 }
 .scan-meter { width: 100%; height: 12px; border-radius: 999px; overflow: hidden; background: #ffe0eb; position: relative; z-index: 2; }
 .scan-meter span { display: block; height: 100%; width: 0; border-radius: 999px; background: linear-gradient(90deg, #ff7ab6, #c83d75); transition: width .45s ease; }
@@ -417,4 +436,17 @@ body.anniv-focus #mainNav,
 body.anniv-focus #navDockToggle {
   filter: blur(8px) brightness(0.75);
   pointer-events: none;
+}
+
+.days-card,
+.countdown-card,
+.stat-grid .soft-card,
+.rain-box,
+.fp-box {
+  transition: transform .28s ease, box-shadow .28s ease;
+}
+.days-card:active,
+.countdown-card:active,
+.soft-card:active {
+  transform: translateY(1px) scale(0.995);
 }

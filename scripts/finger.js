@@ -1,43 +1,33 @@
 import { qs, wait } from './utils.js';
 import { runFingerScan } from './fingerFlow.js';
+import { loadingMarkup, completeMarkup } from './fingerPopupTemplates.js';
+import { createRadarFx } from './fingerRadarFx.js';
 
 export function createFingerController() {
   let state = 'idle';
   let closeEnabled = false;
+  let radarFx = null;
 
   function closePopup() {
     qs('fpPopup').classList.remove('show');
+    radarFx?.stop();
   }
 
   function renderLoadingPopup() {
     closeEnabled = false;
     qs('fpPopup').classList.remove('can-close');
     qs('fpPopupTitle').textContent = 'กำลังโหลดข้อมูลความลับ';
-    qs('fpPopupBody').innerHTML = `
-      <div class="scan-shell wow">
-        <div class="scan-radar-wrap">
-          <div class="scan-radar"></div>
-          <p class="scan-percent" id="scanPercent">0%</p>
-        </div>
-        <div class="scan-meter"><span id="scanMeterBar"></span></div>
-        <p class="scan-tip">กำลังตรวจสอบโหมดลับแบบเรียลไทม์... โปรดรอสักครู่</p>
-        <section class="scan-log-panel" aria-live="polite">
-          <p class="scan-log-title">SYSTEM LOG</p>
-          <ul class="scan-log" id="scanLog"></ul>
-        </section>
-      </div>`;
+    qs('fpPopupBody').innerHTML = loadingMarkup();
+    radarFx = createRadarFx(qs('scanRadarCanvas'));
+    radarFx.start();
   }
 
   function renderDonePopup() {
     closeEnabled = false;
     qs('fpPopup').classList.remove('can-close');
     qs('fpPopupTitle').textContent = 'ตรวจสอบเสร็จสิ้น 💖';
-    qs('fpPopupBody').innerHTML = `
-      <div class="scan-complete">
-        <div class="complete-badge">✔ ผ่านการยืนยัน</div>
-        <p id="fpCountdown" class="scan-tip">แตะจอเพื่อปิดได้ใน 3 วิ...</p>
-        <p class="long-love">ขอบคุณที่อยู่กับฉันในทุกช่วงเวลา ทั้งวันที่เก่งและวันที่อ่อนล้า เธอทำให้คำว่าบ้านมีความหมายมากขึ้นทุกวัน ฉันอยากใช้ทุกเช้าทุกคืนไปกับเธอ อยากเติบโตไปด้วยกัน และอยากจับมือเธอไปเรื่อยๆ ไม่ว่าโลกจะเปลี่ยนไปแค่ไหน รักเธอที่สุดนะคนเก่งของฉัน 🤍</p>
-      </div>`;
+    qs('fpPopupBody').innerHTML = completeMarkup();
+    radarFx?.stop();
   }
 
   async function startDismissCountdown() {
@@ -60,6 +50,7 @@ export function createFingerController() {
     qs('fpMsg').textContent = '';
     qs('fpZone').classList.remove('scanning');
     qs('fpPopup').classList.remove('show', 'can-close');
+    radarFx?.stop();
   }
 
   async function doScan() {
@@ -84,6 +75,7 @@ export function createFingerController() {
         log.appendChild(item);
         meter.style.width = `${pct}%`;
         percent.textContent = `${pct}%`;
+        radarFx?.pulseProgress(pct);
       }
     });
 
