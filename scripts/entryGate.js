@@ -84,6 +84,8 @@ export function initEntryGate({ onUnlocked }) {
   }
 
   button.addEventListener('pointerdown', startHold);
+  button.addEventListener('contextmenu', block);
+  button.addEventListener('dragstart', block);
   window.addEventListener('pointerup', stopHold);
   window.addEventListener('pointercancel', stopHold);
   button.addEventListener('pointerleave', stopHold);

@@ -179,6 +179,7 @@ body.profile-open::after {
   place-items: center;
   position: relative;
   background: transparent;
+  touch-action: none;
 }
 .entry-heart::after {
   content: '';
@@ -205,6 +206,16 @@ body.profile-open::after {
   inset: 0;
   width: 100%;
   height: 100%;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+.entry-heart-icon img {
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 .entry-heart-percent { position: absolute; z-index: 2; font-size: clamp(28px, 6vw, 42px); color: #fff; text-shadow: 0 3px 10px rgba(151, 41, 84, 0.4); }
 .entry-heart.holding { box-shadow: 0 0 0 8px rgba(245, 131, 176, 0.24); }
