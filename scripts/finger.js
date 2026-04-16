@@ -4,7 +4,6 @@ import { runFingerScan } from './fingerFlow.js';
 export function createFingerController() {
   let state = 'idle';
   let closeEnabled = false;
-  let dismissTimer = null;
 
   function closePopup() {
     qs('fpPopup').classList.remove('show');
@@ -19,10 +18,13 @@ export function createFingerController() {
         <div class="scan-radar-wrap">
           <div class="scan-radar"></div>
           <p class="scan-percent" id="scanPercent">0%</p>
-          <ul class="scan-log ring" id="scanLog"></ul>
         </div>
         <div class="scan-meter"><span id="scanMeterBar"></span></div>
         <p class="scan-tip">กำลังตรวจสอบโหมดลับแบบเรียลไทม์... โปรดรอสักครู่</p>
+        <section class="scan-log-panel" aria-live="polite">
+          <p class="scan-log-title">SYSTEM LOG</p>
+          <ul class="scan-log" id="scanLog"></ul>
+        </section>
       </div>`;
   }
 
@@ -54,7 +56,6 @@ export function createFingerController() {
   function reset() {
     state = 'idle';
     closeEnabled = false;
-    clearTimeout(dismissTimer);
     qs('fpHint').textContent = 'แตะเพื่อสแกนลายนิ้วมือ 👆';
     qs('fpMsg').textContent = '';
     qs('fpZone').classList.remove('scanning');
