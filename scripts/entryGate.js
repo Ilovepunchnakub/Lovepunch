@@ -47,10 +47,11 @@ export function initEntryGate({ onUnlocked }) {
   function tick(ts) {
     if (!holding) return;
     const elapsed = ts - startAt;
-    const pct = Math.max(0, Math.min(100, Math.round((elapsed / holdMs) * 100)));
+    const progress = Math.max(0, Math.min(1, elapsed / holdMs));
+    const pct = Math.round(progress * 100);
     percent.textContent = `${pct}%`;
-    button.style.setProperty('--fill', `${pct}%`);
-    button.style.setProperty('--charge', `${pct / 100}`);
+    button.style.setProperty('--fill', `${(progress * 100).toFixed(2)}%`);
+    button.style.setProperty('--charge', `${progress}`);
 
     if (pct % 8 === 0) spawnSparkle();
 
