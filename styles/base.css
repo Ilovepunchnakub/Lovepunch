@@ -194,12 +194,33 @@ body.profile-open::after {
   position: relative;
   display: block;
 }
+.entry-heart-icon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('../icons/custom/entry-heart-solid.svg') center / contain no-repeat;
+  clip-path: inset(calc(100% - var(--fill, 0%)) 0 0 0);
+  transform-origin: bottom;
+  will-change: clip-path, transform;
+}
 .entry-heart-fill {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, #ff4b83 var(--fill), #ffffff0d var(--fill));
-  -webkit-mask: url('../icons/custom/entry-heart-solid.svg') center / contain no-repeat;
-  mask: url('../icons/custom/entry-heart-solid.svg') center / contain no-repeat;
+  background: #ff4b83;
+  clip-path: inset(calc(100% - var(--fill, 0%)) 0 0 0);
+  transform-origin: bottom;
+  will-change: clip-path, transform;
+  opacity: 0;
+}
+@supports ((-webkit-mask: url('') center / contain no-repeat) or (mask: url('') center / contain no-repeat)) {
+  .entry-heart-fill {
+    opacity: 1;
+    -webkit-mask: url('../icons/custom/entry-heart-solid.svg') center / contain no-repeat;
+    mask: url('../icons/custom/entry-heart-solid.svg') center / contain no-repeat;
+  }
+  .entry-heart-icon::before {
+    display: none;
+  }
 }
 .entry-heart-outline {
   position: absolute;
