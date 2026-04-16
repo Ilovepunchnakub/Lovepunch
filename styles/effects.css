@@ -58,6 +58,10 @@
 
 .modal-card.flip-in { animation: flipOpen .55s cubic-bezier(.2, .8, .2, 1) both; }
 .scan-btn.scanning { animation: scanGlow .85s infinite; }
+.scan-btn.holding .scan-btn-icon-wrap,
+.scan-btn.scanning .scan-btn-icon-wrap { animation: scanPulseIcon .9s ease-in-out infinite; }
+.scan-btn.holding .scan-btn-sweep,
+.scan-btn.scanning .scan-btn-sweep { animation: scanSweep .9s linear infinite; opacity: .85; }
 .soft-btn.loading { opacity: .7; pointer-events: none; }
 .tap-pop { animation: tapPop .24s ease; }
 .click-burst {
@@ -90,4 +94,18 @@
 @keyframes popupRise {
   from { opacity: 0; transform: translateY(18px) scale(.95); }
   to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes iconWiggle {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(-12deg) scale(1.04); }
+  60% { transform: rotate(10deg) scale(1.04); }
+}
+@keyframes scanSweep {
+  0% { transform: translateY(0) rotate(-8deg); opacity: 0; }
+  12% { opacity: .8; }
+  100% { transform: translateY(190%) rotate(-8deg); opacity: 0; }
+}
+@keyframes scanPulseIcon {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
 }

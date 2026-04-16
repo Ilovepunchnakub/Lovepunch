@@ -16,7 +16,10 @@
       <h1>แตะค้างเพื่อเติมหัวใจ</h1>
       <p class="entry-gate-sub">กดค้างไว้ให้หัวใจเต็มเพื่อเข้าสู่โลกของเรา</p>
       <button id="entryHeartBtn" class="entry-heart" aria-label="กดค้างเพื่อเติมหัวใจ">
-        <span class="entry-heart-shape">💗</span>
+        <span class="entry-heart-icon" aria-hidden="true">
+          <span class="entry-heart-fill"></span>
+          <img class="entry-heart-outline" src="icons/custom/entry-heart-frame.svg" alt="" />
+        </span>
         <span id="entryPercent" class="entry-heart-percent">0%</span>
       </button>
       <p id="entryHint" class="entry-gate-hint">กดค้างประมาณ 10 วินาที</p>
@@ -40,7 +43,7 @@
         <p class="section-tag">เราอยู่ด้วยกันมาแล้ว</p>
 
         <button class="profile-toggle" id="profileToggle" aria-label="ดูข้อมูลเพิ่มเติม">
-          <img src="icons/heart.svg" alt="profile" />
+          <img src="icons/custom/profile-love.svg" alt="profile" />
         </button>
 
         <div class="duration-grid only-time">
@@ -72,7 +75,10 @@
   </div>
 
   <div class="profile-panel" id="profilePanel">
-    <h3>My Love Profile</h3>
+    <div class="profile-head">
+      <h3>My Love Profile</h3>
+      <img class="profile-mini-photo" src="assets/images/love-profile-kid-photo.svg" alt="my love profile photo" />
+    </div>
     <p><b>ชื่อ:</b> <span id="pf-name"></span></p>
     <p><b>อายุ:</b> <span id="pf-age"></span></p>
     <p><b>วันเกิด:</b> <span id="pf-birthday"></span></p>
@@ -123,8 +129,14 @@
     <div class="page-scroll center">
       <section class="soft-card fp-box">
         <h2>ยืนยันตัวตน</h2>
-        <p id="fpHint">แตะเพื่อสแกนลายนิ้วมือ 👆</p>
-        <button class="scan-btn" id="fpZone">สแกนตอนนี้</button>
+        <p id="fpHint">แตะค้างเพื่อสแกนลายนิ้วมือ 👆</p>
+        <button class="scan-btn" id="fpZone" aria-label="กดค้างเพื่อสแกนลายนิ้วมือ">
+          <span class="scan-btn-icon-wrap">
+            <img src="icons/custom/fingerprint-scan.svg" class="scan-btn-icon" alt="" />
+            <span class="scan-btn-sweep"></span>
+          </span>
+          <span class="scan-btn-progress" id="fpHoldProgress">0%</span>
+        </button>
         <p class="fp-msg" id="fpMsg"></p>
       </section>
     </div>
