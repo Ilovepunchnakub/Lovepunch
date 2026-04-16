@@ -2,10 +2,13 @@ import { CFG } from './config.js';
 import { qs, pad } from './utils.js';
 import { createHourCelebration } from './homeCelebrations.js';
 import { createAnniversaryExperience } from './anniversaryExperience.js';
+import { attachSecretTapTest } from './homeSecretTests.js';
 
 export function createHomeController() {
   let timer;
   let lastHourMilestone = -1;
+  let detachDurationSecret = () => {};
+  let detachCountdownSecret = () => {};
 
   const hourCelebration = createHourCelebration();
   const anniversary = createAnniversaryExperience({ blessings: CFG.ANNIV_BLESSINGS });
@@ -76,6 +79,25 @@ export function createHomeController() {
     });
   }
 
+  function initSecretTests() {
+    const durationCard = document.querySelector('.days-card');
+    const countdownCard = document.querySelector('.countdown-card');
+
+    detachDurationSecret = attachSecretTapTest({
+      element: durationCard,
+      onTrigger: () => {
+        hourCelebration.show(durationCard, 1);
+      }
+    });
+
+    detachCountdownSecret = attachSecretTapTest({
+      element: countdownCard,
+      onTrigger: () => {
+        anniversary.playTestCountdown();
+      }
+    });
+  }
+
   function start() {
     updateHome();
     clearInterval(timer);
@@ -90,8 +112,14 @@ export function createHomeController() {
   function init() {
     fillProfile();
     anniversary.init();
+    initSecretTests();
     start();
   }
 
-  return { init, start, stop, closeProfile };
+  function destroy() {
+    detachDurationSecret();
+    detachCountdownSecret();
+  }
+
+  return { init, start, stop, closeProfile, destroy };
 }

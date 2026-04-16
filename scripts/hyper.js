@@ -11,6 +11,7 @@ export function createHyperController() {
   let targetSpeed = 1;
   let lastTs = 0;
   let loadingTimer = null;
+  let phase = 0;
 
   function resizeCanvas() {
     const cv = qs('hCanvas');
@@ -20,14 +21,37 @@ export function createHyperController() {
 
   function initStars() {
     const cv = qs('hCanvas');
-    const count = Math.floor(Math.min(1300, Math.max(560, cv.width * 0.78)));
+    const count = Math.floor(Math.min(1500, Math.max(660, cv.width * 0.92)));
     stars = Array.from({ length: count }, () => ({
       x: (Math.random() - 0.5) * cv.width * 4,
       y: (Math.random() - 0.5) * cv.height * 4,
       z: Math.random(),
       glow: 0.55 + Math.random() * 0.75,
-      hue: 220 + Math.random() * 140
+      hue: 210 + Math.random() * 150
     }));
+  }
+
+  function drawCore(ctx, cx, cy, radius) {
+    const pulse = 0.5 + Math.sin(phase * 2.8) * 0.5;
+
+    for (let ring = 0; ring < 3; ring += 1) {
+      const ringRadius = radius * (1 + ring * 0.32 + pulse * 0.1);
+      ctx.beginPath();
+      ctx.arc(cx, cy, ringRadius, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(159, 214, 255, ${0.14 - ring * 0.035})`;
+      ctx.lineWidth = Math.max(1.5, 3.5 - ring);
+      ctx.stroke();
+    }
+
+    const core = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius * 1.8);
+    core.addColorStop(0, 'rgba(210, 240, 255, 0.85)');
+    core.addColorStop(0.3, 'rgba(122, 203, 255, 0.35)');
+    core.addColorStop(0.75, 'rgba(110, 112, 255, 0.12)');
+    core.addColorStop(1, 'rgba(20, 30, 80, 0)');
+    ctx.fillStyle = core;
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius * 1.8, 0, Math.PI * 2);
+    ctx.fill();
   }
 
   function drawFrame(ts) {
@@ -38,22 +62,26 @@ export function createHyperController() {
     if (!lastTs) lastTs = ts;
     const dt = Math.min(0.05, (ts - lastTs) / 1000);
     lastTs = ts;
+    phase += dt;
 
     speed += (targetSpeed - speed) * 0.06;
 
     const cx = cv.width / 2;
     const cy = cv.height / 2;
-    const blur = Math.max(0.18, 0.5 - Math.min(0.2, speed * 0.05));
-    ctx.fillStyle = `rgba(3, 8, 20, ${blur})`;
+    const blur = Math.max(0.15, 0.46 - Math.min(0.22, speed * 0.05));
+    ctx.fillStyle = `rgba(2, 6, 20, ${blur})`;
     ctx.fillRect(0, 0, cv.width, cv.height);
 
-    const burst = Math.min(0.75, speed * 0.05);
-    const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, cv.width * 0.45);
-    gradient.addColorStop(0, `rgba(117, 169, 255, ${0.15 + burst})`);
-    gradient.addColorStop(0.7, 'rgba(103, 53, 124, 0.1)');
-    gradient.addColorStop(1, 'rgba(7, 10, 28, 0)');
+    const burst = Math.min(0.85, speed * 0.05);
+    const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, cv.width * 0.55);
+    gradient.addColorStop(0, `rgba(124, 208, 255, ${0.16 + burst * 0.65})`);
+    gradient.addColorStop(0.38, `rgba(90, 124, 255, ${0.12 + burst * 0.2})`);
+    gradient.addColorStop(0.76, 'rgba(88, 46, 152, 0.08)');
+    gradient.addColorStop(1, 'rgba(6, 8, 24, 0)');
     ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, cv.width, cv.height);
+
+    drawCore(ctx, cx, cy, Math.max(36, cv.width * 0.045));
 
     for (const s of stars) {
       s.z -= speed * 0.14 * dt;
@@ -61,26 +89,26 @@ export function createHyperController() {
         s.x = (Math.random() - 0.5) * cv.width * 4;
         s.y = (Math.random() - 0.5) * cv.height * 4;
         s.z = 1;
-        s.hue = 220 + Math.random() * 140;
+        s.hue = 210 + Math.random() * 150;
       }
 
       const depth = 1 / s.z;
       const px = cx + s.x * depth;
       const py = cy + s.y * depth;
-      const trail = Math.min(88, 3 + depth * (0.016 + speed * 0.012));
+      const trail = Math.min(102, 4 + depth * (0.02 + speed * 0.014));
       const tx = px - s.x * speed * 0.048 * dt * trail;
       const ty = py - s.y * speed * 0.048 * dt * trail;
 
       ctx.beginPath();
       ctx.moveTo(tx, ty);
       ctx.lineTo(px, py);
-      ctx.strokeStyle = `hsla(${s.hue}, 92%, 84%, ${Math.min(0.96, 0.28 + depth * 0.00075)})`;
-      ctx.lineWidth = Math.max(0.45, Math.min(3.8, depth * (0.0025 + speed * 0.00085)));
+      ctx.strokeStyle = `hsla(${s.hue}, 95%, 84%, ${Math.min(0.98, 0.25 + depth * 0.0008)})`;
+      ctx.lineWidth = Math.max(0.45, Math.min(4.6, depth * (0.0024 + speed * 0.0009)));
       ctx.stroke();
 
       ctx.beginPath();
-      ctx.arc(px, py, Math.min(3.4, 0.55 + depth * 0.0015 * s.glow), 0, Math.PI * 2);
-      ctx.fillStyle = `hsla(${s.hue}, 90%, 92%, 0.94)`;
+      ctx.arc(px, py, Math.min(3.7, 0.5 + depth * 0.0016 * s.glow), 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${s.hue}, 92%, 95%, 0.94)`;
       ctx.fill();
     }
 
@@ -171,6 +199,7 @@ export function createHyperController() {
 
     cancelAnimationFrame(warpRAF);
     lastTs = 0;
+    phase = 0;
     speed = 1;
     targetSpeed = 1;
     resizeCanvas();

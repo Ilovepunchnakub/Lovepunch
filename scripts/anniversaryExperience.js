@@ -42,11 +42,7 @@ export function createAnniversaryExperience({ blessings }) {
     active = false;
   }
 
-  async function startTenSecondMoment() {
-    if (active || completed) return;
-    active = true;
-    completed = true;
-    unlockedClose = false;
+  async function runCountdownAndPopup() {
     popup.classList.remove('show');
     text.textContent = '';
     document.body.classList.add('anniv-focus');
@@ -63,17 +59,31 @@ export function createAnniversaryExperience({ blessings }) {
     await showPopup();
   }
 
+  async function startSequence({ markCompleted }) {
+    if (active) return;
+
+    active = true;
+    unlockedClose = false;
+    if (markCompleted) completed = true;
+
+    await runCountdownAndPopup();
+  }
+
   function tick(leftMs) {
-    if (leftMs <= 10_000) {
-      startTenSecondMoment();
+    if (leftMs <= 10_000 && !completed) {
+      startSequence({ markCompleted: true });
     } else if (leftMs > 25_000) {
       completed = false;
     }
+  }
+
+  function playTestCountdown() {
+    startSequence({ markCompleted: false });
   }
 
   function init() {
     overlay?.addEventListener('click', close);
   }
 
-  return { init, tick };
+  return { init, tick, playTestCountdown };
 }
