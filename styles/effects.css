@@ -57,7 +57,6 @@
 }
 
 .modal-card.flip-in { animation: flipOpen .55s cubic-bezier(.2, .8, .2, 1) both; }
-#hText.show { animation: cosmicFade 4.6s ease both; }
 .scan-btn.scanning { animation: scanGlow .85s infinite; }
 .soft-btn.loading { opacity: .7; pointer-events: none; }
 .tap-pop { animation: tapPop .24s ease; }
