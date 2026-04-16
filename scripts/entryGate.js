@@ -16,6 +16,16 @@ export function initEntryGate({ onUnlocked }) {
     gate.addEventListener(ev, block);
   });
 
+  function spawnSparkle() {
+    const sparkle = document.createElement('span');
+    sparkle.className = 'entry-sparkle';
+    sparkle.textContent = ['✨', '💖', '💫'][Math.floor(Math.random() * 3)];
+    sparkle.style.left = `${12 + Math.random() * 76}%`;
+    sparkle.style.top = `${14 + Math.random() * 72}%`;
+    button.appendChild(sparkle);
+    setTimeout(() => sparkle.remove(), 900);
+  }
+
   function stopTick() {
     if (raf) cancelAnimationFrame(raf);
     raf = null;
@@ -25,12 +35,13 @@ export function initEntryGate({ onUnlocked }) {
     stopTick();
     holding = false;
     gate.classList.add('done');
+    button.classList.add('charged');
     percent.textContent = '100%';
     hint.textContent = 'ยืนยันเรียบร้อย กำลังเข้าสู่หน้าแรก...';
     setTimeout(() => {
       gate.classList.remove('show');
       onUnlocked();
-    }, 520);
+    }, 620);
   }
 
   function tick(ts) {
@@ -39,6 +50,9 @@ export function initEntryGate({ onUnlocked }) {
     const pct = Math.max(0, Math.min(100, Math.round((elapsed / holdMs) * 100)));
     percent.textContent = `${pct}%`;
     button.style.setProperty('--fill', `${pct}%`);
+    button.style.setProperty('--charge', `${pct / 100}`);
+
+    if (pct % 8 === 0) spawnSparkle();
 
     if (pct >= 100) {
       finishUnlock();
@@ -64,6 +78,7 @@ export function initEntryGate({ onUnlocked }) {
     button.classList.remove('holding');
     stopTick();
     button.style.setProperty('--fill', '0%');
+    button.style.setProperty('--charge', '0');
     percent.textContent = '0%';
     hint.textContent = 'แตะค้างให้เต็มต่อเนื่องเพื่อปลดล็อก';
   }

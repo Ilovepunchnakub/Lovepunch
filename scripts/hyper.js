@@ -10,6 +10,7 @@ export function createHyperController() {
   let speed = 1;
   let targetSpeed = 1;
   let lastTs = 0;
+  let loadingTimer = null;
 
   function resizeCanvas() {
     const cv = qs('hCanvas');
@@ -19,12 +20,13 @@ export function createHyperController() {
 
   function initStars() {
     const cv = qs('hCanvas');
-    const count = Math.floor(Math.min(980, Math.max(460, cv.width * 0.62)));
+    const count = Math.floor(Math.min(1300, Math.max(560, cv.width * 0.78)));
     stars = Array.from({ length: count }, () => ({
-      x: (Math.random() - 0.5) * cv.width * 3.1,
-      y: (Math.random() - 0.5) * cv.height * 3.1,
+      x: (Math.random() - 0.5) * cv.width * 4,
+      y: (Math.random() - 0.5) * cv.height * 4,
       z: Math.random(),
-      glow: 0.55 + Math.random() * 0.7
+      glow: 0.55 + Math.random() * 0.75,
+      hue: 220 + Math.random() * 140
     }));
   }
 
@@ -37,39 +39,48 @@ export function createHyperController() {
     const dt = Math.min(0.05, (ts - lastTs) / 1000);
     lastTs = ts;
 
-    speed += (targetSpeed - speed) * 0.05;
+    speed += (targetSpeed - speed) * 0.06;
 
     const cx = cv.width / 2;
     const cy = cv.height / 2;
-    const blur = Math.max(0.25, 0.56 - Math.min(0.25, speed * 0.07));
-    ctx.fillStyle = `rgba(5, 8, 23, ${blur})`;
+    const blur = Math.max(0.18, 0.5 - Math.min(0.2, speed * 0.05));
+    ctx.fillStyle = `rgba(3, 8, 20, ${blur})`;
+    ctx.fillRect(0, 0, cv.width, cv.height);
+
+    const burst = Math.min(0.75, speed * 0.05);
+    const gradient = ctx.createRadialGradient(cx, cy, 0, cx, cy, cv.width * 0.45);
+    gradient.addColorStop(0, `rgba(117, 169, 255, ${0.15 + burst})`);
+    gradient.addColorStop(0.7, 'rgba(103, 53, 124, 0.1)');
+    gradient.addColorStop(1, 'rgba(7, 10, 28, 0)');
+    ctx.fillStyle = gradient;
     ctx.fillRect(0, 0, cv.width, cv.height);
 
     for (const s of stars) {
       s.z -= speed * 0.14 * dt;
       if (s.z <= 0.001) {
-        s.x = (Math.random() - 0.5) * cv.width * 3.1;
-        s.y = (Math.random() - 0.5) * cv.height * 3.1;
+        s.x = (Math.random() - 0.5) * cv.width * 4;
+        s.y = (Math.random() - 0.5) * cv.height * 4;
         s.z = 1;
+        s.hue = 220 + Math.random() * 140;
       }
 
       const depth = 1 / s.z;
       const px = cx + s.x * depth;
       const py = cy + s.y * depth;
-      const trail = Math.min(60, 2 + depth * (0.014 + speed * 0.008));
-      const tx = px - s.x * speed * 0.05 * dt * trail;
-      const ty = py - s.y * speed * 0.05 * dt * trail;
+      const trail = Math.min(88, 3 + depth * (0.016 + speed * 0.012));
+      const tx = px - s.x * speed * 0.048 * dt * trail;
+      const ty = py - s.y * speed * 0.048 * dt * trail;
 
       ctx.beginPath();
       ctx.moveTo(tx, ty);
       ctx.lineTo(px, py);
-      ctx.strokeStyle = `rgba(255, ${218 + Math.floor(depth * 0.03)}, 244, ${Math.min(0.92, 0.2 + depth * 0.0006)})`;
-      ctx.lineWidth = Math.max(0.5, Math.min(3.2, depth * (0.002 + speed * 0.0007)));
+      ctx.strokeStyle = `hsla(${s.hue}, 92%, 84%, ${Math.min(0.96, 0.28 + depth * 0.00075)})`;
+      ctx.lineWidth = Math.max(0.45, Math.min(3.8, depth * (0.0025 + speed * 0.00085)));
       ctx.stroke();
 
       ctx.beginPath();
-      ctx.arc(px, py, Math.min(3.1, 0.55 + depth * 0.0015 * s.glow), 0, Math.PI * 2);
-      ctx.fillStyle = '#ffe6f3';
+      ctx.arc(px, py, Math.min(3.4, 0.55 + depth * 0.0015 * s.glow), 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${s.hue}, 90%, 92%, 0.94)`;
       ctx.fill();
     }
 
@@ -91,9 +102,26 @@ export function createHyperController() {
 
   async function showLoading() {
     const loading = qs('hLoading');
+    const loadingText = qs('hLoadingText');
+    const loadingLog = qs('hLoadingLog');
+
+    loadingText.textContent = 'กำลังเตรียม hyperspace...';
     loading.classList.add('show');
-    setSpeed(0.2);
+    setSpeed(0.18);
+
+    const started = performance.now();
+    loadingTimer = window.setInterval(() => {
+      const elapsed = Math.min(8500, performance.now() - started);
+      const pct = Math.round((elapsed / 8500) * 100);
+      loadingLog.textContent = `โหลดระบบนำทาง ${pct}%`;
+    }, 180);
+
     await wait(8500);
+    clearInterval(loadingTimer);
+    loadingTimer = null;
+    loadingLog.textContent = 'โหลดระบบนำทาง 100%';
+    loadingText.textContent = 'พร้อมเข้าสู่เส้นทางของเราแล้ว';
+    await wait(1100);
     loading.classList.remove('show');
   }
 
@@ -158,6 +186,8 @@ export function createHyperController() {
   function stop() {
     active = false;
     runningSequence = false;
+    clearInterval(loadingTimer);
+    loadingTimer = null;
     cancelAnimationFrame(warpRAF);
   }
 

@@ -94,6 +94,7 @@
   <div class="card-modal" id="cardModal">
     <div class="modal-backdrop" id="modalClose"></div>
     <article class="modal-card" id="modalCard">
+      <div id="cardFxLayer" class="modal-fx-layer" aria-hidden="true"></div>
       <h3 id="modalTitle"></h3>
       <p id="modalText"></p>
       <button id="modalBtn">ปิด</button>
@@ -119,8 +120,11 @@
       <button class="soft-btn" id="hStart">เริ่มเดินทาง</button>
     </div>
     <div class="h-loading" id="hLoading">
-      <span class="loading-dot"></span>
-      กำลังเตรียม hyperspace...
+      <div class="loading-ring" aria-hidden="true"></div>
+      <div class="loading-copy">
+        <p id="hLoadingText">กำลังเตรียม hyperspace...</p>
+        <p class="loading-log" id="hLoadingLog">โหลดระบบนำทาง 0%</p>
+      </div>
     </div>
     <div class="h-msgs" id="hMsgs">
       <p id="hText"></p>

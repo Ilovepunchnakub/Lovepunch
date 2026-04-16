@@ -1,6 +1,7 @@
 import { wait } from './utils.js';
 
-const HOLD_MS = 2600;
+const PREPARE_DELAY_MS = 5600;
+const HOLD_MS = 4300;
 const TRAVEL_MS = 5600;
 
 export async function playHyperTimeline({
@@ -11,23 +12,26 @@ export async function playHyperTimeline({
   onDone,
   isCancelled
 }) {
+  await wait(PREPARE_DELAY_MS);
+  if (isCancelled()) return;
+
   onBeforeStart();
 
   for (let i = 0; i < messages.length; i += 1) {
     if (isCancelled()) return;
 
     const stage = i + 1;
-    const cruiseSpeed = 1 + stage * 0.5;
+    const cruiseSpeed = 1 + stage * 0.52;
 
     setSpeed(0.05, true);
-    await wait(880);
+    await wait(920);
     if (isCancelled()) return;
 
     showMessage(messages[i]);
     await wait(HOLD_MS);
     if (isCancelled()) return;
 
-    await accelerateSmoothly(1, cruiseSpeed, 1000, setSpeed, isCancelled);
+    await accelerateSmoothly(1, cruiseSpeed, 1150, setSpeed, isCancelled);
     if (isCancelled()) return;
 
     setSpeed(cruiseSpeed);

@@ -195,3 +195,27 @@ body.profile-open::after {
 .entry-heart-percent { position: absolute; z-index: 2; font-size: clamp(28px, 6vw, 42px); color: #fff; text-shadow: 0 3px 10px rgba(151, 41, 84, 0.4); }
 .entry-heart.holding { box-shadow: 0 0 0 8px rgba(245, 131, 176, 0.24); }
 .entry-gate-hint { margin: 18px 0 0; color: #9c7284; }
+
+body.rain-focus #pg-rain .page-scroll > *:not(#rainLayer) {
+  filter: blur(4px) brightness(0.95);
+}
+body.rain-focus #rainLayer { pointer-events: auto; }
+
+.entry-heart {
+  --charge: 0;
+  transition: box-shadow .25s ease, transform .25s ease;
+}
+.entry-heart.holding {
+  box-shadow:
+    0 0 0 8px rgba(245, 131, 176, 0.24),
+    0 0 calc(24px + var(--charge) * 24px) rgba(250, 136, 187, 0.65);
+  transform: scale(1.02);
+}
+.entry-heart.charged { animation: heartFinale 1s ease both; }
+.entry-sparkle {
+  position: absolute;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  animation: sparklePop .9s ease forwards;
+  pointer-events: none;
+}
