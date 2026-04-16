@@ -20,9 +20,8 @@
           <span class="entry-heart-fill"></span>
           <img class="entry-heart-outline" src="icons/custom/entry-heart-frame.svg" alt="" draggable="false" />
         </span>
-        <span id="entryPercent" class="entry-heart-percent">0%</span>
       </button>
-      <p id="entryHint" class="entry-gate-hint">กดค้างประมาณ 10 วินาที</p>
+      <p id="entryHint" class="entry-gate-hint">กดค้างประมาณ 4.5 วินาที</p>
     </div>
   </div>
 
@@ -131,11 +130,8 @@
         <h2>ยืนยันตัวตน</h2>
         <p id="fpHint">แตะค้างเพื่อสแกนลายนิ้วมือ 👆</p>
         <button class="scan-btn" id="fpZone" aria-label="กดค้างเพื่อสแกนลายนิ้วมือ">
-          <span class="scan-btn-icon-wrap">
-            <img src="icons/custom/fingerprint-scan.svg" class="scan-btn-icon" alt="" />
-            <span class="scan-btn-sweep"></span>
-          </span>
-          <span class="scan-btn-progress" id="fpHoldProgress">0%</span>
+          <span class="scan-btn-ring" aria-hidden="true"></span>
+          <img src="icons/custom/fingerprint-scan.svg" class="scan-btn-icon" alt="" draggable="false" />
         </button>
         <p class="fp-msg" id="fpMsg"></p>
       </section>

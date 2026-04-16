@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="640" viewBox="0 0 640 640" role="img" aria-label="My Love profile photo placeholder">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dce9ff"/>
+      <stop offset="55%" stop-color="#ffd8ea"/>
+      <stop offset="100%" stop-color="#f8f2ff"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="24%" r="65%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="640" height="640" rx="52" fill="url(#bg)"/>
+  <rect width="640" height="640" rx="52" fill="url(#halo)"/>
+  <circle cx="320" cy="250" r="116" fill="#f7c7a7"/>
+  <rect x="170" y="360" width="300" height="174" rx="86" fill="#f4d4bf"/>
+  <ellipse cx="274" cy="242" rx="14" ry="12" fill="#47333a"/>
+  <ellipse cx="366" cy="242" rx="14" ry="12" fill="#47333a"/>
+  <path d="M282 300c25 17 50 17 75 0" stroke="#9e5b64" stroke-width="9" stroke-linecap="round" fill="none"/>
+  <path d="M210 196c35-90 190-104 234 0-4-70-58-143-117-143s-108 68-117 143z" fill="#2f2b4d"/>
+  <text x="320" y="590" text-anchor="middle" font-size="34" font-family="Itim, sans-serif" fill="#8f4f6f">My Love</text>
+</svg>

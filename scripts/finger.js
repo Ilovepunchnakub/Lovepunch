@@ -10,7 +10,7 @@ export function createFingerController() {
   let holdTimer = null;
   let holdRaf = null;
   let holdStart = 0;
-  const holdMs = 3500;
+  const holdMs = 2200;
 
   function closePopup() {
     qs('fpPopup').classList.remove('show');
@@ -49,15 +49,23 @@ export function createFingerController() {
 
   function updateHoldVisual(progress) {
     const zone = qs('fpZone');
-    const pct = Math.round(progress * 100);
-    zone.style.setProperty('--hold-progress', `${pct}%`);
-    qs('fpHoldProgress').textContent = `${pct}%`;
+    zone.style.setProperty('--hold-progress', `${Math.round(progress * 100)}%`);
   }
 
   function clearHoldVisual() {
     const zone = qs('fpZone');
     zone.style.setProperty('--hold-progress', '0%');
-    qs('fpHoldProgress').textContent = '0%';
+  }
+
+  function spawnHoldBurst() {
+    const zone = qs('fpZone');
+    const burst = document.createElement('span');
+    burst.className = 'click-burst';
+    const rect = zone.getBoundingClientRect();
+    burst.style.left = `${rect.left + rect.width / 2}px`;
+    burst.style.top = `${rect.top + rect.height / 2}px`;
+    document.body.appendChild(burst);
+    setTimeout(() => burst.remove(), 520);
   }
 
   function cancelHold() {
@@ -91,6 +99,8 @@ export function createFingerController() {
       if (holdRaf) cancelAnimationFrame(holdRaf);
       holdRaf = null;
       updateHoldVisual(1);
+      navigator.vibrate?.(30);
+      spawnHoldBurst();
       doScan();
     }, holdMs);
   }
@@ -148,6 +158,11 @@ export function createFingerController() {
     zone.addEventListener('pointerleave', cancelHold);
     zone.addEventListener('pointercancel', cancelHold);
     zone.addEventListener('lostpointercapture', cancelHold);
+    zone.addEventListener('touchstart', (e) => e.preventDefault(), { passive: false });
+    zone.addEventListener('contextmenu', (e) => e.preventDefault());
+    zone.addEventListener('dragstart', (e) => e.preventDefault());
+    window.addEventListener('pointerup', cancelHold);
+    window.addEventListener('pointercancel', cancelHold);
 
     qs('fpPopup').addEventListener('click', () => {
       if (!closeEnabled || state !== 'done') return;

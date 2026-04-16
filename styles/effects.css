@@ -57,11 +57,12 @@
 }
 
 .modal-card.flip-in { animation: flipOpen .55s cubic-bezier(.2, .8, .2, 1) both; }
-.scan-btn.scanning { animation: scanGlow .85s infinite; }
-.scan-btn.holding .scan-btn-icon-wrap,
-.scan-btn.scanning .scan-btn-icon-wrap { animation: scanPulseIcon .9s ease-in-out infinite; }
-.scan-btn.holding .scan-btn-sweep,
-.scan-btn.scanning .scan-btn-sweep { animation: scanSweep .9s linear infinite; opacity: .85; }
+.scan-btn.scanning .scan-btn-ring { animation: scanGlow .85s infinite; }
+.scan-btn.holding .scan-btn-ring,
+.scan-btn.scanning .scan-btn-ring { animation: scanPulseIcon .9s ease-in-out infinite; }
+.scan-btn.holding .scan-btn-icon,
+.scan-btn.scanning .scan-btn-icon { animation: scanPulseIcon .9s ease-in-out infinite; }
+.scan-btn.holding { transform: scale(1.03); }
 .soft-btn.loading { opacity: .7; pointer-events: none; }
 .tap-pop { animation: tapPop .24s ease; }
 .click-burst {

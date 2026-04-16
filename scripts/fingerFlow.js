@@ -12,7 +12,7 @@ const PHASES = [
 ];
 
 export async function runFingerScan({ onStep }) {
-  const totalMs = 8600;
+  const totalMs = 4800;
   const stepMs = Math.floor(totalMs / PHASES.length);
 
   for (let i = 0; i < PHASES.length; i += 1) {
