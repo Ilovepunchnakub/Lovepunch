@@ -1,92 +1,72 @@
 import { CFG } from './config.js';
-import { qs, wait } from './utils.js';
+import { wait, qs } from './utils.js';
 import { playHyperTimeline } from './hyperTimeline.js';
-import { createHyperRenderer } from './hyperRenderer.js';
+import { createHyperThreeBackground } from './hyperThreeBackground.js';
+import { createHyperUiReact } from './hyperUiReact.js';
 
 export function createHyperController() {
   let active = false;
   let runningSequence = false;
-  let loadingTimer = null;
 
-  const renderer = createHyperRenderer({ canvas: qs('hCanvas') });
-
-  function showMessage(msg) {
-    const text = qs('hText');
-    text.textContent = msg;
-    text.classList.remove('show');
-    void text.offsetWidth;
-    text.classList.add('show');
-  }
+  const renderer = createHyperThreeBackground({ canvas: qs('hCanvas') });
+  const ui = createHyperUiReact({
+    mount: qs('hUiRoot'),
+    onStart: () => startExperience()
+  });
 
   async function showLoading() {
-    const loading = qs('hLoading');
-    const loadingText = qs('hLoadingText');
-    const loadingLog = qs('hLoadingLog');
+    renderer.setSpeed(0.45, true);
 
-    loadingText.textContent = 'กำลังเตรียม hyperspace...';
-    loading.classList.add('show');
-    renderer.setSpeed(0.16, true);
+    const totalMs = 4200;
+    const tick = 140;
+    const loops = Math.ceil(totalMs / tick);
 
-    const started = performance.now();
-    loadingTimer = window.setInterval(() => {
-      const elapsed = Math.min(8500, performance.now() - started);
-      const pct = Math.round((elapsed / 8500) * 100);
-      loadingLog.textContent = `โหลดระบบนำทาง ${pct}%`;
-    }, 180);
-
-    await wait(8500);
-    clearInterval(loadingTimer);
-    loadingTimer = null;
-    loadingLog.textContent = 'โหลดระบบนำทาง 100%';
-    loadingText.textContent = 'พร้อมเข้าสู่เส้นทางของเราแล้ว';
-    await wait(1100);
-    loading.classList.remove('show');
+    for (let i = 0; i <= loops; i += 1) {
+      if (!active || !runningSequence) return;
+      const progress = Math.round((i / loops) * 100);
+      ui.setLoading({
+        text: progress < 100 ? 'กำลังเตรียม hyperspace...' : 'พร้อมเข้าสู่เส้นทางของเราแล้ว',
+        progress
+      });
+      await wait(tick);
+    }
   }
 
   async function runSequence() {
     if (runningSequence) return;
     runningSequence = true;
 
-    const start = qs('hStartWrap');
-    const box = qs('hMsgs');
-    start.classList.remove('show');
-    qs('hDone').classList.remove('show');
-
     await showLoading();
-    if (!active) return;
+    if (!active) {
+      runningSequence = false;
+      return;
+    }
 
-    box.classList.add('show');
+    ui.showMessage('เตรียมตัวเข้าสู่ hyperspace ของเรา ✨');
 
     await playHyperTimeline({
       messages: CFG.HYPER_MESSAGES,
-      showMessage,
+      showMessage: ui.showMessage,
       setSpeed: renderer.setSpeed,
       isCancelled: () => !active || !runningSequence,
       onBeforeStart: () => {
-        showMessage('เตรียมตัวเข้าสู่ hyperspace ของเรา ✨');
+        renderer.setSpeed(1.4, true);
       },
       onDone: () => {
-        qs('hDone').classList.add('show');
-        start.classList.add('show');
+        ui.showDone();
       }
     });
 
     runningSequence = false;
-    renderer.setSpeed(1);
+    renderer.setSpeed(1.1);
+    await wait(1200);
+    if (active) ui.setIdle();
   }
 
   function enterPage() {
     active = true;
     runningSequence = false;
-    const box = qs('hMsgs');
-    const text = qs('hText');
-    const start = qs('hStartWrap');
-
-    box.classList.remove('show');
-    text.textContent = 'กดเริ่มเดินทาง แล้วออกท่องไปในจักรวาลของเรา ✨';
-    qs('hDone').classList.remove('show');
-    start.classList.add('show');
-
+    ui.setIdle();
     renderer.start();
   }
 
@@ -98,16 +78,18 @@ export function createHyperController() {
   function stop() {
     active = false;
     runningSequence = false;
-    clearInterval(loadingTimer);
-    loadingTimer = null;
     renderer.stop();
+    ui.setIdle();
   }
 
   function init() {
-    qs('hStart').addEventListener('click', startExperience);
     window.addEventListener('resize', renderer.resize);
     renderer.prepare();
   }
 
-  return { init, stop, startExperience, enterPage };
+  function destroy() {
+    ui.destroy();
+  }
+
+  return { init, stop, startExperience, enterPage, destroy };
 }
