@@ -100,11 +100,24 @@ function HyperOverlay({ state, onStart, onFinaleFinish }) {
           transition: { duration: 0.35 }
         },
         React.createElement('p', { className: 'hyper-loading-title' }, state.loadingText),
-        React.createElement('div', { className: 'hyper-loading-bar' },
-          React.createElement(motion.span, {
-            animate: { width: `${state.loadingProgress}%` },
-            transition: { ease: 'easeOut', duration: 0.2 }
-          })
+        React.createElement(
+          'div',
+          { className: 'hyper-loading-ring-shell', 'aria-hidden': 'true' },
+          React.createElement(
+            'svg',
+            { className: 'hyper-loading-ring', viewBox: '0 0 120 120' },
+            React.createElement('circle', { className: 'ring-bg', cx: '60', cy: '60', r: '48' }),
+            React.createElement(motion.circle, {
+              className: 'ring-progress',
+              cx: '60',
+              cy: '60',
+              r: '48',
+              strokeDasharray: `${Math.PI * 2 * 48}`,
+              animate: { strokeDashoffset: Math.PI * 2 * 48 * (1 - state.loadingProgress / 100) },
+              transition: { ease: 'easeOut', duration: 0.26 }
+            })
+          ),
+          React.createElement('b', { className: 'hyper-loading-percent' }, `${state.loadingProgress}%`)
         ),
         React.createElement('small', { className: 'hyper-loading-log' }, `โหลดระบบนำทาง ${state.loadingProgress}%`)
       ),
@@ -145,11 +158,16 @@ function HyperOverlay({ state, onStart, onFinaleFinish }) {
 
 function HyperFinale({ onFinish }) {
   const [ready, setReady] = useState(false);
+  const [titleVisible, setTitleVisible] = useState(false);
   const words = useMemo(() => Array.from({ length: 100 }, (_, idx) => ({ id: idx + 1, text: 'I love you' })), []);
 
   useEffect(() => {
-    const t = setTimeout(() => setReady(true), 3500);
-    return () => clearTimeout(t);
+    const reveal = setTimeout(() => setTitleVisible(true), 2500);
+    const t = setTimeout(() => setReady(true), 4100);
+    return () => {
+      clearTimeout(reveal);
+      clearTimeout(t);
+    };
   }, []);
 
   return React.createElement(
@@ -181,18 +199,14 @@ function HyperFinale({ onFinish }) {
     React.createElement(
       'div',
       { className: 'hyper-finale-overlay' },
+      React.createElement('h2', { className: `hyper-finale-title${titleVisible ? ' show' : ''}` }, 'Love Forever'),
       React.createElement(
-        'div',
-        null,
-        React.createElement('h2', { className: 'hyper-finale-title' }, 'Love Forever'),
-        React.createElement(
-          'button',
-          {
-            className: `soft-btn hyper-finale-end-btn${ready ? ' show' : ''}`,
-            onClick: () => onFinish?.()
-          },
-          'กดเพื่อจบ'
-        )
+        'button',
+        {
+          className: `soft-btn hyper-finale-end-btn${ready ? ' show' : ''}`,
+          onClick: () => onFinish?.()
+        },
+        'กดเพื่อจบ'
       )
     )
   );

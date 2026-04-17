@@ -37,7 +37,7 @@
 .fake-loader-text,
 .entry-completion-title {
   top: 50%;
-  transform: translate(-50%, calc(-50% - 148px));
+  transform: translate(-50%, calc(-50% - 186px));
   font-size: clamp(1.9rem, 4.2vw, 2.2rem);
   letter-spacing: 0.08em;
 }
@@ -156,7 +156,7 @@
 @media (max-width: 560px) {
   .fake-loader-text,
   .entry-completion-title {
-    transform: translate(-50%, calc(-50% - 124px));
+    transform: translate(-50%, calc(-50% - 154px));
   }
 
   .fake-loader-sub {
@@ -180,7 +180,7 @@
 /* Entry completion loader cat (scoped from provided HTML sample) */
 .entry-completion-loader .entry-cat {
   position: absolute;
-  top: 50%;
+  top: calc(50% + 18px);
   left: 50%;
   width: 188px;
   height: 260px;
