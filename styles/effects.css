@@ -55,6 +55,29 @@
   60% { transform: scale(.98); }
   100% { transform: scale(1.02); }
 }
+@keyframes pixelRise {
+  0% { background-position: center, 0 0, 0 0; }
+  100% { background-position: center, 16px 0, 0 16px; }
+}
+@keyframes shake { 50% { top: 6px; } }
+@keyframes catShadow {
+  50% {
+    width: 110px;
+    margin-left: -40px;
+  }
+}
+@keyframes tail { 50% { transform: rotate(38deg); } }
+@keyframes catEye { 50% { top: 2px; } }
+@keyframes earL { 50% { transform: rotate(-30deg); } }
+@keyframes earR { 50% { transform: rotate(30deg); } }
+@keyframes pawL {
+  50% { left: 130px; top: 176px; }
+  70% { top: 160px; }
+}
+@keyframes pawR {
+  25% { top: 160px; }
+  50% { left: 88px; top: 176px; }
+}
 
 .modal-card.flip-in { animation: flipOpen .55s cubic-bezier(.2, .8, .2, 1) both; }
 .scan-btn.scanning .scan-btn-ring { animation: scanGlow .85s infinite; }
