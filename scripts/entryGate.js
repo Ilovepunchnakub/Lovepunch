@@ -1,10 +1,9 @@
 import { qs } from './utils.js';
 
-export function initEntryGate({ onUnlocked }) {
+export function initEntryGate({ onUnlocked, transitionLoader }) {
   const gate = qs('entryGate');
   const button = qs('entryHeartBtn');
   const hint = qs('entryHint');
-  const loadingPage = qs('entryLoadingPage');
 
   let raf = null;
   let holding = false;
@@ -43,18 +42,18 @@ export function initEntryGate({ onUnlocked }) {
     hint.textContent = 'เติมครบ 100% แล้ว';
 
     gate.classList.add('done');
+
+    transitionLoader?.show();
+
     const fakeLoadingMs = 4000 + Math.floor(Math.random() * 2001);
     const gateFadeMs = 560;
 
     setTimeout(() => {
       gate.classList.remove('show');
-      loadingPage?.classList.add('show');
-      loadingPage?.setAttribute('aria-hidden', 'false');
     }, gateFadeMs);
 
     setTimeout(() => {
-      loadingPage?.classList.remove('show');
-      loadingPage?.setAttribute('aria-hidden', 'true');
+      transitionLoader?.hide();
       onUnlocked();
     }, gateFadeMs + fakeLoadingMs);
   }
