@@ -37,7 +37,7 @@ export function createHyperController() {
     runningSequence = true;
 
     await showLoading();
-    if (!active) {
+    if (!active || !runningSequence) {
       runningSequence = false;
       return;
     }
@@ -48,7 +48,7 @@ export function createHyperController() {
       fadeOutMs: 950
     });
 
-    await playHyperTimeline({
+    const completed = await playHyperTimeline({
       messages: CFG.HYPER_MESSAGES,
       showMessage: ui.showMessage,
       setSpeed: renderer.setSpeed,
@@ -56,15 +56,27 @@ export function createHyperController() {
       onBeforeStart: () => {
         renderer.setSpeed(1, true);
       },
-      onDone: () => {
-        ui.showDone();
-      }
+      onDone: () => {}
     });
+
+    if (!completed || !active || !runningSequence) {
+      runningSequence = false;
+      renderer.setSpeed(1.2);
+      ui.setIdle();
+      return;
+    }
+
+    ui.showFinale();
+    await wait(5600);
+    if (!active || !runningSequence) {
+      runningSequence = false;
+      return;
+    }
+
+    ui.showDone('จบการเดินทางแล้ว กดเริ่มเพื่อออกเดินทางอีกครั้ง 💫');
 
     runningSequence = false;
     renderer.setSpeed(1.2);
-    await wait(1200);
-    if (active) ui.setIdle();
   }
 
   function enterPage() {

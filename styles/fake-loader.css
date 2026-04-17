@@ -1,0 +1,101 @@
+.fake-loader-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 650;
+  display: none;
+  place-items: center;
+  background: #2c4763;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.fake-loader-overlay.show {
+  display: grid;
+}
+
+.fake-loader-text {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: clamp(1.5rem, 4.5vw, 2rem);
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.fake-loader-sub {
+  position: absolute;
+  top: calc(45% + 42px);
+  left: 50%;
+  transform: translateX(-50%);
+  color: #dfedff;
+  font-size: clamp(0.9rem, 2.8vw, 1rem);
+  margin: 0;
+}
+
+.fake-loader-cat {
+  margin: auto;
+  position: relative;
+  width: 16em;
+  height: 16em;
+}
+
+.fake-loader-cat__segment {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3em;
+  height: 2em;
+  transform: translate(-50%, -50%);
+}
+
+.fake-loader-cat__segment::before {
+  animation: fakeCatLoop 2s cubic-bezier(0.6, 0, 0.4, 1) infinite;
+  animation-delay: var(--delay, 0s);
+  background: linear-gradient(90deg, white 20%, #e6e6e6 20% 80%, white 80%);
+  border-radius: 0.25em;
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  will-change: transform;
+}
+
+.fake-loader-cat__segment:first-child {
+  width: 4em;
+  height: 4em;
+  z-index: 1;
+}
+
+.fake-loader-cat__segment:first-child::before {
+  background:
+    radial-gradient(0.25em 0.25em at 1.25em 1.6em, white 48%, transparent 50%),
+    radial-gradient(0.75em 0.75em at 1.25em 1.75em, #1a1a1a 48%, transparent 50%),
+    radial-gradient(0.25em 0.25em at 2.75em 1.6em, white 48%, transparent 50%),
+    radial-gradient(0.75em 0.75em at 2.75em 1.75em, #1a1a1a 48%, transparent 50%),
+    radial-gradient(0.9em 0.8em at 1.5em 2.65em, white 48%, transparent 50%),
+    radial-gradient(0.9em 0.8em at 2.5em 2.65em, white 48%, transparent 50%),
+    radial-gradient(1em 0.8em at 1.6em 2.75em, #ccc 48%, transparent 50%),
+    radial-gradient(1em 0.8em at 2.4em 2.75em, #ccc 48%, transparent 50%),
+    radial-gradient(0.75em 0.75em at 50% 2.5em, #e69999 48%, transparent 50%),
+    radial-gradient(4em 3em at 50% 2em, white 48%, transparent 50%),
+    radial-gradient(4em 3em at 50% 2.2em, #ccc 48%, transparent 50%),
+    radial-gradient(1em 3em at 0.75em 1.5em, #e69999 39%, white 40% 49%, transparent 50%),
+    radial-gradient(1em 3em at 3.25em 1.5em, #e69999 39%, white 40% 49%, transparent 50%),
+    radial-gradient(1em 2em at 0.5em 2.8em, white 48%, transparent 50%),
+    radial-gradient(1em 2em at 0.5em 3em, #ccc 48%, transparent 50%),
+    radial-gradient(1em 2em at 3.5em 2.8em, white 48%, transparent 50%),
+    radial-gradient(1em 2em at 3.5em 3em, #ccc 48%, transparent 50%);
+  background-repeat: no-repeat;
+}
+
+@keyframes fakeCatLoop {
+  from {
+    transform: rotate(0deg) translateX(6em);
+  }
+
+  to {
+    transform: rotate(-360deg) translateX(6em);
+  }
+}

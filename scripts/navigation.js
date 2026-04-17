@@ -1,7 +1,8 @@
 import { qs } from './utils.js';
 
-export function createNavigator({ onPage }) {
+export function createNavigator({ onPage, transitionLoader }) {
   let current = 'home';
+  let switching = false;
 
   function closeTransientLayers() {
     // Ensure modal/backdrop layers never block interactions after page switches.
@@ -13,7 +14,7 @@ export function createNavigator({ onPage }) {
     document.body.classList.remove('anniv-focus');
   }
 
-  function go(page) {
+  function applyPage(page) {
     document.dispatchEvent(new CustomEvent('app:close-transient-layers'));
     closeTransientLayers();
     document.querySelectorAll('.page').forEach((el) => el.classList.remove('active'));
@@ -23,8 +24,32 @@ export function createNavigator({ onPage }) {
     onPage(page);
   }
 
+  async function go(page, { skipLoader = false } = {}) {
+    if (!page || switching) return;
+    const isSamePage = page === current;
+    if (isSamePage && !skipLoader) return;
+
+    switching = true;
+    try {
+      if (skipLoader || !transitionLoader) {
+        applyPage(page);
+      } else {
+        await transitionLoader.run({
+          minMs: 1500,
+          beforeSwitch: () => applyPage(page)
+        });
+      }
+    } finally {
+      switching = false;
+    }
+  }
+
   function init() {
-    document.querySelectorAll('.ni').forEach((el) => el.addEventListener('click', () => go(el.dataset.page)));
+    document.querySelectorAll('.ni').forEach((el) => {
+      el.addEventListener('click', () => {
+        go(el.dataset.page);
+      });
+    });
   }
 
   return { init, go, current: () => current };

@@ -16,16 +16,16 @@ export async function playHyperTimeline({
   isCancelled
 }) {
   await wait(PREPARE_DELAY_MS);
-  if (isCancelled()) return;
+  if (isCancelled()) return false;
 
   onBeforeStart();
   await wait(WELCOME_HOLD_MS);
-  if (isCancelled()) return;
+  if (isCancelled()) return false;
 
   const maxStage = Math.max(1, messages.length - 1);
 
   for (let i = 0; i < messages.length; i += 1) {
-    if (isCancelled()) return;
+    if (isCancelled()) return false;
 
     const progress = i / maxStage;
     const targetSpeed = 1 + progress * (MAX_SPEED - 1);
@@ -38,10 +38,11 @@ export async function playHyperTimeline({
     });
 
     await wait(HOLD_MS + FADE_BUFFER_MS);
-    if (isCancelled()) return;
+    if (isCancelled()) return false;
 
     await wait(TRAVEL_MS);
   }
 
   onDone();
+  return true;
 }
