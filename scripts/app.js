@@ -7,13 +7,14 @@ import { createFingerController } from './finger.js';
 import { initEntryGate } from './entryGate.js';
 import { initNavDock } from './navDock.js';
 import { initInteractionEffects } from './effects.js';
-import { createFakePageLoader } from './fakePageLoader.js';
+import { createFakePageLoader, createEntryCompletionLoader } from './fakePageLoader.js';
 
 const home = createHomeController();
 const rain = createRainController();
 const hyper = createHyperController();
 const finger = createFingerController();
 const transitionLoader = createFakePageLoader();
+const entryCompletionLoader = createEntryCompletionLoader();
 let cards = null;
 
 const nav = createNavigator({
@@ -49,7 +50,7 @@ document.addEventListener('app:close-transient-layers', () => {
 
 bootMainApp();
 initEntryGate({
-  transitionLoader,
+  completionLoader: entryCompletionLoader,
   onUnlocked: () => {
     document.body.classList.add('unlocked');
   }

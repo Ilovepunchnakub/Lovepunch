@@ -66,17 +66,14 @@ export function createHyperController() {
       return;
     }
 
-    ui.showFinale();
-    await wait(5600);
-    if (!active || !runningSequence) {
-      runningSequence = false;
-      return;
-    }
-
-    ui.showDone('จบการเดินทางแล้ว กดเริ่มเพื่อออกเดินทางอีกครั้ง 💫');
-
-    runningSequence = false;
-    renderer.setSpeed(1.2);
+    ui.showFinale({
+      onFinish: () => {
+        if (!active) return;
+        runningSequence = false;
+        renderer.setSpeed(1.2);
+        ui.setIdle();
+      }
+    });
   }
 
   function enterPage() {

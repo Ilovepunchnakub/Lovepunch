@@ -1,6 +1,6 @@
 import { qs } from './utils.js';
 
-export function initEntryGate({ onUnlocked, transitionLoader }) {
+export function initEntryGate({ onUnlocked, completionLoader }) {
   const gate = qs('entryGate');
   const button = qs('entryHeartBtn');
   const hint = qs('entryHint');
@@ -43,7 +43,7 @@ export function initEntryGate({ onUnlocked, transitionLoader }) {
 
     gate.classList.add('done');
 
-    transitionLoader?.show();
+    completionLoader?.show();
 
     const fakeLoadingMs = 4000 + Math.floor(Math.random() * 2001);
     const gateFadeMs = 560;
@@ -53,7 +53,7 @@ export function initEntryGate({ onUnlocked, transitionLoader }) {
     }, gateFadeMs);
 
     setTimeout(() => {
-      transitionLoader?.hide();
+      completionLoader?.hide();
       onUnlocked();
     }, gateFadeMs + fakeLoadingMs);
   }
