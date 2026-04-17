@@ -4,10 +4,11 @@ export function initEntryGate({ onUnlocked }) {
   const gate = qs('entryGate');
   const button = qs('entryHeartBtn');
   const hint = qs('entryHint');
-  const fakeLoading = qs('entryFakeLoading');
+  const loadingPage = qs('entryLoadingPage');
 
   let raf = null;
   let holding = false;
+  let unlocked = false;
   let startAt = 0;
   const holdMs = 4500;
   let latestSparkleStep = -1;
@@ -33,20 +34,29 @@ export function initEntryGate({ onUnlocked }) {
   }
 
   function finishUnlock() {
+    if (unlocked) return;
+    unlocked = true;
     stopTick();
     holding = false;
-    gate.classList.add('loading');
     button.classList.add('charged');
     navigator.vibrate?.(35);
-    fakeLoading?.setAttribute('aria-hidden', 'false');
-    hint.textContent = 'เติมครบ 100% แล้ว กำลังโหลดระบบ...';
+    hint.textContent = 'เติมครบ 100% แล้ว';
+
+    gate.classList.add('done');
     const fakeLoadingMs = 4000 + Math.floor(Math.random() * 2001);
+    const gateFadeMs = 560;
+
     setTimeout(() => {
-      gate.classList.remove('loading');
-      gate.classList.add('done');
       gate.classList.remove('show');
+      loadingPage?.classList.add('show');
+      loadingPage?.setAttribute('aria-hidden', 'false');
+    }, gateFadeMs);
+
+    setTimeout(() => {
+      loadingPage?.classList.remove('show');
+      loadingPage?.setAttribute('aria-hidden', 'true');
       onUnlocked();
-    }, fakeLoadingMs);
+    }, gateFadeMs + fakeLoadingMs);
   }
 
   function tick(ts) {
@@ -72,7 +82,7 @@ export function initEntryGate({ onUnlocked }) {
 
   function startHold(e) {
     e.preventDefault();
-    if (holding || gate.classList.contains('done')) return;
+    if (holding || unlocked || gate.classList.contains('done')) return;
     holding = true;
     startAt = performance.now();
     latestSparkleStep = -1;
