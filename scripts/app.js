@@ -12,6 +12,7 @@ const home = createHomeController();
 const rain = createRainController();
 const hyper = createHyperController();
 const finger = createFingerController();
+let cards = null;
 
 const nav = createNavigator({
   onPage: (page) => {
@@ -27,7 +28,7 @@ const nav = createNavigator({
 
 function bootMainApp() {
   home.init();
-  initCards();
+  cards = initCards();
   rain.init();
   hyper.init();
   finger.init();
@@ -36,6 +37,12 @@ function bootMainApp() {
   initInteractionEffects();
   nav.go('home');
 }
+
+document.addEventListener('app:close-transient-layers', () => {
+  cards?.close?.({ restoreFocus: false });
+  finger.dismissPopup({ restoreFocus: false, force: true });
+  home.closeTransientLayers();
+});
 
 bootMainApp();
 initEntryGate({

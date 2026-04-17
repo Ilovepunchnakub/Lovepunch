@@ -11,10 +11,77 @@ export function createFingerController() {
   let holdRaf = null;
   let holdStart = 0;
   const holdMs = 2200;
+  let popupKeydownHandler = null;
+  let popupInvoker = null;
 
-  function closePopup() {
+  function getFocusableElements(container) {
+    return Array.from(
+      container.querySelectorAll(
+        'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter((el) => !el.hasAttribute('hidden') && el.offsetParent !== null);
+  }
+
+  function trapDialogFocus(event, dialog) {
+    if (event.key !== 'Tab') return;
+    const focusable = getFocusableElements(dialog);
+    if (!focusable.length) {
+      event.preventDefault();
+      dialog.focus();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+      return;
+    }
+    if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  function bindPopupKeyboard() {
+    const dialog = qs('fpPopupCard');
+    if (popupKeydownHandler) {
+      document.removeEventListener('keydown', popupKeydownHandler);
+      popupKeydownHandler = null;
+    }
+    popupKeydownHandler = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        dismissPopup();
+        return;
+      }
+      trapDialogFocus(event, dialog);
+    };
+    document.addEventListener('keydown', popupKeydownHandler);
+  }
+
+  function unbindPopupKeyboard() {
+    if (!popupKeydownHandler) return;
+    document.removeEventListener('keydown', popupKeydownHandler);
+    popupKeydownHandler = null;
+  }
+
+  function dismissPopup({ restoreFocus = true, force = false } = {}) {
     qs('fpPopup').classList.remove('show');
+    qs('fpPopup').setAttribute('aria-hidden', 'true');
+    unbindPopupKeyboard();
     radarFx?.stop();
+    if (restoreFocus && popupInvoker && document.contains(popupInvoker)) popupInvoker.focus();
+    popupInvoker = null;
+    if (state === 'done' || force) {
+      state = 'idle';
+      closeEnabled = false;
+      qs('fpPopup').classList.remove('can-close');
+      qs('fpZone').classList.remove('scanning');
+      qs('fpMsg').textContent = '';
+      qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือ 👆';
+      clearHoldVisual();
+    }
   }
 
   function renderLoadingPopup() {
@@ -106,6 +173,7 @@ export function createFingerController() {
   }
 
   function reset() {
+    cancelHold();
     state = 'idle';
     closeEnabled = false;
     qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือ 👆';
@@ -113,6 +181,9 @@ export function createFingerController() {
     qs('fpZone').classList.remove('scanning', 'holding');
     clearHoldVisual();
     qs('fpPopup').classList.remove('show', 'can-close');
+    qs('fpPopup').setAttribute('aria-hidden', 'true');
+    unbindPopupKeyboard();
+    popupInvoker = null;
     radarFx?.stop();
   }
 
@@ -125,8 +196,13 @@ export function createFingerController() {
     qs('fpZone').classList.add('scanning');
 
     const popup = qs('fpPopup');
+    const activeEl = document.activeElement;
+    if (activeEl instanceof HTMLElement) popupInvoker = activeEl;
     popup.classList.add('show');
+    popup.setAttribute('aria-hidden', 'false');
+    bindPopupKeyboard();
     renderLoadingPopup();
+    qs('fpPopupTitle').focus();
 
     const meter = qs('scanMeterBar');
     const percent = qs('scanPercent');
@@ -166,12 +242,9 @@ export function createFingerController() {
 
     qs('fpPopup').addEventListener('click', () => {
       if (!closeEnabled || state !== 'done') return;
-      closePopup();
-      state = 'idle';
-      qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือ 👆';
-      clearHoldVisual();
+      dismissPopup();
     });
   }
 
-  return { init, reset };
+  return { init, reset, dismissPopup };
 }

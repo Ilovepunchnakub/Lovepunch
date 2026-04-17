@@ -11,6 +11,59 @@ export function createAnniversaryExperience({ blessings }) {
   let active = false;
   let completed = false;
   let unlockedClose = false;
+  let popupKeydownHandler = null;
+  let popupInvoker = null;
+
+  function getFocusableElements(container) {
+    return Array.from(
+      container.querySelectorAll(
+        'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+      )
+    ).filter((el) => !el.hasAttribute('hidden') && el.offsetParent !== null);
+  }
+
+  function trapDialogFocus(event, dialog) {
+    if (event.key !== 'Tab') return;
+    const focusable = getFocusableElements(dialog);
+    if (!focusable.length) {
+      event.preventDefault();
+      dialog.focus();
+      return;
+    }
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+      return;
+    }
+    if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    }
+  }
+
+  function bindPopupKeyboard() {
+    if (popupKeydownHandler) {
+      document.removeEventListener('keydown', popupKeydownHandler);
+      popupKeydownHandler = null;
+    }
+    popupKeydownHandler = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        close({ force: true });
+        return;
+      }
+      trapDialogFocus(event, popup);
+    };
+    document.addEventListener('keydown', popupKeydownHandler);
+  }
+
+  function unbindPopupKeyboard() {
+    if (!popupKeydownHandler) return;
+    document.removeEventListener('keydown', popupKeydownHandler);
+    popupKeydownHandler = null;
+  }
 
   function pickBlessing() {
     return blessings[Math.floor(Math.random() * blessings.length)] || 'สุขสันต์วันครบรอบนะคนเก่งของฉัน 💕';
@@ -33,6 +86,7 @@ export function createAnniversaryExperience({ blessings }) {
   async function revealPopup() {
     setStage('popup');
     popup.classList.add('show');
+    popup.focus();
     await typeText(pickBlessing());
 
     for (let i = 3; i >= 1; i -= 1) {
@@ -44,13 +98,17 @@ export function createAnniversaryExperience({ blessings }) {
     exit.textContent = 'แตะที่ไหนก็ได้เพื่อกลับสู่หน้าแรก 💫';
   }
 
-  function close() {
-    if (!active || !unlockedClose) return;
+  function close({ force = false, restoreFocus = true } = {}) {
+    if (!active || (!unlockedClose && !force)) return;
     overlay.classList.remove('show');
     popup.classList.remove('show');
     setStage('countdown');
     document.body.classList.remove('anniv-focus');
+    unbindPopupKeyboard();
     active = false;
+    unlockedClose = false;
+    if (restoreFocus && popupInvoker && document.contains(popupInvoker)) popupInvoker.focus();
+    popupInvoker = null;
   }
 
   async function runCountdownAndPopup() {
@@ -58,9 +116,12 @@ export function createAnniversaryExperience({ blessings }) {
     text.textContent = '';
     exit.textContent = 'เตรียมแสดงข้อความ...';
 
+    const activeEl = document.activeElement;
+    if (activeEl instanceof HTMLElement) popupInvoker = activeEl;
     document.body.classList.add('anniv-focus');
     overlay.classList.add('show');
     setStage('countdown');
+    bindPopupKeyboard();
 
     for (let sec = 10; sec >= 0; sec -= 1) {
       counter.textContent = sec.toString().padStart(2, '0');
@@ -96,7 +157,7 @@ export function createAnniversaryExperience({ blessings }) {
   }
 
   function init() {
-    overlay?.addEventListener('click', close);
+    overlay?.addEventListener('click', () => close());
     countBox?.addEventListener('click', (event) => {
       event.stopPropagation();
     });
@@ -105,5 +166,5 @@ export function createAnniversaryExperience({ blessings }) {
     });
   }
 
-  return { init, tick, playTestCountdown };
+  return { init, tick, playTestCountdown, close };
 }

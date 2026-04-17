@@ -123,6 +123,11 @@ export function createHomeController() {
     closeProfile();
   }
 
+  function closeTransientLayers() {
+    anniversary.close({ force: true, restoreFocus: false });
+    closeProfile();
+  }
+
   function init() {
     fillProfile();
     anniversary.init();
@@ -135,5 +140,5 @@ export function createHomeController() {
     detachCountdownSecret();
   }
 
-  return { init, start, stop, closeProfile, destroy };
+  return { init, start, stop, closeProfile, destroy, closeTransientLayers };
 }
