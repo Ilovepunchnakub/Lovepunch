@@ -23,12 +23,12 @@
   display: grid;
 }
 
+
 .fake-loader-text,
 .fake-loader-sub,
 .entry-completion-title {
   position: absolute;
   left: 50%;
-  transform: translateX(-50%);
   margin: 0;
   text-align: center;
   pointer-events: none;
@@ -36,13 +36,14 @@
 
 .fake-loader-text,
 .entry-completion-title {
-  top: clamp(36px, 7vh, 68px);
-  font-size: clamp(2rem, 5vw, 3rem);
+  top: 50%;
+  transform: translate(-50%, calc(-50% - 148px));
+  font-size: clamp(1.9rem, 4.2vw, 2.2rem);
   letter-spacing: 0.08em;
 }
 
 .fake-loader-text {
-  color: #ffffff;
+  color: #fff;
 }
 
 .entry-completion-title {
@@ -50,9 +51,10 @@
 }
 
 .fake-loader-sub {
-  top: clamp(90px, 13vh, 132px);
+  top: calc(50% + 146px);
+  transform: translateX(-50%);
   color: #dfedff;
-  font-size: clamp(0.9rem, 2.8vw, 1rem);
+  font-size: clamp(0.85rem, 2.8vw, 1rem);
 }
 
 .fake-loader-text--wave {
@@ -86,23 +88,22 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 2.8em;
-  height: 1.9em;
-  transform: translate(-50%, -50%);
-  transform-origin: center;
+  width: 3em;
+  height: 2em;
+  transform: translate(-50%, -50%) rotate(var(--angle, 0deg));
 }
 
 .fake-loader-cat__segment::before {
-  animation: fakeCatLoop 1.4s linear infinite;
+  animation: fakeCatLoop 2s cubic-bezier(0.6, 0, 0.4, 1) infinite;
   animation-delay: var(--delay, 0s);
-  background: linear-gradient(90deg, white 20%, #e6e6e6 20% 80%, white 80%);
+  background: linear-gradient(90deg, #fff 20%, #e6e6e6 20% 80%, #fff 80%);
   border-radius: 0.25em;
   content: '';
   display: block;
   width: 100%;
   height: 100%;
-  will-change: transform, opacity;
-  backface-visibility: hidden;
+  transform: translateX(6em);
+  will-change: transform;
 }
 
 .fake-loader-cat__segment:first-child {
@@ -113,39 +114,53 @@
 
 .fake-loader-cat__segment:first-child::before {
   background:
-    radial-gradient(0.25em 0.25em at 1.25em 1.6em, white 48%, transparent 50%),
+    radial-gradient(0.25em 0.25em at 1.25em 1.6em, #fff 48%, transparent 50%),
     radial-gradient(0.75em 0.75em at 1.25em 1.75em, #1a1a1a 48%, transparent 50%),
-    radial-gradient(0.25em 0.25em at 2.75em 1.6em, white 48%, transparent 50%),
+    radial-gradient(0.25em 0.25em at 2.75em 1.6em, #fff 48%, transparent 50%),
     radial-gradient(0.75em 0.75em at 2.75em 1.75em, #1a1a1a 48%, transparent 50%),
-    radial-gradient(0.9em 0.8em at 1.5em 2.65em, white 48%, transparent 50%),
-    radial-gradient(0.9em 0.8em at 2.5em 2.65em, white 48%, transparent 50%),
+    radial-gradient(0.9em 0.8em at 1.5em 2.65em, #fff 48%, transparent 50%),
+    radial-gradient(0.9em 0.8em at 2.5em 2.65em, #fff 48%, transparent 50%),
     radial-gradient(1em 0.8em at 1.6em 2.75em, #ccc 48%, transparent 50%),
     radial-gradient(1em 0.8em at 2.4em 2.75em, #ccc 48%, transparent 50%),
     radial-gradient(0.75em 0.75em at 50% 2.5em, #e69999 48%, transparent 50%),
-    radial-gradient(4em 3em at 50% 2em, white 48%, transparent 50%),
+    radial-gradient(4em 3em at 50% 2em, #fff 48%, transparent 50%),
     radial-gradient(4em 3em at 50% 2.2em, #ccc 48%, transparent 50%),
-    radial-gradient(1em 3em at 0.75em 1.5em, #e69999 39%, white 40% 49%, transparent 50%),
-    radial-gradient(1em 3em at 3.25em 1.5em, #e69999 39%, white 40% 49%, transparent 50%),
-    radial-gradient(1em 2em at 0.5em 2.8em, white 48%, transparent 50%),
+    radial-gradient(1em 3em at 0.75em 1.5em, #e69999 39%, #fff 40% 49%, transparent 50%),
+    radial-gradient(1em 3em at 3.25em 1.5em, #e69999 39%, #fff 40% 49%, transparent 50%),
+    radial-gradient(1em 2em at 0.5em 2.8em, #fff 48%, transparent 50%),
     radial-gradient(1em 2em at 0.5em 3em, #ccc 48%, transparent 50%),
-    radial-gradient(1em 2em at 3.5em 2.8em, white 48%, transparent 50%),
+    radial-gradient(1em 2em at 3.5em 2.8em, #fff 48%, transparent 50%),
     radial-gradient(1em 2em at 3.5em 3em, #ccc 48%, transparent 50%);
   background-repeat: no-repeat;
 }
 
+.fake-loader-cat__segment:last-child {
+  width: 3em;
+  height: 4em;
+}
+
+.fake-loader-cat__segment:last-child::before {
+  background:
+    linear-gradient(90deg, #fff 20%, #e6e6e6 20% 80%, #fff 80%) 0 1.5em/3em 0.5em,
+    radial-gradient(3em 2em at top center, #e6e6e6 30%, #fff 31% 48%, transparent 50%) 0 2em/3em 2em,
+    radial-gradient(1em 4em at 0.5em 0, #fff 48%, transparent 50%) 0 2em/3em 2em,
+    radial-gradient(1em 4em at 2.5em 0, #fff 48%, transparent 50%) 0 2em/3em 2em;
+  background-repeat: no-repeat;
+}
+
 @keyframes fakeCatLoop {
-  from {
-    transform: rotate(0deg) translateX(6em) rotate(0deg);
-    opacity: 0.34;
+  from { transform: rotate(0) translateX(6em); }
+  to { transform: rotate(-1turn) translateX(6em); }
+}
+
+@media (max-width: 560px) {
+  .fake-loader-text,
+  .entry-completion-title {
+    transform: translate(-50%, calc(-50% - 124px));
   }
 
-  52% {
-    opacity: 1;
-  }
-
-  to {
-    transform: rotate(-360deg) translateX(6em) rotate(360deg);
-    opacity: 0.34;
+  .fake-loader-sub {
+    top: calc(50% + 130px);
   }
 }
 
