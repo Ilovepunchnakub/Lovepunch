@@ -30,6 +30,13 @@
   height: 20px;
   animation: iconWiggle 2.4s ease-in-out infinite;
 }
+.profile-toggle:focus-visible {
+  outline: 2px solid transparent;
+  box-shadow:
+    0 0 0 2px var(--focus-ring-inner),
+    0 0 0 5px var(--focus-ring),
+    0 10px 22px rgba(56, 147, 230, 0.4);
+}
 .profile-panel {
   position: fixed;
   top: 14%;
@@ -101,6 +108,13 @@
   box-shadow: 0 18px 28px rgba(173, 74, 117, 0.25);
 }
 .fc.pressing .emoji { transform: rotate(-8deg) scale(1.05); }
+.fc:focus-visible {
+  outline: 2px solid transparent;
+  box-shadow:
+    0 0 0 2px var(--focus-ring-inner),
+    0 0 0 5px var(--focus-ring),
+    0 20px 32px rgba(56, 147, 230, 0.35);
+}
 
 .card-modal { position: fixed; inset: 0; display: none; z-index: 200; }
 .card-modal.show { display: block; }
@@ -156,6 +170,13 @@
   box-shadow: 0 10px 24px rgba(204, 61, 118, 0.35);
   border: 1px solid #ffffffa6;
 }
+#modalBtn:focus-visible {
+  outline: 2px solid transparent;
+  box-shadow:
+    0 0 0 2px var(--focus-ring-inner),
+    0 0 0 5px var(--focus-ring),
+    0 10px 24px rgba(56, 147, 230, 0.45);
+}
 
 .rain-box { width: min(92vw, 420px); padding: 26px 18px; text-align: center; }
 .rain-box h2 { margin: 0 0 8px; font-size: 36px; }
@@ -210,10 +231,17 @@
   touch-action: none;
   -webkit-touch-callout: none;
   user-select: none;
-  outline: none;
 }
-.scan-btn:focus,
-.scan-btn:focus-visible { outline: none; }
+.scan-btn:focus-visible {
+  outline: 2px solid transparent;
+}
+.scan-btn:focus-visible .scan-btn-ring {
+  box-shadow:
+    0 0 0 2px var(--focus-ring-inner),
+    0 0 0 6px var(--focus-ring),
+    0 16px 28px rgba(198, 84, 133, 0.24),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.92);
+}
 .scan-btn-ring {
   position: absolute;
   inset: 0;
