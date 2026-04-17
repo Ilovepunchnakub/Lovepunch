@@ -6,6 +6,8 @@
   --soft: #8f6676;
   --pink: #f06f96;
   --pink2: #cf3e77;
+  --focus-ring: #1bd6ff;
+  --focus-ring-inner: #ffffff;
   --radius: 24px;
   --nav-h: 82px;
   --shadow: 0 12px 30px rgba(138, 74, 100, 0.22);
@@ -52,6 +54,16 @@ button { font: inherit; border: none; cursor: pointer; -webkit-tap-highlight-col
   background: linear-gradient(130deg, var(--pink), var(--pink2));
   color: #fff;
   font-weight: 800;
+}
+.soft-btn:focus-visible,
+.ni:focus-visible,
+.nav-dock-toggle:focus-visible,
+#navDockToggle:focus-visible {
+  outline: 2px solid transparent;
+  box-shadow:
+    0 0 0 2px var(--focus-ring-inner),
+    0 0 0 5px var(--focus-ring),
+    var(--shadow);
 }
 
 .nav-dock-toggle {
