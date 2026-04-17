@@ -4,11 +4,13 @@ export function initEntryGate({ onUnlocked }) {
   const gate = qs('entryGate');
   const button = qs('entryHeartBtn');
   const hint = qs('entryHint');
+  const fakeLoading = qs('entryFakeLoading');
 
   let raf = null;
   let holding = false;
   let startAt = 0;
   const holdMs = 4500;
+  let latestSparkleStep = -1;
 
   const block = (e) => e.preventDefault();
   ['contextmenu', 'selectstart', 'dragstart'].forEach((ev) => {
@@ -33,14 +35,18 @@ export function initEntryGate({ onUnlocked }) {
   function finishUnlock() {
     stopTick();
     holding = false;
-    gate.classList.add('done');
+    gate.classList.add('loading');
     button.classList.add('charged');
     navigator.vibrate?.(35);
-    hint.textContent = 'ยืนยันเรียบร้อย กำลังเข้าสู่หน้าแรก...';
+    fakeLoading?.setAttribute('aria-hidden', 'false');
+    hint.textContent = 'เติมครบ 100% แล้ว กำลังโหลดระบบ...';
+    const fakeLoadingMs = 4000 + Math.floor(Math.random() * 2001);
     setTimeout(() => {
+      gate.classList.remove('loading');
+      gate.classList.add('done');
       gate.classList.remove('show');
       onUnlocked();
-    }, 620);
+    }, fakeLoadingMs);
   }
 
   function tick(ts) {
@@ -50,7 +56,11 @@ export function initEntryGate({ onUnlocked }) {
     button.style.setProperty('--fill', `${(progress * 100).toFixed(2)}%`);
     button.style.setProperty('--charge', `${progress}`);
 
-    if (Math.round(progress * 100) % 8 === 0) spawnSparkle();
+    const sparkleStep = Math.floor(progress * 12);
+    if (sparkleStep !== latestSparkleStep) {
+      latestSparkleStep = sparkleStep;
+      spawnSparkle();
+    }
 
     if (progress >= 1) {
       finishUnlock();
@@ -65,6 +75,7 @@ export function initEntryGate({ onUnlocked }) {
     if (holding || gate.classList.contains('done')) return;
     holding = true;
     startAt = performance.now();
+    latestSparkleStep = -1;
     hint.textContent = 'กำลังยืนยันตัวตน...';
     button.classList.add('holding');
     raf = requestAnimationFrame(tick);
@@ -77,6 +88,7 @@ export function initEntryGate({ onUnlocked }) {
     stopTick();
     button.style.setProperty('--fill', '0%');
     button.style.setProperty('--charge', '0');
+    latestSparkleStep = -1;
     hint.textContent = 'แตะค้างให้เต็มต่อเนื่องเพื่อปลดล็อก';
   }
 
