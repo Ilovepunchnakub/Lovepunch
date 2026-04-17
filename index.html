@@ -96,11 +96,11 @@
     </div>
   </div>
 
-  <div class="card-modal" id="cardModal">
+  <div class="card-modal" id="cardModal" aria-hidden="true">
     <div class="modal-backdrop" id="modalClose"></div>
-    <article class="modal-card" id="modalCard">
+    <article class="modal-card" id="modalCard" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalText" tabindex="-1">
       <div id="cardFxLayer" class="modal-fx-layer" aria-hidden="true"></div>
-      <h3 id="modalTitle"></h3>
+      <h3 id="modalTitle" tabindex="-1"></h3>
       <p id="modalText"></p>
       <button id="modalBtn">ปิด</button>
     </article>
@@ -138,9 +138,9 @@
     </div>
   </div>
 
-  <div class="fp-popup" id="fpPopup">
-    <div class="fp-popup-card">
-      <h3 id="fpPopupTitle"></h3>
+  <div class="fp-popup" id="fpPopup" aria-hidden="true">
+    <div class="fp-popup-card" id="fpPopupCard" role="dialog" aria-modal="true" aria-labelledby="fpPopupTitle" aria-describedby="fpPopupBody" tabindex="-1">
+      <h3 id="fpPopupTitle" tabindex="-1"></h3>
       <div id="fpPopupBody"></div>
     </div>
   </div>
@@ -153,8 +153,8 @@
       <small>วินาทีสุดท้ายกำลังเริ่มแล้ว ✨</small>
     </div>
 
-    <div class="anniv-popup" id="annivPopup">
-      <h3>Happy Anniversary 💞</h3>
+    <div class="anniv-popup" id="annivPopup" role="dialog" aria-modal="true" aria-labelledby="annivPopupTitle" aria-describedby="annivTypedText" tabindex="-1">
+      <h3 id="annivPopupTitle" tabindex="-1">Happy Anniversary 💞</h3>
       <p id="annivTypedText"></p>
       <small id="annivExitHint">เตรียมแสดงข้อความ...</small>
     </div>

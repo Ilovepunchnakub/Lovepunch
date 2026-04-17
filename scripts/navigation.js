@@ -6,10 +6,15 @@ export function createNavigator({ onPage }) {
   function closeTransientLayers() {
     // Ensure modal/backdrop layers never block interactions after page switches.
     qs('cardModal')?.classList.remove('show');
+    qs('cardModal')?.setAttribute('aria-hidden', 'true');
     qs('fpPopup')?.classList.remove('show');
+    qs('fpPopup')?.setAttribute('aria-hidden', 'true');
+    qs('annivOverlay')?.classList.remove('show');
+    document.body.classList.remove('anniv-focus');
   }
 
   function go(page) {
+    document.dispatchEvent(new CustomEvent('app:close-transient-layers'));
     closeTransientLayers();
     document.querySelectorAll('.page').forEach((el) => el.classList.remove('active'));
     qs(`pg-${page}`).classList.add('active');
