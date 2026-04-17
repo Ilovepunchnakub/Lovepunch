@@ -1,6 +1,6 @@
 import { wait, qs } from './utils.js';
 
-const SEGMENT_COUNT = 42;
+const SEGMENT_COUNT = 30;
 
 function createOverlayLoader(overlayId, { buildSegments = false } = {}) {
   const overlay = qs(overlayId);
@@ -11,7 +11,8 @@ function createOverlayLoader(overlayId, { buildSegments = false } = {}) {
     for (let i = 0; i < SEGMENT_COUNT; i += 1) {
       const segment = document.createElement('span');
       segment.className = 'fake-loader-cat__segment';
-      segment.style.setProperty('--delay', `${(i * -0.03).toFixed(2)}s`);
+      segment.style.setProperty('--delay', `${(i * 0.02).toFixed(2)}s`);
+      segment.style.setProperty('--angle', `${(-20 + i * (40 / (SEGMENT_COUNT - 1))).toFixed(4)}deg`);
       cat.appendChild(segment);
     }
   }

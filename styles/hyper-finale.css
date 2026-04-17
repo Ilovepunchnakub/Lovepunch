@@ -1,6 +1,7 @@
 .hyper-love-finale {
-  width: min(96vw, 980px);
-  min-height: 66vh;
+  --finale-scale: 0.9;
+  width: min(92vw, 860px);
+  min-height: min(70vh, 760px);
   position: relative;
   pointer-events: auto;
   overflow: hidden;
@@ -11,6 +12,8 @@
 .hyper-love-field {
   position: absolute;
   inset: 0;
+  transform: scale(var(--finale-scale));
+  transform-origin: center;
 }
 
 .hyper-love-item {
@@ -46,7 +49,7 @@
   place-items: center;
   text-align: center;
   z-index: 3;
-  padding: 24px;
+  padding: max(24px, env(safe-area-inset-top)) 24px max(24px, env(safe-area-inset-bottom));
 }
 
 .hyper-finale-title {
@@ -70,6 +73,32 @@
 .hyper-finale-end-btn.show {
   pointer-events: auto;
   animation: hyperFinalButtonIn .48s ease forwards;
+}
+
+@media (max-width: 900px) {
+  .hyper-love-finale {
+    --finale-scale: 0.82;
+    width: min(95vw, 760px);
+    min-height: 64vh;
+  }
+}
+
+@media (max-width: 560px) {
+  .hyper-love-finale {
+    --finale-scale: 0.72;
+    width: min(98vw, 620px);
+    min-height: 58vh;
+    border-radius: 20px;
+  }
+
+  .hyper-finale-overlay {
+    align-items: start;
+    padding-top: clamp(96px, 14vh, 132px);
+  }
+
+  .hyper-finale-title {
+    font-size: clamp(1.8rem, 10vw, 2.5rem);
+  }
 }
 
 @keyframes hyperFinalTitleIn {
