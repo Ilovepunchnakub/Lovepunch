@@ -4,6 +4,7 @@ import { initCards } from './cards.js';
 import { createRainController } from './rain.js';
 import { createHyperController } from './hyper.js';
 import { createFingerController } from './finger.js';
+import { createLovePlayground } from './lovePlayground.js';
 import { initEntryGate } from './entryGate.js';
 import { initNavDock } from './navDock.js';
 import { initInteractionEffects } from './effects.js';
@@ -29,13 +30,15 @@ const nav = createNavigator({
     if (page === 'finger') finger.reset();
   }
 });
+const lovePlayground = createLovePlayground({ navigator: nav });
 
 function bootMainApp() {
   home.init();
-  cards = initCards();
+  cards = initCards({ onOpenLoveScene: () => lovePlayground.open() });
   rain.init();
   hyper.init();
   finger.init();
+  lovePlayground.init();
   nav.init();
   initNavDock();
   initInteractionEffects();
@@ -45,6 +48,7 @@ function bootMainApp() {
 document.addEventListener('app:close-transient-layers', () => {
   cards?.close?.({ restoreFocus: false });
   finger.dismissPopup({ restoreFocus: false, force: true });
+  lovePlayground.close();
   home.closeTransientLayers();
 });
 

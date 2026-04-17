@@ -36,7 +36,7 @@ function trapDialogFocus(event, dialog) {
   }
 }
 
-export function initCards() {
+export function initCards({ onOpenLoveScene } = {}) {
   const grid = qs('cardsGrid');
   CFG.CARD_DATA.forEach(([emoji, title, text], idx) => {
     const card = document.createElement('button');
@@ -47,7 +47,13 @@ export function initCards() {
     card.addEventListener('pointerdown', () => card.classList.add('pressing'));
     card.addEventListener('pointerup', () => card.classList.remove('pressing'));
     card.addEventListener('pointerleave', () => card.classList.remove('pressing'));
-    card.addEventListener('click', () => openCard({ title, text, idx, icon: emoji }));
+    card.addEventListener('click', () => {
+      if (title === 'ความรัก' && typeof onOpenLoveScene === 'function') {
+        onOpenLoveScene();
+        return;
+      }
+      openCard({ title, text, idx, icon: emoji });
+    });
     grid.appendChild(card);
   });
 

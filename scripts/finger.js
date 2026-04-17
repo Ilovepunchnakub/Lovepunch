@@ -89,6 +89,7 @@ export function createFingerController() {
     qs('fpPopup').classList.remove('can-close');
     qs('fpPopupTitle').textContent = 'กำลังโหลดข้อมูลความลับ';
     qs('fpPopupBody').innerHTML = loadingMarkup();
+    qs('fpPopupCard').classList.remove('scan-stage-transition');
     radarFx = createRadarFx(qs('scanRadarCanvas'));
     radarFx.start();
   }
@@ -98,6 +99,10 @@ export function createFingerController() {
     qs('fpPopup').classList.remove('can-close');
     qs('fpPopupTitle').textContent = 'ตรวจสอบเสร็จสิ้น 💖';
     qs('fpPopupBody').innerHTML = completeMarkup();
+    const card = qs('fpPopupCard');
+    card.classList.remove('scan-stage-transition');
+    void card.offsetWidth;
+    card.classList.add('scan-stage-transition');
     radarFx?.stop();
   }
 
