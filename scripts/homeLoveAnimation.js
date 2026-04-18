@@ -29,6 +29,17 @@ function buildTemplate(label) {
 
 export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีที่รัก 🌸') {
   if (!targetEl) return;
+  const isCompactViewport = window.matchMedia?.('(max-width: 520px)').matches;
+
+  if (isCompactViewport) {
+    targetEl.classList.add('home-love-title', 'home-love-title--compact');
+    targetEl.innerHTML = `
+      <span class="home-love-title-compact-word">I</span>
+      <span class="home-love-title-compact-heart" aria-hidden="true">❤️</span>
+      <span class="home-love-title-compact-word">YOU</span>
+    `;
+    return;
+  }
 
   if (!window.mojs) {
     targetEl.textContent = 'I LOVE YOU';

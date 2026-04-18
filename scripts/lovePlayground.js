@@ -19,9 +19,12 @@ export function createLovePlayground({ navigator }) {
     destroyScene = initLovePlaygroundScene({ wrapper: wrap, bearEl: bear });
   }
 
-  function close() {
-    if (navigator.current() === pageId) {
-      navigator.go('cards');
+  function close({ navigate = true } = {}) {
+    destroyScene?.();
+    destroyScene = null;
+    if (host) host.innerHTML = '';
+    if (navigate && navigator.current() === pageId) {
+      navigator.go('cards', { skipLoader: true });
     }
   }
 
@@ -45,8 +48,7 @@ export function createLovePlayground({ navigator }) {
     open,
     close,
     destroy: () => {
-      destroyScene?.();
-      if (host) host.innerHTML = '';
+      close({ navigate: false });
     }
   };
 }
