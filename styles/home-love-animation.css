@@ -1,5 +1,5 @@
 .home-hdr {
-  overflow: hidden;
+  overflow: visible;
 }
 
 .home-love-title {
@@ -48,6 +48,26 @@
   fill: #763c8c;
 }
 
+.home-love-title--compact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.5rem, 2vw, 1rem);
+  font-weight: 900;
+  letter-spacing: 0.03em;
+}
+
+.home-love-title-compact-word {
+  font-size: clamp(2.9rem, 11vw, 4.2rem);
+  color: #763c8c;
+  line-height: 1;
+}
+
+.home-love-title-compact-heart {
+  font-size: clamp(3.1rem, 12vw, 4.4rem);
+  line-height: 1;
+  transform: translateY(0.1rem);
+}
 
 @media (max-width: 520px) {
   .home-love-title {

@@ -103,8 +103,8 @@ export function createDreamScene({ navigator }) {
     });
   }
 
-  function close() {
-    if (navigator.current() === pageId) navigator.go('cards');
+  function close({ navigate = true } = {}) {
+    if (navigate && navigator.current() === pageId) navigator.go('cards', { skipLoader: true });
     teardown();
   }
 

@@ -10,9 +10,15 @@ const markup = `
   <g class="arrow-angle"><use x="100" y="250" xlink:href="#arrow"/></g>
   <clipPath id="mask"><polygon opacity=".5" points="0,0 1500,0 1500,200 970,290 950,240 925,220 875,280 890,295 920,310 0,350" pointer-events="none"/></clipPath>
   <g class="arrows" clip-path="url(#mask)" pointer-events="none"></g>
-  <g class="missyou" fill="#aaa" opacity="0" transform="translate(-50, 50)"><path d="M358 194L363 118 386 120 400 153 416 121 440 119 446 203 419 212 416 163 401 180 380 160 381 204"/></g>
-  <g class="loveyou" fill="#F4531C" opacity="0" transform="translate(300, 100)"><path d="M0 0 L0 80 L30 80 L30 70 L10 70 L10 0 Z"/></g>
-  <g class="hit" fill="#ffcc00" opacity="0" transform="translate(180, -80) rotate(12)"><path d="M383 114L385 195 407 191 406 160 422 155 418 191 436 189 444 112 423 119 422 141 407 146 400 113"/></g>
+  <g class="missyou" opacity="0" transform="translate(256, 196)">
+    <text x="0" y="0" fill="#b7bbc2" font-size="64" font-style="italic" font-weight="800" letter-spacing="3">MISS YOU</text>
+  </g>
+  <g class="loveyou" opacity="0" transform="translate(288, 108)">
+    <text x="0" y="0" fill="#F4531C" font-size="72" font-style="italic" font-weight="900" letter-spacing="2">LOVE YOU</text>
+  </g>
+  <g class="hit" opacity="0" transform="translate(430, 112) rotate(12)">
+    <text x="0" y="0" fill="#ffcc00" font-size="86" font-style="italic" font-weight="900">HIT!</text>
+  </g>
 </svg>
 <span class="today-game-hint">Draw back an arrow and launch it!</span>`;
 
@@ -86,8 +92,8 @@ export function createTodayScene({ navigator }) {
       TweenMax.killTweensOf(selector);
       TweenMax.killChildTweensOf(selector);
       TweenMax.set(selector, { autoAlpha: 1 });
-      TweenMax.staggerFromTo(`${selector} path`, 0.5, { rotation: -5, scale: 0, transformOrigin: 'center' }, { scale: 1, ease: Back.easeOut }, 0.05);
-      TweenMax.staggerTo(`${selector} path`, 0.3, { delay: 2, rotation: 20, scale: 0, ease: Back.easeIn }, 0.03);
+      TweenMax.fromTo(`${selector}`, 0.45, { scale: 0.6, y: 14 }, { scale: 1, y: 0, ease: Back.easeOut });
+      TweenMax.to(`${selector}`, 0.3, { delay: 2, rotation: 8, scale: 0, ease: Back.easeIn });
     };
 
     const hitTest = (tween) => {
@@ -146,8 +152,8 @@ export function createTodayScene({ navigator }) {
     });
   }
 
-  function close() {
-    if (navigator.current() === pageId) navigator.go('cards');
+  function close({ navigate = true } = {}) {
+    if (navigate && navigator.current() === pageId) navigator.go('cards', { skipLoader: true });
     cleanup();
   }
 

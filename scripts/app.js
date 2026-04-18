@@ -58,9 +58,9 @@ function bootMainApp() {
 document.addEventListener('app:close-transient-layers', () => {
   cards?.close?.({ restoreFocus: false });
   finger.dismissPopup({ restoreFocus: false, force: true });
-  lovePlayground.close();
-  todayScene.close();
-  dreamScene.close();
+  lovePlayground.close({ navigate: false });
+  todayScene.close({ navigate: false });
+  dreamScene.close({ navigate: false });
   home.closeTransientLayers();
 });
 
