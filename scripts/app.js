@@ -5,8 +5,6 @@ import { createRainController } from './rain.js';
 import { createHyperController } from './hyper.js';
 import { createFingerController } from './finger.js';
 import { createLovePlayground } from './lovePlayground.js';
-import { createTodayScene } from './todayScene.js';
-import { createDreamScene } from './dreamScene.js';
 import { initEntryGate } from './entryGate.js';
 import { initNavDock } from './navDock.js';
 import { initInteractionEffects } from './effects.js';
@@ -33,22 +31,14 @@ const nav = createNavigator({
   }
 });
 const lovePlayground = createLovePlayground({ navigator: nav });
-const todayScene = createTodayScene({ navigator: nav });
-const dreamScene = createDreamScene({ navigator: nav });
 
 function bootMainApp() {
   home.init();
-  cards = initCards({
-    onOpenLoveScene: () => lovePlayground.open(),
-    onOpenTodayScene: () => todayScene.open(),
-    onOpenDreamScene: () => dreamScene.open()
-  });
+  cards = initCards({ onOpenLoveScene: () => lovePlayground.open() });
   rain.init();
   hyper.init();
   finger.init();
   lovePlayground.init();
-  todayScene.init();
-  dreamScene.init();
   nav.init();
   initNavDock();
   initInteractionEffects();
@@ -59,8 +49,6 @@ document.addEventListener('app:close-transient-layers', () => {
   cards?.close?.({ restoreFocus: false });
   finger.dismissPopup({ restoreFocus: false, force: true });
   lovePlayground.close();
-  todayScene.close();
-  dreamScene.close();
   home.closeTransientLayers();
 });
 

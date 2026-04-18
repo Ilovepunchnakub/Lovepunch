@@ -564,7 +564,16 @@ body.anniv-focus #navDockToggle {
   stroke-linecap: round;
 }
 .hyper-loading-ring-shell::before {
-  content: none;
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 98px;
+  height: 98px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.4), rgba(132, 168, 255, 0.1) 72%);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.25);
 }
 .hyper-loading-percent {
   position: relative;

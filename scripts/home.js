@@ -3,7 +3,6 @@ import { qs, pad, toast } from './utils.js';
 import { createHourCelebration } from './homeCelebrations.js';
 import { createAnniversaryExperience } from './anniversaryExperience.js';
 import { attachSecretTapTest } from './homeSecretTests.js';
-import { mountHomeLoveAnimation } from './homeLoveAnimation.js';
 
 export function createHomeController() {
   let timer;
@@ -61,7 +60,7 @@ export function createHomeController() {
   }
 
   function fillProfile() {
-    mountHomeLoveAnimation(qs('homeTitle'), `สวัสดี${CFG.HER_NAME} 🌸`);
+    qs('homeTitle').textContent = `สวัสดี${CFG.HER_NAME} 🌸`;
     Object.entries(CFG.PROFILE).forEach(([key, value]) => {
       const el = qs(`pf-${key}`);
       if (el) el.textContent = value;
