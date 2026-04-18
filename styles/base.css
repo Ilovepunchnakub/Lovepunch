@@ -226,6 +226,7 @@ body.profile-open::after {
   position: relative;
   display: block;
   isolation: isolate;
+  overflow: hidden;
 }
 .entry-heart-icon::before {
   content: '';
@@ -275,6 +276,7 @@ body.profile-open::after {
   will-change: clip-path, transform, filter;
   opacity: .92;
   filter: contrast(1.15) saturate(1.2);
+  overflow: hidden;
 }
 @supports ((-webkit-mask: url('') center / contain no-repeat) or (mask: url('') center / contain no-repeat)) {
   .entry-heart-fill {
