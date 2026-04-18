@@ -12,6 +12,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
   const holdMs = 4500;
   let latestSparkleStep = -1;
   let activePointerId = null;
+  let progress = 0;
 
   const block = (e) => e.preventDefault();
   ['contextmenu', 'selectstart', 'dragstart'].forEach((ev) => {
@@ -31,6 +32,12 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
   function stopTick() {
     if (raf) cancelAnimationFrame(raf);
     raf = null;
+  }
+
+  function setProgress(value) {
+    progress = Math.max(0, Math.min(1, value));
+    button.style.setProperty('--fill', `${(progress * 100).toFixed(2)}%`);
+    button.style.setProperty('--charge', `${progress}`);
   }
 
   function finishUnlock() {
@@ -63,9 +70,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
   function tick(ts) {
     if (!holding) return;
     const elapsed = ts - startAt;
-    const progress = Math.max(0, Math.min(1, elapsed / holdMs));
-    button.style.setProperty('--fill', `${(progress * 100).toFixed(2)}%`);
-    button.style.setProperty('--charge', `${progress}`);
+    setProgress(elapsed / holdMs);
 
     const sparkleStep = Math.floor(progress * 12);
     if (sparkleStep !== latestSparkleStep) {
@@ -85,7 +90,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     e.preventDefault();
     if (holding || unlocked || gate.classList.contains('done')) return;
     holding = true;
-    startAt = performance.now();
+    startAt = performance.now() - progress * holdMs;
     latestSparkleStep = -1;
     hint.textContent = 'กำลังยืนยันตัวตน...';
     button.classList.add('holding');
@@ -98,10 +103,10 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     activePointerId = null;
     button.classList.remove('holding');
     stopTick();
-    button.style.setProperty('--fill', '0%');
-    button.style.setProperty('--charge', '0');
     latestSparkleStep = -1;
-    hint.textContent = 'แตะค้างให้เต็มต่อเนื่องเพื่อปลดล็อก';
+    hint.textContent = progress > 0
+      ? `เติมแล้ว ${Math.round(progress * 100)}% กดค้างหรือแตะเพิ่มได้เลย`
+      : 'กดค้างหรือแตะเพิ่มหัวใจให้เต็มเพื่อปลดล็อก';
   }
 
   function handlePointerDown(e) {
@@ -120,6 +125,14 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
   button.addEventListener('pointerup', handlePointerStop);
   button.addEventListener('pointercancel', handlePointerStop);
   button.addEventListener('lostpointercapture', handlePointerStop);
+  button.addEventListener('click', () => {
+    if (unlocked || holding || gate.classList.contains('done')) return;
+    setProgress(progress + 0.2);
+    latestSparkleStep = -1;
+    spawnSparkle();
+    hint.textContent = `เติมแล้ว ${Math.round(progress * 100)}% กดเพิ่มได้อีกนะ`;
+    if (progress >= 1) finishUnlock();
+  });
 
   button.addEventListener('touchstart', block, { passive: false });
   button.addEventListener('contextmenu', block);
