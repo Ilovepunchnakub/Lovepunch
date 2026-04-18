@@ -11,6 +11,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
   let startAt = 0;
   const holdMs = 4500;
   let latestSparkleStep = -1;
+  let activePointerId = null;
 
   const block = (e) => e.preventDefault();
   ['contextmenu', 'selectstart', 'dragstart'].forEach((ev) => {
@@ -37,6 +38,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     unlocked = true;
     stopTick();
     holding = false;
+    activePointerId = null;
     button.classList.add('charged');
     navigator.vibrate?.(35);
     hint.textContent = 'เติมครบ 100% แล้ว';
@@ -93,6 +95,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
   function stopHold() {
     if (!holding) return;
     holding = false;
+    activePointerId = null;
     button.classList.remove('holding');
     stopTick();
     button.style.setProperty('--fill', '0%');
@@ -101,13 +104,39 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     hint.textContent = 'แตะค้างให้เต็มต่อเนื่องเพื่อปลดล็อก';
   }
 
-  button.addEventListener('pointerdown', startHold);
+  function handlePointerDown(e) {
+    if (!e.isPrimary) return;
+    activePointerId = e.pointerId;
+    button.setPointerCapture?.(e.pointerId);
+    startHold(e);
+  }
+
+  function handlePointerStop(e) {
+    if (activePointerId !== null && e.pointerId !== activePointerId) return;
+    stopHold();
+  }
+
+  button.addEventListener('pointerdown', handlePointerDown);
+  button.addEventListener('pointerup', handlePointerStop);
+  button.addEventListener('pointercancel', handlePointerStop);
+  button.addEventListener('lostpointercapture', handlePointerStop);
+
   button.addEventListener('touchstart', block, { passive: false });
   button.addEventListener('contextmenu', block);
   button.addEventListener('dragstart', block);
-  window.addEventListener('pointerup', stopHold);
-  window.addEventListener('pointercancel', stopHold);
-  button.addEventListener('pointerleave', stopHold);
+
+  window.addEventListener('pointerup', handlePointerStop);
+  window.addEventListener('pointercancel', handlePointerStop);
+  window.addEventListener('blur', stopHold);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopHold();
+  });
+
+  if (!window.PointerEvent) {
+    button.addEventListener('mousedown', startHold);
+    window.addEventListener('mouseup', stopHold);
+    button.addEventListener('mouseleave', stopHold);
+  }
 
   return {
     isLocked: () => gate.classList.contains('show')
