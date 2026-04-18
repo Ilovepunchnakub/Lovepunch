@@ -15,7 +15,12 @@ export function createNavigator({ onPage, transitionLoader }) {
   }
 
   function applyPage(page) {
-    document.dispatchEvent(new CustomEvent('app:close-transient-layers'));
+    document.dispatchEvent(new CustomEvent('app:close-transient-layers', {
+      detail: {
+        from: current,
+        to: page
+      }
+    }));
     closeTransientLayers();
     document.querySelectorAll('.page').forEach((el) => el.classList.remove('active'));
     qs(`pg-${page}`).classList.add('active');

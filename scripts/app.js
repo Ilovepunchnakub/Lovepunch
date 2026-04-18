@@ -55,12 +55,14 @@ function bootMainApp() {
   nav.go('home', { skipLoader: true });
 }
 
-document.addEventListener('app:close-transient-layers', () => {
+document.addEventListener('app:close-transient-layers', (event) => {
+  const destinationPage = event.detail?.to;
+
   cards?.close?.({ restoreFocus: false });
   finger.dismissPopup({ restoreFocus: false, force: true });
-  lovePlayground.close({ navigate: false });
-  todayScene.close({ navigate: false });
-  dreamScene.close({ navigate: false });
+  if (destinationPage !== 'love-play') lovePlayground.close({ navigate: false });
+  if (destinationPage !== 'today') todayScene.close({ navigate: false });
+  if (destinationPage !== 'dream') dreamScene.close({ navigate: false });
   home.closeTransientLayers();
 });
 
