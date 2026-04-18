@@ -8,9 +8,16 @@ export function createLovePlayground({ navigator }) {
   const closeBtn = qs('lovePlayClose');
   let destroyScene = null;
 
+  function unmountScene() {
+    destroyScene?.();
+    destroyScene = null;
+    document.body.classList.remove('lp-no-select');
+    if (host) host.innerHTML = '';
+  }
+
   function mountScene() {
     if (!host) return;
-    destroyScene?.();
+    unmountScene();
     host.innerHTML = renderLovePlayground();
 
     const wrap = host.querySelector('[data-love-play]');
@@ -20,6 +27,7 @@ export function createLovePlayground({ navigator }) {
   }
 
   function close() {
+    unmountScene();
     if (navigator.current() === pageId) {
       navigator.go('cards');
     }
@@ -44,9 +52,6 @@ export function createLovePlayground({ navigator }) {
     init,
     open,
     close,
-    destroy: () => {
-      destroyScene?.();
-      if (host) host.innerHTML = '';
-    }
+    destroy: unmountScene
   };
 }

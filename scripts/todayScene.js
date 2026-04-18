@@ -10,9 +10,15 @@ const markup = `
   <g class="arrow-angle"><use x="100" y="250" xlink:href="#arrow"/></g>
   <clipPath id="mask"><polygon opacity=".5" points="0,0 1500,0 1500,200 970,290 950,240 925,220 875,280 890,295 920,310 0,350" pointer-events="none"/></clipPath>
   <g class="arrows" clip-path="url(#mask)" pointer-events="none"></g>
-  <g class="missyou" fill="#aaa" opacity="0" transform="translate(-50, 50)"><path d="M358 194L363 118 386 120 400 153 416 121 440 119 446 203 419 212 416 163 401 180 380 160 381 204"/></g>
-  <g class="loveyou" fill="#F4531C" opacity="0" transform="translate(300, 100)"><path d="M0 0 L0 80 L30 80 L30 70 L10 70 L10 0 Z"/></g>
-  <g class="hit" fill="#ffcc00" opacity="0" transform="translate(180, -80) rotate(12)"><path d="M383 114L385 195 407 191 406 160 422 155 418 191 436 189 444 112 423 119 422 141 407 146 400 113"/></g>
+  <g class="missyou" opacity="0" transform="translate(-50, 50)">
+    <text x="355" y="200" fill="#bfc2ca" font-size="100" font-weight="700" letter-spacing="10">MISS YOU</text>
+  </g>
+  <g class="loveyou" opacity="0" transform="translate(70, 90)">
+    <text x="320" y="185" fill="#f4531c" font-size="108" font-weight="900" letter-spacing="6">LOVE YOU</text>
+  </g>
+  <g class="hit" opacity="0" transform="translate(180, -80) rotate(12)">
+    <text x="380" y="200" fill="#ffcc00" font-size="118" font-weight="900" letter-spacing="8">HIT!</text>
+  </g>
 </svg>
 <span class="today-game-hint">Draw back an arrow and launch it!</span>`;
 
@@ -86,8 +92,14 @@ export function createTodayScene({ navigator }) {
       TweenMax.killTweensOf(selector);
       TweenMax.killChildTweensOf(selector);
       TweenMax.set(selector, { autoAlpha: 1 });
-      TweenMax.staggerFromTo(`${selector} path`, 0.5, { rotation: -5, scale: 0, transformOrigin: 'center' }, { scale: 1, ease: Back.easeOut }, 0.05);
-      TweenMax.staggerTo(`${selector} path`, 0.3, { delay: 2, rotation: 20, scale: 0, ease: Back.easeIn }, 0.03);
+      TweenMax.staggerFromTo(
+        `${selector} > *`,
+        0.5,
+        { rotation: -5, scale: 0, transformOrigin: 'center center' },
+        { scale: 1, ease: Back.easeOut },
+        0.05
+      );
+      TweenMax.staggerTo(`${selector} > *`, 0.3, { delay: 2, rotation: 20, scale: 0, ease: Back.easeIn }, 0.03);
     };
 
     const hitTest = (tween) => {

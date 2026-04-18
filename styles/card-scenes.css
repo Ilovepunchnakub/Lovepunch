@@ -55,6 +55,13 @@
   opacity: .55;
 }
 
+.today-game-svg text {
+  font-family: 'Itim', 'Segoe UI', sans-serif;
+  paint-order: stroke;
+  stroke: rgba(0, 0, 0, 0.2);
+  stroke-width: 2px;
+}
+
 .dream-scene-root {
   margin: 0;
   overflow: hidden;
