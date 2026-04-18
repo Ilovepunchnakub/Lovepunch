@@ -3,23 +3,16 @@
 }
 
 .home-love-title {
-  width: min(38rem, 88vw);
-  height: clamp(5.75rem, 20vh, 8rem);
+  width: 100%;
   margin: 0.35rem auto 0;
   position: relative;
-}
-
-.home-love-title *,
-.home-love-title *::before,
-.home-love-title *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  display: flex;
+  justify-content: center;
 }
 
 .home-love-title .container {
-  width: 100%;
-  height: 100%;
+  width: min(50rem, 95vw);
+  height: min(20rem, 42vw);
   position: relative;
 }
 
@@ -48,30 +41,24 @@
   fill: #763c8c;
 }
 
-.home-love-title--compact {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(0.5rem, 2vw, 1rem);
-  font-weight: 900;
-  letter-spacing: 0.03em;
-}
-
-.home-love-title-compact-word {
-  font-size: clamp(2.9rem, 11vw, 4.2rem);
+.home-love-title .sound {
+  position: fixed;
   color: #763c8c;
-  line-height: 1;
+  font-size: 1.6rem;
+  bottom: 1rem;
+  right: 1rem;
+  text-decoration: underline;
+  cursor: pointer;
+  z-index: 20;
 }
 
-.home-love-title-compact-heart {
-  font-size: clamp(3.1rem, 12vw, 4.4rem);
-  line-height: 1;
-  transform: translateY(0.1rem);
+.home-love-title .sound--off {
+  text-decoration: line-through;
 }
 
 @media (max-width: 520px) {
-  .home-love-title {
-    width: min(34rem, 92vw);
-    height: clamp(5rem, 16vh, 6.5rem);
+  .home-love-title .container {
+    width: min(50rem, 96vw);
+    height: min(20rem, 54vw);
   }
 }
