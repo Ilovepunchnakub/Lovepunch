@@ -103,10 +103,9 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     activePointerId = null;
     button.classList.remove('holding');
     stopTick();
+    setProgress(0);
     latestSparkleStep = -1;
-    hint.textContent = progress > 0
-      ? `เติมแล้ว ${Math.round(progress * 100)}% กดค้างหรือแตะเพิ่มได้เลย`
-      : 'กดค้างหรือแตะเพิ่มหัวใจให้เต็มเพื่อปลดล็อก';
+    hint.textContent = 'ปล่อยแล้วรีเซ็ตนะคั้บ กดค้างใหม่เพื่อเติมหัวใจ';
   }
 
   function handlePointerDown(e) {
