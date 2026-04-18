@@ -3,9 +3,9 @@
 }
 
 .home-love-title {
-  width: min(50rem, 92vw);
-  height: 20rem;
-  margin: 0.8rem auto 0;
+  width: min(38rem, 88vw);
+  height: clamp(5.75rem, 20vh, 8rem);
+  margin: 0.35rem auto 0;
   position: relative;
 }
 
@@ -48,28 +48,10 @@
   fill: #763c8c;
 }
 
-.home-love-title .sound {
-  position: absolute;
-  color: #763c8c;
-  font-size: 1.2rem;
-  bottom: 0.4rem;
-  right: 0.4rem;
-  text-decoration: underline;
-  cursor: pointer;
-  user-select: none;
-}
-
-.home-love-title .sound--off {
-  text-decoration: line-through;
-}
 
 @media (max-width: 520px) {
   .home-love-title {
-    width: min(44rem, 94vw);
-    height: 16rem;
-  }
-
-  .home-love-title .sound {
-    font-size: 1rem;
+    width: min(34rem, 92vw);
+    height: clamp(5rem, 16vh, 6.5rem);
   }
 }
