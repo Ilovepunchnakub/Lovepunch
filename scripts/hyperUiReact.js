@@ -106,7 +106,6 @@ function HyperOverlay({ state, onStart, onFinaleFinish }) {
           React.createElement(
             'svg',
             { className: 'hyper-loading-ring', viewBox: '0 0 120 120' },
-            React.createElement('circle', { className: 'ring-bg', cx: '60', cy: '60', r: '48' }),
             React.createElement(motion.circle, {
               className: 'ring-progress',
               cx: '60',

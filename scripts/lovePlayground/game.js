@@ -134,11 +134,13 @@ class Food extends WorldObject {
   }
 
   onGrab(e) {
+    e.preventDefault();
     this.grabPos.b = this.touchPos(e);
     this.el.classList.add('lp-dragging');
+    document.body.classList.add('lp-no-select');
     this.el.setPointerCapture?.(e.pointerId);
     document.addEventListener('pointerup', this.onLetGo);
-    document.addEventListener('pointermove', this.onDrag);
+    document.addEventListener('pointermove', this.onDrag, { passive: false });
   }
 
   onDrag(e) {
@@ -148,8 +150,10 @@ class Food extends WorldObject {
     this.grabPos.b.y = y;
   }
 
-  onLetGo() {
+  onLetGo(e) {
+    if (e?.pointerId !== undefined) this.el.releasePointerCapture?.(e.pointerId);
     this.el.classList.remove('lp-dragging');
+    document.body.classList.remove('lp-no-select');
     document.removeEventListener('pointerup', this.onLetGo);
     document.removeEventListener('pointermove', this.onDrag);
   }
