@@ -299,6 +299,12 @@
   -webkit-user-select: none !important;
 }
 
+body.lp-no-scroll {
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none;
+}
+
 #pg-love-play .love-play-shell:active {
   transform: none !important;
 }
