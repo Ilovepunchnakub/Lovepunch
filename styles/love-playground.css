@@ -3,8 +3,11 @@
   min-height: min(62vh, 520px);
   border-radius: 24px;
   border: 1px solid #d8f8f3;
-  background: linear-gradient(180deg, #63cec8, #4abdb8);
-  box-shadow: inset 0 12px 28px rgba(255, 255, 255, 0.24);
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.32), transparent 32%),
+    radial-gradient(circle at 82% 76%, rgba(255, 236, 246, 0.2), transparent 36%),
+    linear-gradient(180deg, #63cec8, #4abdb8);
+  box-shadow: inset 0 12px 28px rgba(255, 255, 255, 0.24), 0 16px 36px rgba(49, 133, 129, 0.24);
   overflow: hidden;
 }
 
@@ -23,6 +26,22 @@
   justify-content: center;
   overflow: hidden;
   --brown: #57280f;
+  --drag-x: 50%;
+  --drag-y: 50%;
+}
+
+.lp-wrapper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle 90px at var(--drag-x) var(--drag-y), rgba(255, 255, 255, 0.24), transparent 72%);
+  transition: opacity .2s ease;
+}
+
+.lp-wrapper.lp-pointer-glow::before {
+  opacity: 1;
 }
 
 .lp-wrapper.lp-show-message::after {
@@ -206,6 +225,13 @@
 
 .lp-food { cursor: grab; }
 .lp-food.lp-dragging { cursor: grabbing; }
+.lp-food {
+  transition: filter .18s ease, transform .18s ease;
+}
+.lp-food.lp-dragging {
+  transform: scale(1.06);
+  filter: drop-shadow(0 14px 18px rgba(45, 42, 42, 0.24));
+}
 
 .lp-donut {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAASCAYAAABB7B6eAAAAAXNSR0IArs4c6QAAAVJJREFUOE9jZCAAwjX4/+NTsvLGR0Z88lglkQ0tjQ1nMLazxWlGRGoOXA6bZSgWwAwGGUosQLYcZhmyRXALQIaTYjA2B8AsA1kEswRsATUMR7YQZBHMErAFZ1rT8EbkrdtXsIaYmqoOzpAEWcJoG8vIiM/1uAxGNxWbRTBf4LSge/FKBn8LbbhZOk5WKOZe2XcMzt944ioDtvgDmYHTApgLQKZUV6ViDYrWttlg8RWzpzCcPXQYQw1eC0CqkVMFNhtABoMANsNB4nALQEFBKMKwWYDLYJBaUPyBgg4cRMhhjc8iYjIfcsIAWwDS9PfFrv8rKxrg+sm1BNnw8I4GBmYJN0Z4Rlt2YDUDsiUw2whZhi0pgwyPcggF52aUogJkCQhgs4iY4AEZDAIww0FsrIUdzCJiLIMZCjMYrAepCCdYXCNbhs0XINfCAMHiGpsBlFY4AGg4nGHeibMpAAAAAElFTkSuQmCC);
@@ -268,4 +294,8 @@
 .lp-no-select * {
   user-select: none !important;
   -webkit-user-select: none !important;
+}
+
+#pg-love-play .love-play-shell:active {
+  transform: none !important;
 }

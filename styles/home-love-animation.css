@@ -11,8 +11,8 @@
 }
 
 .home-love-title .container {
-  width: min(50rem, 95vw);
-  height: min(20rem, 42vw);
+  width: min(42rem, 90vw);
+  height: clamp(7.2rem, 24vw, 12.8rem);
   position: relative;
 }
 
@@ -41,24 +41,9 @@
   fill: #763c8c;
 }
 
-.home-love-title .sound {
-  position: fixed;
-  color: #763c8c;
-  font-size: 1.6rem;
-  bottom: 1rem;
-  right: 1rem;
-  text-decoration: underline;
-  cursor: pointer;
-  z-index: 20;
-}
-
-.home-love-title .sound--off {
-  text-decoration: line-through;
-}
-
 @media (max-width: 520px) {
   .home-love-title .container {
-    width: min(50rem, 96vw);
-    height: min(20rem, 54vw);
+    width: min(42rem, 95vw);
+    height: clamp(6.2rem, 30vw, 10.8rem);
   }
 }

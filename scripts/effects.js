@@ -1,5 +1,7 @@
 export function initInteractionEffects() {
   document.addEventListener('pointerdown', (e) => {
+    if (e.target.closest('#lovePlayWrap')) return;
+
     const target = e.target.closest('button, .soft-card, .fc, .ni');
     if (!target) return;
 

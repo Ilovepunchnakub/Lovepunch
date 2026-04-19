@@ -6,8 +6,6 @@ const EASING_HEART_PATH =
 const INITIAL_TRANSFORM =
   'transform: translate(0px, 0px) rotate(0deg) skew(0deg, 0deg) scale(1, 1); opacity: 1;';
 
-const VOLUME = 0.2;
-
 function buildTemplate(label) {
   return `
     <div class="container">
@@ -27,13 +25,6 @@ function buildTemplate(label) {
       </svg>
       <div class="mo-container"></div>
     </div>
-    <audio class="blup" style="display: none">
-      <source src="https://www.freesound.org/data/previews/265/265115_4373976-lq.mp3" type="audio/ogg">
-    </audio>
-    <audio class="blop" style="display: none">
-      <source src="https://www.freesound.org/data/previews/265/265115_4373976-lq.mp3" type="audio/ogg">
-    </audio>
-    <span class="sound">sound</span>
   `;
 }
 
@@ -68,10 +59,7 @@ export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีท�
     lineLeft: qs(targetEl, '.line--left'),
     lineRight: qs(targetEl, '.line--rght'),
     colTxt: '#763c8c',
-    colHeart: '#fa4843',
-    blup: qs(targetEl, '.blup'),
-    blop: qs(targetEl, '.blop'),
-    sound: qs(targetEl, '.sound')
+    colHeart: '#fa4843'
   };
 
   class Heart extends window.mojs.CustomShape {
@@ -85,19 +73,8 @@ export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีท�
 
   window.mojs.addShape('heart', Heart);
 
-  const playBlop = () => {
-    if (el.blop) {
-      el.blop.currentTime = 0;
-      el.blop.play().catch(() => {});
-    }
-  };
-
-  const playBlup = () => {
-    if (el.blup) {
-      el.blup.currentTime = 0;
-      el.blup.play().catch(() => {});
-    }
-  };
+  const playBlop = () => {};
+  const playBlup = () => {};
 
   const crtBoom = (delay = 0, x = 0, rd = 46) => {
     const parent = el.container;
@@ -279,27 +256,6 @@ export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีท�
   const replayTimer = window.setInterval(() => {
     loveTl.replay();
   }, 4300);
-
-  if (el.blup) el.blup.volume = VOLUME;
-  if (el.blop) el.blop.volume = VOLUME;
-
-  const toggleSound = () => {
-    let on = true;
-    return () => {
-      if (on) {
-        if (el.blup) el.blup.volume = 0;
-        if (el.blop) el.blop.volume = 0;
-        el.sound?.classList.add('sound--off');
-      } else {
-        if (el.blup) el.blup.volume = VOLUME;
-        if (el.blop) el.blop.volume = VOLUME;
-        el.sound?.classList.remove('sound--off');
-      }
-      on = !on;
-    };
-  };
-
-  el.sound?.addEventListener('click', toggleSound());
 
   targetEl.__loveAnimationCleanup = () => {
     window.clearInterval(replayTimer);

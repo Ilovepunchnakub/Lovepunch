@@ -130,7 +130,12 @@ class Food extends WorldObject {
     this.grabPos.a.x = this.grabPos.b.x - x;
     this.grabPos.a.y = this.grabPos.b.y - y;
     this.pos.subtractXy(this.grabPos.a);
+    this.pos.x = Math.max(-20, Math.min(this.pos.x, this.wrapper.clientWidth - this.size.w + 20));
+    this.pos.y = Math.max(8, Math.min(this.pos.y, this.wrapper.clientHeight - this.size.h + 8));
     this.setStyles();
+    this.wrapper.style.setProperty('--drag-x', `${x}px`);
+    this.wrapper.style.setProperty('--drag-y', `${y}px`);
+    this.wrapper.classList.add('lp-pointer-glow');
   }
 
   onGrab(e) {
@@ -154,6 +159,7 @@ class Food extends WorldObject {
     if (e?.pointerId !== undefined) this.el.releasePointerCapture?.(e.pointerId);
     this.el.classList.remove('lp-dragging');
     document.body.classList.remove('lp-no-select');
+    this.wrapper.classList.remove('lp-pointer-glow');
     document.removeEventListener('pointerup', this.onLetGo);
     document.removeEventListener('pointermove', this.onDrag);
   }
@@ -245,7 +251,17 @@ class Bear extends WorldObject {
   }
 
   onResize() {
+    this.setPos();
     if (this.food) this.food.setPos();
+  }
+
+  setPos() {
+    const { width, height } = this.wrapper.getBoundingClientRect();
+    this.pos.setXy({
+      x: width / 2 - this.size.w / 2,
+      y: Math.max(40, height / 2 - 140)
+    });
+    this.setStyles();
   }
 
   grow() {
@@ -306,6 +322,8 @@ export function initLovePlaygroundScene({ wrapper, bearEl }) {
     maxSize: { w: 90, h: 100 },
     offset: { x: null, y: null }
   });
+
+  bear.setPos();
 
   return () => {
     bear.destroy();

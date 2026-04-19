@@ -198,6 +198,7 @@ body.profile-open::after {
   background: transparent;
   touch-action: none;
   border-radius: 50%;
+  overflow: hidden;
   outline: none;
   -webkit-touch-callout: none;
 }
@@ -227,15 +228,17 @@ body.profile-open::after {
   display: block;
   isolation: isolate;
   overflow: hidden;
+  transform: translateZ(0);
 }
 .entry-heart-icon::before {
   content: '';
   position: absolute;
   inset: 0;
   background: url('../icons/custom/entry-heart-solid.svg') center / contain no-repeat;
-  clip-path: inset(calc(100% - var(--fill, 0%)) 0 0 0);
+  clip-path: inset(calc(100% - var(--fill, 0%)) -1px -1px -1px);
   transform-origin: bottom;
   will-change: clip-path, transform;
+  transition: clip-path .22s ease-out;
 }
 .entry-heart-icon::after {
   content: '';
@@ -272,9 +275,10 @@ body.profile-open::after {
   background-size: 100% 100%, 16px 16px, 16px 16px;
   background-position: center, 0 0, 0 0;
   image-rendering: pixelated;
-  clip-path: inset(calc(100% - var(--fill, 0%)) 0 0 0);
+  clip-path: inset(calc(100% - var(--fill, 0%)) -1px -1px -1px);
   transform-origin: bottom;
   will-change: clip-path, transform, filter;
+  transition: clip-path .22s ease-out, filter .22s ease-out;
   opacity: .92;
   filter: contrast(1.15) saturate(1.2);
   overflow: hidden;
@@ -357,6 +361,7 @@ body.rain-focus #rainLayer { pointer-events: auto; }
 }
 .entry-heart.holding .entry-heart-fill {
   animation: pixelRise .65s steps(6, end) infinite;
+  filter: contrast(1.2) saturate(1.25) drop-shadow(0 8px 12px rgba(255, 107, 170, 0.22));
 }
 .entry-heart.charged { animation: heartFinale 1s ease both; }
 .entry-sparkle {
