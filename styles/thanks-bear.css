@@ -1,0 +1,23 @@
+.thanks-page-shell {
+  position: relative;
+  min-height: 100dvh;
+  width: 100%;
+  background: #48c1bb;
+  overflow: hidden;
+}
+
+.thanks-bear-root {
+  min-height: 100dvh;
+  width: 100%;
+}
+
+.thanks-bear-root .lp-wrapper {
+  height: 100dvh;
+  min-height: 100dvh;
+  border-radius: 0;
+}
+
+.thanks-bear-root .lp-wrapper.lp-show-message::after {
+  top: 80px;
+  font-size: 1.2em;
+}

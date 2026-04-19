@@ -7,6 +7,7 @@ import { createFingerController } from './finger.js';
 import { createLovePlayground } from './lovePlayground.js';
 import { createTodayScene } from './todayScene.js';
 import { createDreamScene } from './dreamScene.js';
+import { createThankYouBearPage } from './thankYouBear.js';
 import { initEntryGate } from './entryGate.js';
 import { initNavDock } from './navDock.js';
 import { initInteractionEffects } from './effects.js';
@@ -36,13 +37,15 @@ const nav = createNavigator({
 const lovePlayground = createLovePlayground({ navigator: nav });
 const todayScene = createTodayScene({ navigator: nav });
 const dreamScene = createDreamScene({ navigator: nav });
+const thankYouBearPage = createThankYouBearPage({ navigator: nav });
 
 function bootMainApp() {
   home.init();
   cards = initCards({
     onOpenLoveScene: () => lovePlayground.open(),
     onOpenTodayScene: () => todayScene.open(),
-    onOpenDreamScene: () => dreamScene.open()
+    onOpenDreamScene: () => dreamScene.open(),
+    onOpenThanksScene: () => thankYouBearPage.open()
   });
   rain.init();
   hyper.init();
@@ -50,6 +53,7 @@ function bootMainApp() {
   lovePlayground.init();
   todayScene.init();
   dreamScene.init();
+  thankYouBearPage.init();
   nav.init();
   initNavDock();
   initInteractionEffects();
@@ -63,6 +67,7 @@ document.addEventListener('app:close-transient-layers', () => {
   lovePlayground.close({ navigate: false });
   todayScene.close({ navigate: false });
   dreamScene.close({ navigate: false });
+  thankYouBearPage.close({ navigate: false });
   home.closeTransientLayers();
 });
 
