@@ -1,0 +1,8 @@
+export const LOVE_LETTER_CONTENT = {
+  envelopeLabel: '♡ จดหมายถึงเธอ ♡',
+  titleInitial: 'จะเป็นวาเลนไทน์ของเราไหม?',
+  titleAccepted: 'เย้~ ตกลงแล้วน้าา 💖',
+  finalHtml: '<strong>เดตวาเลนไทน์:</strong> ร้าน Meow เวลา 19:00 น. แต่งตัวสวยๆ นะ 💐',
+  yesAlt: 'ตกลง',
+  noAlt: 'ยังไม่ตกลง'
+};
