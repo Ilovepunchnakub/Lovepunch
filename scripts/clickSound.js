@@ -17,26 +17,33 @@ export function initClickSound() {
     const time = ctx.currentTime;
     const gain = ctx.createGain();
     gain.gain.setValueAtTime(0.0001, time);
-    gain.gain.exponentialRampToValueAtTime(0.15, time + 0.012);
-    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.14);
-    gain.connect(ctx.destination);
+    gain.gain.exponentialRampToValueAtTime(0.08, time + 0.022);
+    gain.gain.exponentialRampToValueAtTime(0.0001, time + 0.22);
+
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(1900, time);
+    filter.Q.setValueAtTime(0.8, time);
+
+    gain.connect(filter);
+    filter.connect(ctx.destination);
 
     const oscA = ctx.createOscillator();
-    oscA.type = 'triangle';
-    oscA.frequency.setValueAtTime(1046, time);
-    oscA.frequency.exponentialRampToValueAtTime(1318, time + 0.08);
+    oscA.type = 'sine';
+    oscA.frequency.setValueAtTime(620, time);
+    oscA.frequency.exponentialRampToValueAtTime(760, time + 0.11);
 
     const oscB = ctx.createOscillator();
-    oscB.type = 'sine';
-    oscB.frequency.setValueAtTime(1568, time);
-    oscB.frequency.exponentialRampToValueAtTime(2093, time + 0.08);
+    oscB.type = 'triangle';
+    oscB.frequency.setValueAtTime(430, time);
+    oscB.frequency.exponentialRampToValueAtTime(510, time + 0.12);
 
     oscA.connect(gain);
     oscB.connect(gain);
     oscA.start(time);
-    oscB.start(time);
-    oscA.stop(time + 0.14);
-    oscB.stop(time + 0.12);
+    oscB.start(time + 0.005);
+    oscA.stop(time + 0.2);
+    oscB.stop(time + 0.22);
   };
 
   document.addEventListener('pointerdown', (event) => {

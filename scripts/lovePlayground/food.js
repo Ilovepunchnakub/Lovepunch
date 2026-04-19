@@ -1,0 +1,111 @@
+import { randomN } from './math.js';
+import { WorldObject } from './worldObject.js';
+import { Crumbs } from './crumbs.js';
+
+export class Food extends WorldObject {
+  constructor(props) {
+    super({
+      el: props.el,
+      x: 0,
+      y: 0,
+      grabPos: { a: { x: 0, y: 0 }, b: { x: 0, y: 0 } },
+      eatCount: 0,
+      eatInterval: null,
+      ...props
+    });
+
+    this.onGrab = this.onGrab.bind(this);
+    this.onDrag = this.onDrag.bind(this);
+    this.onLetGo = this.onLetGo.bind(this);
+
+    this.addDragEvent();
+    this.setPos();
+  }
+
+  touchPos(e) {
+    return { x: e.clientX, y: e.clientY };
+  }
+
+  addDragEvent() {
+    this.el.addEventListener('pointerdown', this.onGrab);
+  }
+
+  drag(e, x, y) {
+    e.preventDefault();
+    this.grabPos.a.x = this.grabPos.b.x - x;
+    this.grabPos.a.y = this.grabPos.b.y - y;
+    this.pos.subtractXy(this.grabPos.a);
+    this.pos.x = Math.max(-20, Math.min(this.pos.x, this.wrapper.clientWidth - this.size.w + 20));
+    this.pos.y = Math.max(8, Math.min(this.pos.y, this.wrapper.clientHeight - this.size.h + 8));
+    this.setStyles();
+    this.wrapper.style.setProperty('--drag-x', `${x}px`);
+    this.wrapper.style.setProperty('--drag-y', `${y}px`);
+    this.wrapper.classList.add('lp-pointer-glow');
+  }
+
+  onGrab(e) {
+    e.preventDefault();
+    this.grabPos.b = this.touchPos(e);
+    this.el.classList.add('lp-dragging');
+    document.body.classList.add('lp-no-select');
+    this.el.setPointerCapture?.(e.pointerId);
+    document.addEventListener('pointerup', this.onLetGo);
+    document.addEventListener('pointermove', this.onDrag, { passive: false });
+  }
+
+  onDrag(e) {
+    const { x, y } = this.touchPos(e);
+    if (this.canMove) this.drag(e, x, y);
+    this.grabPos.b.x = x;
+    this.grabPos.b.y = y;
+  }
+
+  onLetGo(e) {
+    if (e?.pointerId !== undefined) this.el.releasePointerCapture?.(e.pointerId);
+    this.el.classList.remove('lp-dragging');
+    document.body.classList.remove('lp-no-select');
+    this.wrapper.classList.remove('lp-pointer-glow');
+    document.removeEventListener('pointerup', this.onLetGo);
+    document.removeEventListener('pointermove', this.onDrag);
+  }
+
+  eat() {
+    if (this.eatInterval) return;
+
+    this.eatInterval = setInterval(() => {
+      if (this.eatCount < 5) {
+        this.crumbs = new Crumbs({
+          size: { w: 0, h: 0 },
+          maxSize: { w: 40, h: 40 },
+          x: this.distPos.x + randomN(10),
+          y: this.pos.y + randomN(10),
+          food: this,
+          wrapper: this.wrapper
+        });
+        this.eatCount += 1;
+        this.el.className = `lp-food lp-donut lp-donut-eaten-${this.eatCount} lp-object`;
+      } else {
+        this.el.remove();
+        this.bear.food = null;
+        clearInterval(this.eatInterval);
+        this.eatInterval = null;
+        this.bear.grow();
+      }
+    }, 500);
+  }
+
+  setPos() {
+    const { width, height } = this.wrapper.getBoundingClientRect();
+    this.pos.setXy({
+      x: width / 2 - 36,
+      y: height - (height > 400 ? 200 : 100)
+    });
+    this.setStyles();
+  }
+
+  destroy() {
+    this.onLetGo();
+    this.el.removeEventListener('pointerdown', this.onGrab);
+    clearInterval(this.eatInterval);
+  }
+}

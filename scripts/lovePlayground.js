@@ -8,13 +8,50 @@ export function createLovePlayground({ navigator }) {
   const closeBtn = qs('lovePlayClose');
   let destroyScene = null;
 
+
+  function normalizeLegacyMarkup(scope) {
+    if (!scope) return;
+    const classMap = {
+      'cheek-wrapper': 'lp-cheek-wrapper',
+      'mouth-wrapper': 'lp-mouth-wrapper',
+      'ear': 'lp-ear',
+      'round': 'lp-round',
+      'face': 'lp-face',
+      'inner-face': 'lp-inner-face',
+      'eye': 'lp-eye',
+      'nose': 'lp-nose',
+      'cheeks': 'lp-cheeks',
+      'flex-center': 'lp-flex-center',
+      'limbs': 'lp-limbs',
+      'hands': 'lp-hands',
+      'hand': 'lp-hand',
+      'flip': 'lp-flip',
+      'feet': 'lp-feet',
+      'foot': 'lp-foot',
+      'ears': 'lp-ears',
+      'inner-ears': 'lp-inner-ears',
+      'food': 'lp-food',
+      'donut': 'lp-donut',
+      'object': 'lp-object'
+    };
+
+    Object.entries(classMap).forEach(([legacy, modern]) => {
+      scope.querySelectorAll(`.${legacy}`).forEach((node) => node.classList.add(modern));
+    });
+  }
+
   function mountScene() {
     if (!host) return;
     destroyScene?.();
     host.innerHTML = renderLovePlayground();
 
-    const wrap = host.querySelector('[data-love-play]');
-    const bear = host.querySelector('[data-bear]');
+    const wrap = host.querySelector('[data-love-play], .lp-wrapper, .wrapper');
+    const bear = host.querySelector('[data-bear], .lp-bear, .bear');
+
+    if (wrap && !wrap.classList.contains('lp-wrapper')) wrap.classList.add('lp-wrapper');
+    if (bear && !bear.classList.contains('lp-bear')) bear.classList.add('lp-bear', 'lp-object');
+    normalizeLegacyMarkup(wrap);
+
     if (!wrap || !bear) return;
     destroyScene = initLovePlaygroundScene({ wrapper: wrap, bearEl: bear });
   }
