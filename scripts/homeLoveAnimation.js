@@ -120,6 +120,7 @@ export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีท�
     const easingOut = 'sin.out';
     const opts = { duration: move, easing, opacity: 1 };
     const delta = 150;
+    const heartCenterX = -18;
 
     return new window.mojs.Timeline().add([
       new window.mojs.Tween({
@@ -226,16 +227,16 @@ export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีท�
         shape: 'heart',
         delay: move,
         fill: el.colHeart,
-        x: -64,
+        x: heartCenterX,
         scale: { 0: 0.95, easing: easingHeart },
         duration: 500
       })
         .then({
-          x: { to: -62, easing },
+          x: { to: heartCenterX + 2, easing },
           scale: { to: 0.65, easing },
           duration: boom + move - 500
         })
-        .then({ duration: boom - 50, x: { to: -62 + 48 }, scale: { to: 0.9 }, easing: easingBoom })
+        .then({ duration: boom - 50, x: { to: heartCenterX + 50 }, scale: { to: 0.9 }, easing: easingBoom })
         .then({ duration: 125, scale: { to: 0.8 }, easing: easingOut })
         .then({ duration: 125, scale: { to: 0.85 }, easing: easingOut })
         .then({ duration: move - 200, scale: { to: 0.45 }, easing })
@@ -245,9 +246,9 @@ export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีท�
         .then({ duration: 125 })
         .then({ duration: 350, scale: { to: 0 }, easing: easingOut }),
 
-      ...crtBoom(move, -64, 46),
+      ...crtBoom(move, heartCenterX, 46),
       ...crtBoom(move * 2 + boom, 18, 34),
-      ...crtBoom(move * 3 + boom * 2 - delta, -64, 34),
+      ...crtBoom(move * 3 + boom * 2 - delta, heartCenterX, 34),
       ...crtBoom(move * 3 + boom * 2, 45, 34)
     ]);
   };
