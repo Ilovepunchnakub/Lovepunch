@@ -15,6 +15,7 @@
   height: 100dvh;
   min-height: 100dvh;
   border-radius: 0;
+  overscroll-behavior: none;
 }
 
 .thanks-bear-root .lp-wrapper.lp-show-message::after {
