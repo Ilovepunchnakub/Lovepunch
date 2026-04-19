@@ -62,7 +62,7 @@
 }
 
 .lp-bear {
-  position: relative;
+  position: absolute;
   --bg: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAYAAABWdVznAAAAAXNSR0IArs4c6QAAAEFJREFUKFNjZMACvp+a/h8kzGmWyYgujSIAU4iuCFkjXAMuxTDNME1gDYQUI2tiJFYxTNPI1EBysMKCi1DwwiIOAN7kLBdgm7MJAAAAAElFTkSuQmCC);
   border-image: var(--bg) 5 fill / 12px / 0 stretch;
 }
