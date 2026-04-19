@@ -205,21 +205,22 @@ body.profile-open::after {
 .entry-heart::after {
   content: '';
   position: absolute;
-  inset: 10%;
-  background:
-    radial-gradient(circle at 50% 44%, rgba(255, 255, 255, 0.68), transparent 52%),
-    radial-gradient(circle at 30% 72%, rgba(255, 173, 214, 0.45), transparent 56%);
+  inset: 9%;
+  -webkit-mask: url('../icons/custom/entry-heart-solid.svg') center / contain no-repeat;
+  mask: url('../icons/custom/entry-heart-solid.svg') center / contain no-repeat;
   pointer-events: none;
 }
 
 .entry-heart::before {
   content: '';
   position: absolute;
-  inset: 12%;
-  border-radius: 50%;
-  background: radial-gradient(circle at 50% 52%, rgba(255, 144, 194, 0.16), rgba(255, 116, 178, 0.04) 68%, transparent 76%);
+  inset: 10%;
+  -webkit-mask: url('../icons/custom/entry-heart-solid.svg') center / contain no-repeat;
+  mask: url('../icons/custom/entry-heart-solid.svg') center / contain no-repeat;
+  background: radial-gradient(circle at 50% 48%, rgba(255, 144, 194, 0.16), rgba(255, 116, 178, 0.04) 68%, transparent 76%);
   filter: blur(4px);
   z-index: -1;
+  pointer-events: none;
 }
 .entry-heart-icon {
   width: 100%;
@@ -236,7 +237,11 @@ body.profile-open::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, #ffe9f3 0%, #ffdceb 100%);
+  background:
+    radial-gradient(circle at 50% 40%, rgba(255, 255, 255, 0.68), transparent 52%),
+    radial-gradient(circle at 40% 64%, rgba(255, 173, 214, 0.38), transparent 56%),
+    linear-gradient(180deg, #ffe9f3 0%, #ffdceb 100%);
+  pointer-events: none;
 }
 .entry-heart-icon::after {
   content: '';
@@ -251,6 +256,7 @@ body.profile-open::after {
     radial-gradient(circle at 76% 74%, rgba(255, 128, 192, 0.85) 0 10%, transparent 11%),
     radial-gradient(circle at 58% 88%, rgba(255, 181, 220, 0.78) 0 11%, transparent 12%);
   filter: blur(0.5px) saturate(1.2);
+  pointer-events: none;
 }
 .entry-heart-fill {
   position: absolute;
