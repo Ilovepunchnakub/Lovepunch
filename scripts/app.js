@@ -4,7 +4,7 @@ import { initCards } from './cards.js';
 import { createRainController } from './rain.js';
 import { createHyperController } from './hyper.js';
 import { createFingerController } from './finger.js';
-import { createLovePlayground } from './lovePlayground.js';
+import { createLoveLetterPage } from './loveLetter.js';
 import { createTodayScene } from './todayScene.js';
 import { createDreamScene } from './dreamScene.js';
 import { createThankYouBearPage } from './thankYouBear.js';
@@ -34,7 +34,7 @@ const nav = createNavigator({
     if (page === 'finger') finger.reset();
   }
 });
-const lovePlayground = createLovePlayground({ navigator: nav });
+const loveLetterPage = createLoveLetterPage({ navigator: nav });
 const todayScene = createTodayScene({ navigator: nav });
 const dreamScene = createDreamScene({ navigator: nav });
 const thankYouBearPage = createThankYouBearPage({ navigator: nav });
@@ -42,7 +42,7 @@ const thankYouBearPage = createThankYouBearPage({ navigator: nav });
 function bootMainApp() {
   home.init();
   cards = initCards({
-    onOpenLoveScene: () => lovePlayground.open(),
+    onOpenLoveScene: () => loveLetterPage.open(),
     onOpenTodayScene: () => todayScene.open(),
     onOpenDreamScene: () => dreamScene.open(),
     onOpenThanksScene: () => thankYouBearPage.open()
@@ -50,7 +50,7 @@ function bootMainApp() {
   rain.init();
   hyper.init();
   finger.init();
-  lovePlayground.init();
+  loveLetterPage.init();
   todayScene.init();
   dreamScene.init();
   thankYouBearPage.init();
@@ -64,7 +64,7 @@ function bootMainApp() {
 document.addEventListener('app:close-transient-layers', () => {
   cards?.close?.({ restoreFocus: false });
   finger.dismissPopup({ restoreFocus: false, force: true });
-  lovePlayground.close({ navigate: false });
+  loveLetterPage.close({ navigate: false });
   todayScene.close({ navigate: false });
   dreamScene.close({ navigate: false });
   thankYouBearPage.close({ navigate: false });
