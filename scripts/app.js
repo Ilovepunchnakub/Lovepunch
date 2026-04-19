@@ -10,6 +10,7 @@ import { createDreamScene } from './dreamScene.js';
 import { initEntryGate } from './entryGate.js';
 import { initNavDock } from './navDock.js';
 import { initInteractionEffects } from './effects.js';
+import { initClickSound } from './clickSound.js';
 import { createFakePageLoader, createEntryCompletionLoader } from './fakePageLoader.js';
 
 const home = createHomeController();
@@ -52,6 +53,7 @@ function bootMainApp() {
   nav.init();
   initNavDock();
   initInteractionEffects();
+  initClickSound();
   nav.go('home', { skipLoader: true });
 }
 

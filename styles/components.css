@@ -1,6 +1,13 @@
 .home-hdr { text-align: center; margin-bottom: 12px; }
 .home-tag { letter-spacing: 1.4px; color: #c05f80; font-size: 11px; font-weight: 700; }
-.home-hdr h2 { margin: 4px 0 0; font-size: 36px; }
+.home-hdr h2 {
+  margin: 4px 0 0;
+  font-size: 36px;
+  font-weight: 900;
+  letter-spacing: .2px;
+  text-wrap: balance;
+  text-shadow: 0 6px 16px rgba(188, 84, 126, 0.2);
+}
 
 .days-card { padding: 22px; background: linear-gradient(145deg, #eb5a8b, #c54576); color: #fff; position: relative; }
 .section-tag { margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: .9; }
@@ -83,7 +90,12 @@
 .stat-grid b { font-size: 20px; }
 
 .simple-hdr { text-align: center; margin-bottom: 10px; }
-.simple-hdr h2 { margin: 2px 0; font-size: 33px; }
+.simple-hdr h2 {
+  margin: 2px 0;
+  font-size: 33px;
+  font-weight: 900;
+  text-wrap: balance;
+}
 .simple-hdr p { margin: 0; color: #9d7283; }
 .love-play-page { align-content: center; }
 .love-play-shell {
@@ -95,6 +107,18 @@
 .love-play-shell h2 {
   margin: 8px 0 6px;
   font-size: clamp(30px, 5vw, 42px);
+  font-weight: 900;
+}
+.home-tag,
+.section-tag {
+  font-weight: 800;
+}
+.text-highlight {
+  display: inline;
+  font-weight: 900;
+  background: linear-gradient(transparent 58%, rgba(255, 196, 220, 0.7) 58%);
+  padding: 0 .08em;
+  border-radius: .22em;
 }
 .love-play-guide { margin: 0 0 14px; color: #7d5767; }
 .love-play-close {

@@ -10,14 +10,8 @@ const markup = `
   <g class="arrow-angle"><use x="100" y="250" xlink:href="#arrow"/></g>
   <clipPath id="mask"><polygon opacity=".5" points="0,0 1500,0 1500,200 970,290 950,240 925,220 875,280 890,295 920,310 0,350" pointer-events="none"/></clipPath>
   <g class="arrows" clip-path="url(#mask)" pointer-events="none"></g>
-  <g class="missyou" opacity="0" transform="translate(256, 196)">
-    <text x="0" y="0" fill="#b7bbc2" font-size="64" font-style="italic" font-weight="800" letter-spacing="3">MISS YOU</text>
-  </g>
-  <g class="loveyou" opacity="0" transform="translate(288, 108)">
-    <text x="0" y="0" fill="#F4531C" font-size="72" font-style="italic" font-weight="900" letter-spacing="2">LOVE YOU</text>
-  </g>
-  <g class="hit" opacity="0" transform="translate(430, 112) rotate(12)">
-    <text x="0" y="0" fill="#ffcc00" font-size="86" font-style="italic" font-weight="900">HIT!</text>
+  <g class="feedback" opacity="0" transform="translate(318, 130) rotate(0)">
+    <text id="todayFeedbackText" x="0" y="0" fill="#F4531C" font-size="72" font-style="italic" font-weight="900" letter-spacing="2">LOVE YOU</text>
   </g>
 </svg>
 <span class="today-game-hint">Draw back an arrow and launch it!</span>`;
@@ -88,12 +82,25 @@ export function createTodayScene({ navigator }) {
       return { x: segment1.x1 + ua * dx1, y: segment1.y1 + ua * dy1, segment1: ua >= 0 && ua <= 1, segment2: ub >= 0 && ub <= 1 };
     };
 
-    const showMessage = (selector) => {
-      TweenMax.killTweensOf(selector);
-      TweenMax.killChildTweensOf(selector);
-      TweenMax.set(selector, { autoAlpha: 1 });
-      TweenMax.fromTo(`${selector}`, 0.45, { scale: 0.6, y: 14 }, { scale: 1, y: 0, ease: Back.easeOut });
-      TweenMax.to(`${selector}`, 0.3, { delay: 2, rotation: 8, scale: 0, ease: Back.easeIn });
+    const feedbackGroup = root.querySelector('.feedback');
+    const feedbackText = root.querySelector('#todayFeedbackText');
+
+    const showMessage = ({
+      text,
+      color,
+      size = 72,
+      x = 320,
+      y = 124,
+      rotation = 0
+    }) => {
+      if (!feedbackGroup || !feedbackText) return;
+      TweenMax.killTweensOf(feedbackGroup);
+      TweenMax.set(feedbackGroup, { autoAlpha: 1, x, y, rotation, scale: 1 });
+      feedbackText.textContent = text;
+      feedbackText.setAttribute('fill', color);
+      feedbackText.setAttribute('font-size', `${size}`);
+      TweenMax.fromTo(feedbackGroup, 0.45, { scale: 0.58, y: y + 14 }, { scale: 1, y, ease: Back.easeOut });
+      TweenMax.to(feedbackGroup, 0.28, { delay: 0.95, scale: 0.88, autoAlpha: 0, ease: Back.easeIn });
     };
 
     const hitTest = (tween) => {
@@ -106,11 +113,15 @@ export function createTodayScene({ navigator }) {
         tween.pause();
         const dx = intersection.x - target.x;
         const dy = intersection.y - target.y;
-        showMessage(Math.sqrt(dx * dx + dy * dy) < 7 ? '.loveyou' : '.hit');
+        showMessage(
+          Math.sqrt(dx * dx + dy * dy) < 7
+            ? { text: 'LOVE YOU', color: '#F4531C', size: 72, x: 292, y: 108, rotation: 0 }
+            : { text: 'HIT!', color: '#ffcc00', size: 82, x: 430, y: 112, rotation: 10 }
+        );
       }
     };
 
-    const onMiss = () => showMessage('.missyou');
+    const onMiss = () => showMessage({ text: 'MISS YOU', color: '#b7bbc2', size: 62, x: 256, y: 196, rotation: 0 });
 
     const loose = () => {
       window.removeEventListener('pointermove', aim);
