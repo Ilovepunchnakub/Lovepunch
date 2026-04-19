@@ -25,6 +25,8 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  touch-action: none;
+  overscroll-behavior: contain;
   --brown: #57280f;
   --drag-x: 50%;
   --drag-y: 50%;
@@ -226,6 +228,7 @@
 .lp-food { cursor: grab; }
 .lp-food.lp-dragging { cursor: grabbing; }
 .lp-food {
+  touch-action: none;
   transition: filter .18s ease, transform .18s ease;
 }
 .lp-food.lp-dragging {
