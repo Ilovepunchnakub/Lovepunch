@@ -31,8 +31,9 @@ export function createThankYouBearPage({ navigator }) {
   }
 
   function open() {
-    mountScene();
-    navigator.go(pageId);
+    navigator.go(pageId).then(() => {
+      if (navigator.current() === pageId) mountScene();
+    });
   }
 
   function init() {
