@@ -36,7 +36,7 @@ function trapDialogFocus(event, dialog) {
   }
 }
 
-export function initCards({ onOpenLoveScene, onOpenTodayScene, onOpenDreamScene } = {}) {
+export function initCards({ onOpenLoveScene, onOpenTodayScene, onOpenDreamScene, onOpenThanksScene } = {}) {
   const grid = qs('cardsGrid');
   CFG.CARD_DATA.forEach(([emoji, title, text], idx) => {
     const card = document.createElement('button');
@@ -58,6 +58,10 @@ export function initCards({ onOpenLoveScene, onOpenTodayScene, onOpenDreamScene 
       }
       if (title === 'ความฝัน' && typeof onOpenDreamScene === 'function') {
         onOpenDreamScene();
+        return;
+      }
+      if (title.startsWith('ขอบคุณ') && typeof onOpenThanksScene === 'function') {
+        onOpenThanksScene();
         return;
       }
       openCard({ title, text, idx, icon: emoji });
