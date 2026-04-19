@@ -17,6 +17,7 @@ export class Food extends WorldObject {
     this.onGrab = this.onGrab.bind(this);
     this.onDrag = this.onDrag.bind(this);
     this.onLetGo = this.onLetGo.bind(this);
+    this.activePointerId = null;
 
     this.addDragEvent();
     this.setPos();
@@ -28,6 +29,7 @@ export class Food extends WorldObject {
 
   addDragEvent() {
     this.el.addEventListener('pointerdown', this.onGrab);
+    this.el.addEventListener('pointercancel', this.onLetGo);
   }
 
   drag(e, x, y) {
@@ -45,15 +47,20 @@ export class Food extends WorldObject {
 
   onGrab(e) {
     e.preventDefault();
+    if (this.activePointerId !== null && e.pointerId !== this.activePointerId) return;
+    this.activePointerId = e.pointerId;
     this.grabPos.b = this.touchPos(e);
     this.el.classList.add('lp-dragging');
     document.body.classList.add('lp-no-select');
+    document.body.classList.add('lp-no-scroll');
     this.el.setPointerCapture?.(e.pointerId);
     document.addEventListener('pointerup', this.onLetGo);
-    document.addEventListener('pointermove', this.onDrag, { passive: false });
+    document.addEventListener('pointercancel', this.onLetGo);
+    window.addEventListener('pointermove', this.onDrag, { passive: false });
   }
 
   onDrag(e) {
+    if (this.activePointerId !== null && e.pointerId !== this.activePointerId) return;
     const { x, y } = this.touchPos(e);
     if (this.canMove) this.drag(e, x, y);
     this.grabPos.b.x = x;
@@ -61,12 +68,16 @@ export class Food extends WorldObject {
   }
 
   onLetGo(e) {
+    if (this.activePointerId !== null && e?.pointerId !== undefined && e.pointerId !== this.activePointerId) return;
     if (e?.pointerId !== undefined) this.el.releasePointerCapture?.(e.pointerId);
     this.el.classList.remove('lp-dragging');
     document.body.classList.remove('lp-no-select');
+    document.body.classList.remove('lp-no-scroll');
     this.wrapper.classList.remove('lp-pointer-glow');
+    this.activePointerId = null;
     document.removeEventListener('pointerup', this.onLetGo);
-    document.removeEventListener('pointermove', this.onDrag);
+    document.removeEventListener('pointercancel', this.onLetGo);
+    window.removeEventListener('pointermove', this.onDrag);
   }
 
   eat() {
@@ -106,6 +117,7 @@ export class Food extends WorldObject {
   destroy() {
     this.onLetGo();
     this.el.removeEventListener('pointerdown', this.onGrab);
+    this.el.removeEventListener('pointercancel', this.onLetGo);
     clearInterval(this.eatInterval);
   }
 }
