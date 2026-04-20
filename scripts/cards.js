@@ -1,6 +1,16 @@
-import { CFG } from './config.js';
 import { qs } from './utils.js';
 import { pickCardTheme, startModalThemeFx } from './cardEffects.js';
+
+const CARD_ITEMS = [
+  { id: 'today', emoji: '🌸', title: 'วันนี้', text: 'วันนี้มีเธออยู่ ทุกอย่างดูสดใสขึ้นมาก' },
+  { id: 'love', emoji: '💕', title: 'ความรัก', text: 'รักเธอมากกว่า ที่จะบรรยายเป็นคำพูดได้เลย' },
+  { id: 'dream', emoji: '✨', title: 'ความฝัน', text: 'เธอคือความฝัน ที่กลายเป็นความจริงของฉัน' },
+  { id: 'thanks', emoji: '🙏', title: 'ขอบคุณครับ', text: 'ขอบคุณที่เลือกฉัน ขอบคุณที่รักฉัน ขอบคุณที่มีอยู่' },
+  { id: 'promise', emoji: '🌙', title: 'สัญญา', text: 'สัญญาว่าจะอยู่เคียงข้างเธอทุกวัน ทุกคืน ไม่ว่าจะเกิดอะไรขึ้น' },
+  { id: 'world', emoji: '🌍', title: 'โลก', text: 'โลกนี้สวยขึ้นมาก เพราะมีเธออยู่ในนั้น' },
+  { id: 'heart', emoji: '💗', title: 'หัวใจ', text: 'ทุกการเต้นของหัวใจฉัน มีชื่อเธออยู่ด้วย' },
+  { id: 'star', emoji: '⭐', title: 'ดาว', text: 'เธอคือดาวที่สว่างที่สุด ในชีวิตฉัน' }
+];
 
 let stopModalFx = null;
 let lastFocusedElement = null;
@@ -36,9 +46,9 @@ function trapDialogFocus(event, dialog) {
   }
 }
 
-export function initCards({ onOpenLoveScene, onOpenTodayScene, onOpenDreamScene, onOpenThanksScene } = {}) {
+export function initCards({ onOpenLoveScene, onOpenTodayScene, onOpenDreamScene, onOpenThanksScene, onOpenPromiseScene } = {}) {
   const grid = qs('cardsGrid');
-  CFG.CARD_DATA.forEach((item, idx) => {
+  CARD_ITEMS.forEach((item, idx) => {
     const { id, emoji, title, text } = item;
     const card = document.createElement('button');
     card.className = 'fc';
@@ -63,6 +73,10 @@ export function initCards({ onOpenLoveScene, onOpenTodayScene, onOpenDreamScene,
       }
       if (id === 'thanks' && typeof onOpenThanksScene === 'function') {
         onOpenThanksScene();
+        return;
+      }
+      if (id === 'promise' && typeof onOpenPromiseScene === 'function') {
+        onOpenPromiseScene();
         return;
       }
       openCard({ title, text, idx, icon: emoji });
