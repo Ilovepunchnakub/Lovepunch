@@ -1,13 +1,13 @@
 // Elements
-const envelope = document.getElementById("Valentine Letter/envelope-container");
-const letter = document.getElementById("Valentine Letter/letter-container");
+const envelope = document.getElementById("envelope-container");
+const letter = document.getElementById("letter-container");
 const noBtn = document.querySelector(".no-btn");
 const yesBtn = document.querySelector(".btn[alt='Yes']");
 
-const title = document.getElementById("Valentine Letter/letter-title");
-const catImg = document.getElementById("Valentine Letter/letter-cat");
-const buttons = document.getElementById("Valentine Letter/letter-buttons");
-const finalText = document.getElementById("Valentine Letter/final-text");
+const title = document.getElementById("letter-title");
+const catImg = document.getElementById("letter-cat");
+const buttons = document.getElementById("letter-buttons");
+const finalText = document.getElementById("final-text");
 
 // Click Envelope
 
