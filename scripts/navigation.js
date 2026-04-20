@@ -45,7 +45,12 @@ export function createNavigator({ onPage, transitionLoader }) {
   function init() {
     document.querySelectorAll('.ni').forEach((el) => {
       el.addEventListener('click', () => {
-        go(el.dataset.page);
+        const { page, link } = el.dataset;
+        if (link) {
+          window.location.assign(link);
+          return;
+        }
+        go(page);
       });
     });
   }
