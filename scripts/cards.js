@@ -48,6 +48,11 @@ function trapDialogFocus(event, dialog) {
 
 export function initCards({ onOpenLoveScene, onOpenTodayScene, onOpenDreamScene, onOpenThanksScene, onOpenPromiseScene } = {}) {
   const grid = qs('cardsGrid');
+  if (!grid) {
+    console.warn('[cards] #cardsGrid not found. Skipping cards initialization.');
+    return { close: closeCard };
+  }
+
   CARD_ITEMS.forEach((item, idx) => {
     const { id, emoji, title, text } = item;
     const card = document.createElement('button');
