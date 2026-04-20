@@ -28,6 +28,17 @@ function buildTemplate(label) {
   `;
 }
 
+function getAnimationScale(targetEl) {
+  const container = targetEl.querySelector('.container');
+  if (!container) return 1;
+
+  const baseWidth = 500;
+  const width = container.getBoundingClientRect().width;
+  if (!width || Number.isNaN(width)) return 1;
+
+  return width / baseWidth;
+}
+
 export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีที่รัก 🌸') {
   if (!targetEl) return;
 
@@ -45,6 +56,8 @@ export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีท�
   targetEl.innerHTML = buildTemplate(label);
 
   const easingHeart = window.mojs.easing.path(EASING_HEART_PATH);
+  const scale = getAnimationScale(targetEl);
+  const sx = (value) => value * scale;
 
   const el = {
     container: qs(targetEl, '.mo-container'),
@@ -120,7 +133,7 @@ export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีท�
     const easingOut = 'sin.out';
     const opts = { duration: move, easing, opacity: 1 };
     const delta = 150;
-    const heartCenterX = -18;
+    const heartCenterX = sx(-18);
 
     return new window.mojs.Timeline().add([
       new window.mojs.Tween({
@@ -183,44 +196,44 @@ export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีท�
         }
       }),
 
-      new window.mojs.Html({ ...opts, el: el.lineLeft, x: { 0: 52 } })
-        .then({ duration: boom + move, easing, x: { to: 52 + 54 } })
-        .then({ duration: boom + move, easing, x: { to: 52 + 54 + 60 } })
-        .then({ duration: 150, easing, x: { to: 52 + 54 + 60 + 10 } })
+      new window.mojs.Html({ ...opts, el: el.lineLeft, x: { 0: sx(52) } })
+        .then({ duration: boom + move, easing, x: { to: sx(52 + 54) } })
+        .then({ duration: boom + move, easing, x: { to: sx(52 + 54 + 60) } })
+        .then({ duration: 150, easing, x: { to: sx(52 + 54 + 60 + 10) } })
         .then({ duration: 300 })
-        .then({ duration: 350, x: { to: 0 }, easing: easingOut }),
+        .then({ duration: 350, x: { to: sx(0) }, easing: easingOut }),
 
-      new window.mojs.Html({ ...opts, el: el.lineRight, x: { 0: -52 } })
-        .then({ duration: boom + move, easing, x: { to: -52 - 54 } })
-        .then({ duration: boom + move, easing, x: { to: -52 - 54 - 60 } })
-        .then({ duration: 150, easing, x: { to: -52 - 54 - 60 - 10 } })
+      new window.mojs.Html({ ...opts, el: el.lineRight, x: { 0: sx(-52) } })
+        .then({ duration: boom + move, easing, x: { to: sx(-52 - 54) } })
+        .then({ duration: boom + move, easing, x: { to: sx(-52 - 54 - 60) } })
+        .then({ duration: 150, easing, x: { to: sx(-52 - 54 - 60 - 10) } })
         .then({ duration: 300 })
-        .then({ duration: 350, x: { to: 0 }, easing: easingOut }),
+        .then({ duration: 350, x: { to: sx(0) }, easing: easingOut }),
 
-      new window.mojs.Html({ ...opts, el: el.i, x: { 0: 34 } })
-        .then({ duration: boom, easing: easingBoom, x: { to: 34 + 19 } })
-        .then({ duration: move, easing, x: { to: 34 + 19 + 40 } })
-        .then({ duration: boom, easing: easingBoom, x: { to: 34 + 19 + 40 + 30 } })
-        .then({ duration: move, easing, x: { to: 34 + 19 + 40 + 30 + 30 } }),
+      new window.mojs.Html({ ...opts, el: el.i, x: { 0: sx(34) } })
+        .then({ duration: boom, easing: easingBoom, x: { to: sx(34 + 19) } })
+        .then({ duration: move, easing, x: { to: sx(34 + 19 + 40) } })
+        .then({ duration: boom, easing: easingBoom, x: { to: sx(34 + 19 + 40 + 30) } })
+        .then({ duration: move, easing, x: { to: sx(34 + 19 + 40 + 30 + 30) } }),
 
-      new window.mojs.Html({ ...opts, el: el.l, x: { 0: 15 } }),
-      new window.mojs.Html({ ...opts, el: el.o, x: { 0: 11 } }),
-      new window.mojs.Html({ ...opts, el: el.v, x: { 0: 3 } }),
-      new window.mojs.Html({ ...opts, el: el.e, x: { 0: -3 } }),
+      new window.mojs.Html({ ...opts, el: el.l, x: { 0: sx(15) } }),
+      new window.mojs.Html({ ...opts, el: el.o, x: { 0: sx(11) } }),
+      new window.mojs.Html({ ...opts, el: el.v, x: { 0: sx(3) } }),
+      new window.mojs.Html({ ...opts, el: el.e, x: { 0: sx(-3) } }),
 
-      new window.mojs.Html({ ...opts, el: el.y, x: { 0: -20 } })
-        .then({ duration: boom, easing: easingBoom, x: { to: -20 - 33 } })
-        .then({ duration: move, easing, x: { to: -20 - 33 - 24 } }),
+      new window.mojs.Html({ ...opts, el: el.y, x: { 0: sx(-20) } })
+        .then({ duration: boom, easing: easingBoom, x: { to: sx(-20 - 33) } })
+        .then({ duration: move, easing, x: { to: sx(-20 - 33 - 24) } }),
 
-      new window.mojs.Html({ ...opts, el: el.o2, x: { 0: -27 } })
-        .then({ duration: boom, easing: easingBoom, x: { to: -27 - 27 } })
-        .then({ duration: move, easing, x: { to: -27 - 27 - 30 } }),
+      new window.mojs.Html({ ...opts, el: el.o2, x: { 0: sx(-27) } })
+        .then({ duration: boom, easing: easingBoom, x: { to: sx(-27 - 27) } })
+        .then({ duration: move, easing, x: { to: sx(-27 - 27 - 30) } }),
 
-      new window.mojs.Html({ ...opts, el: el.u, x: { 0: -32 } })
-        .then({ duration: boom, easing: easingBoom, x: { to: -32 - 21 } })
-        .then({ duration: move, easing, x: { to: -32 - 21 - 36 } })
-        .then({ duration: boom, easing: easingBoom, x: { to: -32 - 21 - 36 - 31 } })
-        .then({ duration: move, easing, x: { to: -32 - 21 - 36 - 31 - 27 } }),
+      new window.mojs.Html({ ...opts, el: el.u, x: { 0: sx(-32) } })
+        .then({ duration: boom, easing: easingBoom, x: { to: sx(-32 - 21) } })
+        .then({ duration: move, easing, x: { to: sx(-32 - 21 - 36) } })
+        .then({ duration: boom, easing: easingBoom, x: { to: sx(-32 - 21 - 36 - 31) } })
+        .then({ duration: move, easing, x: { to: sx(-32 - 21 - 36 - 31 - 27) } }),
 
       new window.mojs.Shape({
         parent: el.container,
@@ -228,28 +241,28 @@ export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีท�
         delay: move,
         fill: el.colHeart,
         x: heartCenterX,
-        scale: { 0: 0.95, easing: easingHeart },
+        scale: { 0: 0.95 * scale, easing: easingHeart },
         duration: 500
       })
         .then({
-          x: { to: heartCenterX + 2, easing },
-          scale: { to: 0.65, easing },
+          x: { to: heartCenterX + sx(2), easing },
+          scale: { to: 0.65 * scale, easing },
           duration: boom + move - 500
         })
-        .then({ duration: boom - 50, x: { to: heartCenterX + 50 }, scale: { to: 0.9 }, easing: easingBoom })
-        .then({ duration: 125, scale: { to: 0.8 }, easing: easingOut })
-        .then({ duration: 125, scale: { to: 0.85 }, easing: easingOut })
-        .then({ duration: move - 200, scale: { to: 0.45 }, easing })
-        .then({ delay: -75, duration: 150, x: { to: 0 }, scale: { to: 0.9 }, easing: easingBoom })
-        .then({ duration: 125, scale: { to: 0.8 }, easing: easingOut })
-        .then({ duration: 125, scale: { to: 0.85 }, easing: easingOut })
+        .then({ duration: boom - 50, x: { to: heartCenterX + sx(50) }, scale: { to: 0.9 * scale }, easing: easingBoom })
+        .then({ duration: 125, scale: { to: 0.8 * scale }, easing: easingOut })
+        .then({ duration: 125, scale: { to: 0.85 * scale }, easing: easingOut })
+        .then({ duration: move - 200, scale: { to: 0.45 * scale }, easing })
+        .then({ delay: -75, duration: 150, x: { to: sx(0) }, scale: { to: 0.9 * scale }, easing: easingBoom })
+        .then({ duration: 125, scale: { to: 0.8 * scale }, easing: easingOut })
+        .then({ duration: 125, scale: { to: 0.85 * scale }, easing: easingOut })
         .then({ duration: 125 })
-        .then({ duration: 350, scale: { to: 0 }, easing: easingOut }),
+        .then({ duration: 350, scale: { to: sx(0) }, easing: easingOut }),
 
-      ...crtBoom(move, heartCenterX, 46),
-      ...crtBoom(move * 2 + boom, 18, 34),
-      ...crtBoom(move * 3 + boom * 2 - delta, heartCenterX, 34),
-      ...crtBoom(move * 3 + boom * 2, 45, 34)
+      ...crtBoom(move, heartCenterX, sx(46)),
+      ...crtBoom(move * 2 + boom, sx(18), sx(34)),
+      ...crtBoom(move * 3 + boom * 2 - delta, heartCenterX, sx(34)),
+      ...crtBoom(move * 3 + boom * 2, sx(45), sx(34))
     ]);
   };
 
