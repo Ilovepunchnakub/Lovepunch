@@ -2,7 +2,8 @@ export function initInteractionEffects() {
   document.addEventListener('pointerdown', (e) => {
     if (e.target.closest('#lovePlayWrap')) return;
 
-    const target = e.target.closest('button, .soft-card, .fc, .ni');
+    // ตัด .fc ออกเพราะลบระบบการ์ดแล้ว
+    const target = e.target.closest('button, .soft-card, .ni');
     if (!target) return;
 
     target.classList.add('tap-pop');

@@ -17,26 +17,28 @@
 .duration-grid strong { display: block; font-size: 24px; color: #fff; text-shadow: 0 2px 3px rgba(75, 13, 41, 0.35); }
 .duration-grid small { font-size: 11px; color: #fff; text-shadow: 0 1px 2px rgba(75, 13, 41, 0.35); }
 .only-time { margin-top: 20px; }
-.since { margin: 12px 0 0; font-size: 12px; opacity: 1; color: #fff; text-shadow: 0 2px 3px rgba(84, 12, 43, 0.38); font-weight: 700; }
+.since { margin: 12px 0 0; font-size: 12px; opacity: 1; color: #5b1e39; text-shadow: none; font-weight: 800; background: rgba(255,255,255,.55); border-radius: 999px; padding: 6px 10px; display: inline-block; }
 
 .profile-toggle {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: #ffffff26;
-  border: 1px solid #ffeff7;
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top));
+  right: 14px;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #ff8abd, #d34782);
+  border: 1px solid #fff3f9;
   display: grid;
   place-items: center;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  z-index: 120;
 }
 .profile-toggle img {
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   animation: iconWiggle 2.4s ease-in-out infinite;
 }
+.profile-toggle--home[hidden] { display: none; }
 .profile-toggle:focus-visible {
   outline: 2px solid transparent;
   box-shadow:

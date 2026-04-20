@@ -1,4 +1,4 @@
-import { qs } from './utils.js';
+import { qs, randomInt } from './utils.js';
 
 export function initEntryGate({ onUnlocked, completionLoader }) {
   const gate = qs('entryGate');
@@ -16,17 +16,17 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
   const tapThresholdMs = 220;
   let suppressNextClick = false;
 
+  // บังคับให้กลับมาล็อกหน้าเข้าใช้งานใหม่ทุกครั้งที่รีเฟรช (เว้นแต่ระบุ skipEntry=1)
   const params = new URLSearchParams(window.location.search);
-  const unlockFlag = 'entryGateUnlocked';
-  const hasUnlockedBefore = sessionStorage.getItem(unlockFlag) === '1';
-  const shouldBypassGate = hasUnlockedBefore || params.get('skipEntry') === '1';
+  const shouldBypassGate = params.get('skipEntry') === '1';
 
-  function persistUnlockState() {
-    sessionStorage.setItem(unlockFlag, '1');
+  if (params.get('forceEntry') === '1') {
+    // ล้าง query หลังใช้งาน เพื่อไม่ให้ค้างใน URL
+    const cleanUrl = `${window.location.pathname}${window.location.hash || ''}`;
+    window.history.replaceState({}, '', cleanUrl);
   }
 
   if (shouldBypassGate) {
-    persistUnlockState();
     gate.classList.remove('show');
     onUnlocked?.();
     return {
@@ -71,11 +71,10 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     hint.textContent = 'เติมครบ 100% แล้ว';
 
     gate.classList.add('done');
-    persistUnlockState();
-
     completionLoader?.show();
 
-    const fakeLoadingMs = 4000 + Math.floor(Math.random() * 2001);
+    // โหลดหลอกแบบสุ่ม 3-6 วินาทีให้เหมือนใช้งานจริง
+    const fakeLoadingMs = randomInt(3000, 6000);
     const gateFadeMs = 560;
 
     setTimeout(() => {

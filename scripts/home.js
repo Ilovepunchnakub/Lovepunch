@@ -60,6 +60,14 @@ export function createHomeController() {
     qs('profilePanel').classList.remove('show');
   }
 
+  // แสดง/ซ่อนปุ่ม My Love Profile เฉพาะหน้าแรก
+  function setProfileToggleVisibility(visible) {
+    const toggle = qs('profileToggle');
+    if (!toggle) return;
+    toggle.hidden = !visible;
+    toggle.setAttribute('aria-hidden', visible ? 'false' : 'true');
+  }
+
   function fillProfile() {
     mountHomeLoveAnimation(qs('homeTitle'), `สวัสดี${CFG.HER_NAME} 🌸`);
     Object.entries(CFG.PROFILE).forEach(([key, value]) => {
@@ -114,12 +122,14 @@ export function createHomeController() {
   }
 
   function start() {
+    setProfileToggleVisibility(true);
     updateHome();
     clearInterval(timer);
     timer = setInterval(updateHome, 1000);
   }
 
   function stop() {
+    setProfileToggleVisibility(false);
     clearInterval(timer);
     closeProfile();
   }
