@@ -51,6 +51,11 @@ function bootMainApp() {
   initInteractionEffects();
   initClickSound();
   nav.go('home', { skipLoader: true });
+
+  const fpZoneBento = document.getElementById('fpZoneBento');
+  fpZoneBento?.addEventListener('click', () => {
+    nav.go('finger');
+  });
 }
 
 document.addEventListener('app:close-transient-layers', () => {
