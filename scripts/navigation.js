@@ -1,3 +1,6 @@
+// คอมเมนต์ภาษาไทยเพื่ออธิบายไฟล์: scripts/navigation.js
+// ไฟล์นี้เป็นส่วนหนึ่งของระบบเว็บ และถูกแยกเป็นโมดูลเพื่อให้อ่าน/แก้ไขง่าย
+
 import { qs, randomInt } from './utils.js';
 
 export function createNavigator({ onPage, transitionLoader }) {

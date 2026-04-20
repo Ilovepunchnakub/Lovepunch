@@ -1,3 +1,6 @@
+// คอมเมนต์ภาษาไทยเพื่ออธิบายไฟล์: scripts/home.js
+// ไฟล์นี้เป็นส่วนหนึ่งของระบบเว็บ และถูกแยกเป็นโมดูลเพื่อให้อ่าน/แก้ไขง่าย
+
 import { CFG } from './config.js';
 import { qs, pad, toast } from './utils.js';
 import { createHourCelebration } from './homeCelebrations.js';

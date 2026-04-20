@@ -1,3 +1,6 @@
+// คอมเมนต์ภาษาไทยเพื่ออธิบายไฟล์: scripts/fingerRadarFx.js
+// ไฟล์นี้เป็นส่วนหนึ่งของระบบเว็บ และถูกแยกเป็นโมดูลเพื่อให้อ่าน/แก้ไขง่าย
+
 export function createRadarFx(canvas) {
   if (!canvas) return { start: () => {}, stop: () => {}, pulseProgress: () => {} };
 

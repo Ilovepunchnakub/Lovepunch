@@ -1,3 +1,6 @@
+/* คอมเมนต์ภาษาไทยเพื่ออธิบายไฟล์: styles/effects.css */
+/* ไฟล์นี้รวมสไตล์การแสดงผล และแยกตามหน้าที่เพื่อให้ดูแลง่าย */
+
 @keyframes pulse { 50% { transform: scale(1.08); } }
 @keyframes dropFade {
   0% { opacity: 0; transform: translate(-50%, 0) scale(.9); }

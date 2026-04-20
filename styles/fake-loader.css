@@ -1,3 +1,6 @@
+/* คอมเมนต์ภาษาไทยเพื่ออธิบายไฟล์: styles/fake-loader.css */
+/* ไฟล์นี้รวมสไตล์การแสดงผล และแยกตามหน้าที่เพื่อให้ดูแลง่าย */
+
 .fake-loader-overlay,
 .entry-completion-loader {
   position: fixed;

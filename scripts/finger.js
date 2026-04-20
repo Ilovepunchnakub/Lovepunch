@@ -1,3 +1,6 @@
+// คอมเมนต์ภาษาไทยเพื่ออธิบายไฟล์: scripts/finger.js
+// ไฟล์นี้เป็นส่วนหนึ่งของระบบเว็บ และถูกแยกเป็นโมดูลเพื่อให้อ่าน/แก้ไขง่าย
+
 import { qs, wait } from './utils.js';
 import { runFingerScan } from './fingerFlow.js';
 import { loadingMarkup, completeMarkup } from './fingerPopupTemplates.js';

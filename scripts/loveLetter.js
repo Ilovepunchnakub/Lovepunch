@@ -1,3 +1,6 @@
+// คอมเมนต์ภาษาไทยเพื่ออธิบายไฟล์: scripts/loveLetter.js
+// ไฟล์นี้เป็นส่วนหนึ่งของระบบเว็บ และถูกแยกเป็นโมดูลเพื่อให้อ่าน/แก้ไขง่าย
+
 import { qs } from './utils.js';
 import { renderLoveLetter } from './loveLetter/template.js';
 import { LOVE_LETTER_CONTENT } from './loveLetter/content.js';

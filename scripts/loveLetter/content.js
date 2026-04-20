@@ -1,3 +1,6 @@
+// คอมเมนต์ภาษาไทยเพื่ออธิบายไฟล์: scripts/loveLetter/content.js
+// ไฟล์นี้เป็นส่วนหนึ่งของระบบเว็บ และถูกแยกเป็นโมดูลเพื่อให้อ่าน/แก้ไขง่าย
+
 export const LOVE_LETTER_CONTENT = {
   envelopeLabel: '♡ จดหมายถึงเธอ ♡',
   titleInitial: 'จะเป็นวาเลนไทน์ของเราไหม?',

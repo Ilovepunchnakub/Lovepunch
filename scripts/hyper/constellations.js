@@ -1,3 +1,6 @@
+// คอมเมนต์ภาษาไทยเพื่ออธิบายไฟล์: scripts/hyper/constellations.js
+// ไฟล์นี้เป็นส่วนหนึ่งของระบบเว็บ และถูกแยกเป็นโมดูลเพื่อให้อ่าน/แก้ไขง่าย
+
 import * as THREE from 'https://unpkg.com/three@0.165.0/build/three.module.js';
 import { DEPTH } from './constants.js';
 

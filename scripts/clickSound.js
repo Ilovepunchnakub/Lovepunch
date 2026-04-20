@@ -1,3 +1,6 @@
+// คอมเมนต์ภาษาไทยเพื่ออธิบายไฟล์: scripts/clickSound.js
+// ไฟล์นี้เป็นส่วนหนึ่งของระบบเว็บ และถูกแยกเป็นโมดูลเพื่อให้อ่าน/แก้ไขง่าย
+
 // ตัวเลือก element ที่ถือว่า "กดได้"
 const CLICKABLE_SELECTOR = 'button, .soft-btn, .ni, .profile-toggle';
 

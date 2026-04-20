@@ -1,3 +1,6 @@
+// คอมเมนต์ภาษาไทยเพื่ออธิบายไฟล์: scripts/utils.js
+// ไฟล์นี้เป็นส่วนหนึ่งของระบบเว็บ และถูกแยกเป็นโมดูลเพื่อให้อ่าน/แก้ไขง่าย
+
 // ยูทิลิตี้พื้นฐานที่หลายโมดูลใช้ร่วมกัน
 export const qs = (id) => document.getElementById(id);
 export const pad = (n) => String(Math.max(0, n)).padStart(2, '0');

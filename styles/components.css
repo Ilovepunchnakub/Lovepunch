@@ -1,3 +1,6 @@
+/* คอมเมนต์ภาษาไทยเพื่ออธิบายไฟล์: styles/components.css */
+/* ไฟล์นี้รวมสไตล์การแสดงผล และแยกตามหน้าที่เพื่อให้ดูแลง่าย */
+
 .home-hdr { text-align: center; margin-bottom: 12px; }
 .home-tag { letter-spacing: 1.4px; color: #8f3d5f; font-size: 11px; font-weight: 800; }
 .home-hdr h2 {

@@ -1,3 +1,6 @@
+/* คอมเมนต์ภาษาไทยเพื่ออธิบายไฟล์: styles/thanks-bear.css */
+/* ไฟล์นี้รวมสไตล์การแสดงผล และแยกตามหน้าที่เพื่อให้ดูแลง่าย */
+
 .thanks-page-shell {
   position: relative;
   min-height: 100dvh;
