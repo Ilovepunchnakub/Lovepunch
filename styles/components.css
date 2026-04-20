@@ -21,7 +21,7 @@
 }
 
 .days-card { padding: 22px; background: linear-gradient(145deg, #eb5a8b, #c54576); color: #fff; position: relative; }
-.section-tag { margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 1; color: #fff; text-shadow: 0 2px 3px rgba(79, 15, 42, 0.38); }
+.section-tag { margin: 0; font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; opacity: 1; color: #5a1b37; text-shadow: none; font-weight: 900; }
 .section-tag.dark { color: #7f4259; text-shadow: none; }
 .duration-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 10px; }
 .duration-grid div { background: #ffffff24; border-radius: 14px; padding: 8px 0; text-align: center; }
@@ -29,6 +29,25 @@
 .duration-grid small { font-size: 11px; color: #fff; text-shadow: 0 1px 2px rgba(75, 13, 41, 0.35); }
 .only-time { margin-top: 20px; }
 .since { margin: 12px 0 0; font-size: 12px; opacity: 1; color: #5b1e39; text-shadow: none; font-weight: 800; background: rgba(255,255,255,.55); border-radius: 999px; padding: 6px 10px; display: inline-block; }
+
+.days-card .section-tag,
+.days-card .text-highlight {
+  color: #4f1630;
+  text-shadow: none;
+}
+.days-card .duration-grid div {
+  background: rgba(255, 247, 252, 0.94);
+  border: 1px solid rgba(255, 214, 235, 0.75);
+}
+.days-card .duration-grid strong {
+  color: #8f1f52;
+  text-shadow: none;
+}
+.days-card .duration-grid small {
+  color: #6b2d47;
+  text-shadow: none;
+  font-weight: 700;
+}
 
 .profile-toggle {
   position: fixed;
