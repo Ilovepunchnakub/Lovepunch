@@ -16,6 +16,24 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
   const tapThresholdMs = 220;
   let suppressNextClick = false;
 
+  const params = new URLSearchParams(window.location.search);
+  const unlockFlag = 'entryGateUnlocked';
+  const hasUnlockedBefore = sessionStorage.getItem(unlockFlag) === '1';
+  const shouldBypassGate = hasUnlockedBefore || params.get('skipEntry') === '1';
+
+  function persistUnlockState() {
+    sessionStorage.setItem(unlockFlag, '1');
+  }
+
+  if (shouldBypassGate) {
+    persistUnlockState();
+    gate.classList.remove('show');
+    onUnlocked?.();
+    return {
+      isLocked: () => false
+    };
+  }
+
   const block = (e) => e.preventDefault();
   ['contextmenu', 'selectstart', 'dragstart'].forEach((ev) => {
     gate.addEventListener(ev, block);
@@ -53,6 +71,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     hint.textContent = 'เติมครบ 100% แล้ว';
 
     gate.classList.add('done');
+    persistUnlockState();
 
     completionLoader?.show();
 
