@@ -9,6 +9,8 @@ const catImg = document.getElementById("letter-cat");
 const buttons = document.getElementById("letter-buttons");
 const finalText = document.getElementById("final-text");
 
+let currentX = 0;
+let currentY = 0;
 // Click Envelope
 
 envelope.addEventListener("click", () => {
@@ -23,17 +25,14 @@ envelope.addEventListener("click", () => {
 // Logic to move the NO btn
 
 noBtn.addEventListener("mouseover", () => {
-    const min = 200;
-    const max = 200;
-
-    const distance = Math.random() * (max - min) + min;
+    const distance = 200;
     const angle = Math.random() * Math.PI * 2;
 
-    const moveX = Math.cos(angle) * distance;
-    const moveY = Math.sin(angle) * distance;
+    currentX += Math.cos(angle) * distance;
+    currentY += Math.sin(angle) * distance;
 
     noBtn.style.transition = "transform 0.3s ease";
-    noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    noBtn.style.transform = `translate(${currentX}px, ${currentY}px)`;
 });
 
 // Logic to make YES btn to grow
