@@ -1,0 +1,263 @@
+:root {
+  --bento-radius-xl: 36px;
+  --bento-radius-lg: 28px;
+  --bento-radius-md: 22px;
+  --bento-stroke: rgba(255, 255, 255, 0.84);
+  --bento-shadow-lg: 0 28px 65px rgba(171, 87, 129, 0.24);
+  --bento-shadow-md: 0 20px 42px rgba(171, 87, 129, 0.2);
+  --bento-gloss: linear-gradient(155deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.32) 42%, rgba(255, 255, 255, 0.08));
+  --bento-card-bg: linear-gradient(150deg, rgba(255, 255, 255, 0.94), rgba(255, 238, 247, 0.82));
+}
+
+html,
+body {
+  background:
+    radial-gradient(circle at 12% 12%, rgba(255, 182, 214, 0.5), transparent 35%),
+    radial-gradient(circle at 90% 20%, rgba(175, 222, 255, 0.36), transparent 28%),
+    radial-gradient(circle at 80% 84%, rgba(221, 199, 255, 0.38), transparent 35%),
+    linear-gradient(138deg, #fff9fe, #f5f8ff 52%, #fff4fa 100%);
+}
+
+.page-scroll {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding-inline: clamp(14px, 2.8vw, 28px);
+}
+
+.soft-card,
+.rain-box,
+.fp-box,
+.love-play-shell,
+.profile-panel,
+.fp-popup-card,
+.anniv-count-box,
+.anniv-popup,
+.entry-gate-card {
+  border-radius: var(--bento-radius-xl);
+  border: 1px solid var(--bento-stroke);
+  background: var(--bento-card-bg);
+  box-shadow:
+    var(--bento-shadow-lg),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88),
+    inset 0 -14px 24px rgba(255, 205, 230, 0.22);
+  position: relative;
+  overflow: hidden;
+}
+
+.soft-card::before,
+.rain-box::before,
+.fp-box::before,
+.love-play-shell::before,
+.profile-panel::before,
+.fp-popup-card::before,
+.anniv-count-box::before,
+.anniv-popup::before,
+.entry-gate-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--bento-gloss);
+  pointer-events: none;
+}
+
+.home-hdr.bento-hero {
+  border-radius: var(--bento-radius-xl);
+  padding: clamp(18px, 4vw, 30px) clamp(16px, 3.5vw, 30px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.86), rgba(255, 237, 246, 0.68));
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  box-shadow: var(--bento-shadow-md);
+  margin-bottom: 12px;
+}
+
+.hero-icon-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.hero-icon-bubble,
+.mini-3d-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  font-size: 22px;
+  background: linear-gradient(165deg, #ffffff, #ffe8f5);
+  border: 1px solid rgba(255, 255, 255, 0.92);
+  box-shadow:
+    0 9px 14px rgba(192, 95, 144, 0.22),
+    inset 0 2px 3px rgba(255, 255, 255, 0.94),
+    inset 0 -8px 12px rgba(255, 206, 230, 0.42);
+}
+
+.hero-icon-bubble {
+  transform: translateY(0);
+  animation: iconFloat 3.4s ease-in-out infinite;
+}
+.hero-icon-bubble:nth-child(2) { animation-delay: .24s; }
+.hero-icon-bubble:nth-child(3) { animation-delay: .5s; }
+
+.home-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.bento-card {
+  min-width: 0;
+}
+
+.bento-card--hero {
+  grid-column: span 12;
+  border-radius: var(--bento-radius-xl);
+}
+
+.bento-card--sub {
+  grid-column: span 12;
+  border-radius: var(--bento-radius-xl);
+}
+
+.bento-card--stats {
+  grid-column: span 12;
+  margin-top: 0;
+}
+
+.bento-card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.days-card {
+  background: linear-gradient(145deg, #ff6fa7, #d54a82);
+  box-shadow:
+    0 22px 44px rgba(186, 63, 116, 0.26),
+    inset 0 2px 6px rgba(255, 255, 255, 0.26),
+    inset 0 -14px 22px rgba(117, 12, 55, 0.16);
+}
+
+.duration-grid div,
+.cd-unit,
+.stat-grid article,
+.scan-log-panel,
+.complete-badge,
+.scan-meter,
+.scan-radar-wrap,
+#mainNav,
+.ni.on,
+.nav-dock-toggle {
+  border-radius: var(--bento-radius-md);
+}
+
+.duration-grid div,
+.cd-unit,
+.stat-grid article,
+.scan-log-panel,
+.scan-radar-wrap {
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.92), rgba(255, 239, 247, 0.92));
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 12px 22px rgba(193, 94, 142, 0.16),
+    inset 0 1px 2px rgba(255, 255, 255, 0.9),
+    inset 0 -7px 12px rgba(248, 195, 220, 0.28);
+}
+
+.stat-grid {
+  gap: 12px;
+}
+
+.stat-grid article {
+  padding: 16px 12px;
+}
+
+.section-tag,
+.home-tag {
+  letter-spacing: 1.9px;
+}
+
+.profile-toggle,
+.scene-close-btn,
+.love-play-close,
+.soft-btn,
+.scan-btn {
+  box-shadow:
+    0 12px 24px rgba(192, 88, 139, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.86),
+    inset 0 -7px 10px rgba(177, 28, 93, 0.18);
+}
+
+.soft-btn,
+.scene-close-btn,
+.love-play-close {
+  background: linear-gradient(145deg, #ff7ab2, #cf3b78);
+  color: #fff;
+}
+
+.nav-dock-toggle {
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: linear-gradient(145deg, #ff89bf, #cb3b79);
+}
+
+#mainNav {
+  background: linear-gradient(140deg, rgba(255, 255, 255, 0.95), rgba(255, 241, 249, 0.9));
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  box-shadow:
+    0 18px 36px rgba(156, 80, 117, 0.24),
+    inset 0 1px 0 rgba(255, 255, 255, 0.88),
+    inset 0 -12px 20px rgba(250, 213, 233, 0.35);
+}
+
+.ni {
+  border-radius: 18px;
+}
+
+.ni.on {
+  background: linear-gradient(145deg, #ffffff, #ffeef7);
+}
+
+.scene-close-btn,
+.love-play-close {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.88);
+}
+
+.rain-box,
+.fp-box,
+.love-play-shell,
+.entry-gate-card,
+.profile-panel {
+  backdrop-filter: blur(14px) saturate(120%);
+}
+
+@media (min-width: 860px) {
+  .home-bento-grid {
+    gap: 14px;
+  }
+
+  .bento-card--hero {
+    grid-column: span 7;
+    grid-row: span 2;
+    align-self: stretch;
+  }
+
+  .bento-card--sub {
+    grid-column: span 5;
+  }
+
+  .bento-card--stats {
+    grid-column: span 5;
+  }
+
+  .stat-grid {
+    margin-top: 0;
+  }
+}
+
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(-3deg); }
+}
