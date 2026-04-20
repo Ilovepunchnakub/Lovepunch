@@ -66,70 +66,46 @@
   <div id="toast"></div>
 
   <div class="page active" id="pg-home">
-    <div class="page-scroll bento-scroll">
-      <section class="browser-chrome soft-card" aria-label="browser chrome">
-        <span class="browser-time">11:05</span>
-        <span class="browser-url">ilovepunchnakub.github.io</span>
-        <button class="pink-x-btn" aria-label="ปิด">✕</button>
-      </section>
-
-      <header class="home-hdr bento-title">
+    <div class="page-scroll">
+      <header class="home-hdr">
         <p class="home-tag">✨ FOR YOUR EYES ONLY ✨</p>
         <h2 id="homeTitle" aria-label="สวัสดีที่รัก 🌸"></h2>
       </header>
 
-      <section class="bento-grid" aria-label="Dashboard, Card Selection, Verification, Universe">
-        <article class="soft-card bento-box bento-dashboard">
-          <div class="box-head">
-            <h3>Dashboard</h3>
-            <button class="profile-toggle" id="profileToggle" aria-label="ดูข้อมูลเพิ่มเติม">
-              <img src="icons/custom/profile-love.svg" alt="profile" />
-            </button>
-          </div>
-          <p class="section-tag"><span class="text-highlight">เราอยู่ด้วยกันมาแล้ว</span></p>
-          <div class="duration-grid only-time">
-            <div><strong id="durD">0</strong><small>วัน</small></div>
-            <div><strong id="durH">0</strong><small>ชั่วโมง</small></div>
-            <div><strong id="durM">0</strong><small>นาที</small></div>
-            <div><strong id="durS">0</strong><small>วินาที</small></div>
-          </div>
-          <p id="daysSince" class="since"></p>
-        </article>
+      <section class="days-card soft-card">
+        <p class="section-tag"><span class="text-highlight">เราอยู่ด้วยกันมาแล้ว</span></p>
 
-        <article class="soft-card bento-box bento-countdown">
-          <div class="box-head"><h3>Card Selection</h3><span class="icon-chip" aria-hidden="true">🃏</span></div>
-          <p class="section-tag dark"><span class="text-highlight">นับถอยหลังวันครบรอบเดือนถัดไป</span></p>
-          <div class="cd-units">
-            <div class="cd-unit"><b id="cdD">00</b><small>วัน</small></div>
-            <div class="cd-unit"><b id="cdH">00</b><small>ชั่วโมง</small></div>
-            <div class="cd-unit"><b id="cdM">00</b><small>นาที</small></div>
-            <div class="cd-unit"><b id="cdS">00</b><small>วินาที</small></div>
-          </div>
-        </article>
+        <button class="profile-toggle" id="profileToggle" aria-label="ดูข้อมูลเพิ่มเติม">
+          <img src="icons/custom/profile-love.svg" alt="profile" />
+        </button>
 
-        <article class="soft-card bento-box bento-verification">
-          <div class="box-head"><h3>Verification</h3><span class="icon-chip" aria-hidden="true">🔐</span></div>
-          <p>ยืนยันตัวตน</p>
-          <p class="mini-note">แตะค้างเพื่อสแกนลายนิ้วมือ 👆</p>
-          <button class="scan-btn" id="fpZoneBento" aria-label="กดค้างเพื่อสแกนลายนิ้วมือ">
-            <span class="scan-btn-ring" aria-hidden="true"></span>
-            <img src="icons/custom/fingerprint-scan.svg" class="scan-btn-icon" alt="" draggable="false" />
-          </button>
-        </article>
+        <div class="duration-grid only-time">
+          <div><strong id="durD">0</strong><small>วัน</small></div>
+          <div><strong id="durH">0</strong><small>ชั่วโมง</small></div>
+          <div><strong id="durM">0</strong><small>นาที</small></div>
+          <div><strong id="durS">0</strong><small>วินาที</small></div>
+        </div>
+        <p id="daysSince" class="since"></p>
+      </section>
 
-        <article class="soft-card bento-box bento-universe">
-          <div class="box-head"><h3>Universe</h3><span class="icon-chip" aria-hidden="true">🌌</span></div>
-          <section class="stat-grid">
-            <article class="soft-card"><span>📅</span><p>เดือนที่ผ่านมา</p><b id="stM">0 เดือน</b></article>
-            <article class="soft-card"><span>🌙</span><p>คืนที่คิดถึงกัน</p><b id="stN">0 คืน</b></article>
-            <article class="soft-card"><span>☀️</span><p>เช้าที่นึกถึงกัน</p><b id="stMr">0 เช้า</b></article>
-            <article class="soft-card"><span>💗</span><p>หัวใจเต้นเพื่อเธอ</p><b>∞ ครั้ง</b></article>
-          </section>
-        </article>
+      <section class="soft-card countdown-card">
+        <p class="section-tag dark"><span class="text-highlight">นับถอยหลังวันครบรอบเดือนถัดไป</span></p>
+        <div class="cd-units">
+          <div class="cd-unit"><b id="cdD">00</b><small>วัน</small></div>
+          <div class="cd-unit"><b id="cdH">00</b><small>ชั่วโมง</small></div>
+          <div class="cd-unit"><b id="cdM">00</b><small>นาที</small></div>
+          <div class="cd-unit"><b id="cdS">00</b><small>วินาที</small></div>
+        </div>
+      </section>
+
+      <section class="stat-grid">
+        <article class="soft-card"><span>📅</span><p>เดือนที่ผ่านมา</p><b id="stM">0 เดือน</b></article>
+        <article class="soft-card"><span>🌙</span><p>คืนที่คิดถึงกัน</p><b id="stN">0 คืน</b></article>
+        <article class="soft-card"><span>☀️</span><p>เช้าที่นึกถึงกัน</p><b id="stMr">0 เช้า</b></article>
+        <article class="soft-card"><span>💗</span><p>หัวใจเต้นเพื่อเธอ</p><b>∞ ครั้ง</b></article>
       </section>
     </div>
   </div>
-
 
   <div class="profile-panel" id="profilePanel">
     <div class="profile-head">
@@ -236,12 +212,11 @@
     <span>＋</span>
   </button>
 
-  <nav id="mainNav" class="collapsed bento-nav" aria-label="bottom menu">
-    <button class="ni" data-page="home"><span class="nav-icon">🏠</span><span>Home</span></button>
-    <button class="ni primary-highlight" data-page="today"><span class="nav-icon">🃏</span><span>Cards</span></button>
-    <button class="ni" data-page="thanks"><span class="nav-icon">💕</span><span>Love</span></button>
-    <button class="ni" data-page="hyper"><span class="nav-icon">🌌</span><span>Universe</span></button>
-    <button class="ni" data-page="finger"><span class="nav-icon">💗</span><span>Heart</span></button>
+  <nav id="mainNav" class="collapsed">
+    <button class="ni on" data-page="home">🏠<span>หน้าแรก</span></button>
+    <button class="ni" data-page="rain">🌸<span>โปรยรัก</span></button>
+    <button class="ni" data-page="hyper">✨<span>จักรวาล</span></button>
+    <button class="ni" data-page="finger">💝<span>หัวใจ</span></button>
   </nav>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
