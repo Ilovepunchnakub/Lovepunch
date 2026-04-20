@@ -6,8 +6,6 @@ export function createNavigator({ onPage, transitionLoader }) {
 
   function closeTransientLayers() {
     // Ensure modal/backdrop layers never block interactions after page switches.
-    qs('cardModal')?.classList.remove('show');
-    qs('cardModal')?.setAttribute('aria-hidden', 'true');
     qs('fpPopup')?.classList.remove('show');
     qs('fpPopup')?.setAttribute('aria-hidden', 'true');
     qs('annivOverlay')?.classList.remove('show');
