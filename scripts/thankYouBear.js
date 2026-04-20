@@ -26,7 +26,7 @@ export function createThankYouBearPage({ navigator }) {
     if (host) host.innerHTML = '';
 
     if (navigate && navigator.current() === pageId) {
-      navigator.go('promise', { skipLoader: true });
+      navigator.go('home', { skipLoader: true });
     }
   }
 

@@ -120,39 +120,9 @@
     <p><b>ของโปรด:</b> <span id="pf-favorite"></span></p>
   </div>
 
-  <div class="page" id="pg-promise">
-    <div class="page-scroll">
-      <header class="simple-hdr">
-        <h2>สัญญาของเรา 💍</h2>
-        <p>ทุกวันจะรักษาหัวใจนี้ไว้ให้เธอเสมอ</p>
-      </header>
-      <section class="soft-card">
-        <ul class="promise-list">
-          <li>จะกอดเธอผ่านทุกวันที่เหนื่อยล้า</li>
-          <li>จะฟังเธอเสมอทั้งเรื่องเล็กและเรื่องใหญ่</li>
-          <li>จะเตือนตัวเองทุกวันว่าเธอสำคัญที่สุด</li>
-          <li>จะเติมรอยยิ้มให้เธอด้วยความรักแบบเดิมทุกวัน</li>
-        </ul>
-      </section>
-    </div>
-  </div>
-
-  <div class="page" id="pg-cards">
-    <div class="page-scroll">
-      <header class="simple-hdr">
-        <h2>การ์ดความรัก 💌</h2>
-        <p>แตะการ์ดเพื่อเปิดซีนพิเศษหรืออ่านข้อความจากใจ</p>
-      </header>
-      <section class="soft-card">
-        <div id="cardsGrid" class="cards-grid"></div>
-      </section>
-    </div>
-  </div>
-
-
   <div class="page" id="pg-today">
     <div class="today-page-shell">
-      <button id="todayClose" class="scene-close-btn" aria-label="กลับหน้าการ์ด">ปิด ✕</button>
+      <button id="todayClose" class="scene-close-btn" aria-label="กลับหน้าแรก">ปิด ✕</button>
       <div id="todayGameRoot" class="today-game-root"></div>
     </div>
   </div>
@@ -160,14 +130,14 @@
 
   <div class="page" id="pg-thanks">
     <div class="thanks-page-shell">
-      <button id="thanksBearClose" class="scene-close-btn" aria-label="กลับหน้าการ์ด">ปิด ✕</button>
+      <button id="thanksBearClose" class="scene-close-btn" aria-label="กลับหน้าแรก">ปิด ✕</button>
       <div id="thanksBearRoot" class="thanks-bear-root"></div>
     </div>
   </div>
 
   <div class="page" id="pg-dream">
     <div class="dream-page-shell">
-      <button id="dreamClose" class="scene-close-btn" aria-label="กลับหน้าการ์ด">ปิด ✕</button>
+      <button id="dreamClose" class="scene-close-btn" aria-label="กลับหน้าแรก">ปิด ✕</button>
       <div id="dreamSceneRoot" class="dream-scene-root"></div>
     </div>
   </div>
@@ -179,30 +149,9 @@
         <h2>ความรัก 💕</h2>
         <p class="love-play-guide">ซีน Love Letter: แตะที่ซองจดหมาย แล้วเลือกคำตอบได้เลยน้า</p>
         <div id="lovePlayWrap" class="love-play-wrap love-letter-wrap"></div>
-        <small>เคล็ดลับ: กด Esc (คอม) หรือปุ่มปิด เพื่อกลับหน้าการ์ด</small>
+        <small>เคล็ดลับ: กด Esc (คอม) หรือปุ่มปิด เพื่อกลับหน้าแรก</small>
       </section>
     </div>
-  </div>
-
-  <div class="page" id="pg-promise">
-    <div class="page-scroll center">
-      <section class="soft-card love-play-shell">
-        <button id="promiseClose" class="scene-close-btn" aria-label="ปิดหน้าสัญญา">ปิด ✕</button>
-        <h2 id="promiseHeading">สัญญาของเรา 🌙</h2>
-        <p id="promiseMessage"></p>
-        <button id="promiseCta" class="soft-btn">กลับไปหน้าการ์ด</button>
-      </section>
-    </div>
-  </div>
-
-  <div class="card-modal" id="cardModal" aria-hidden="true">
-    <div class="modal-backdrop" id="modalClose"></div>
-    <article class="modal-card" id="modalCard" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-describedby="modalText" tabindex="-1">
-      <div id="cardFxLayer" class="modal-fx-layer" aria-hidden="true"></div>
-      <h3 id="modalTitle" tabindex="-1"></h3>
-      <p id="modalText"></p>
-      <button id="modalBtn">ปิด</button>
-    </article>
   </div>
 
   <div class="page" id="pg-rain">
@@ -265,8 +214,6 @@
 
   <nav id="mainNav" class="collapsed">
     <button class="ni on" data-page="home">🏠<span>หน้าแรก</span></button>
-    <button class="ni" data-page="cards">🃏<span>การ์ด</span></button>
-    <button class="ni" data-page="promise">💌<span>สัญญา</span></button>
     <button class="ni" data-page="rain">🌸<span>โปรยรัก</span></button>
     <button class="ni" data-page="hyper">✨<span>จักรวาล</span></button>
     <button class="ni" data-page="finger">💝<span>หัวใจ</span></button>
