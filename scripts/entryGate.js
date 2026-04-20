@@ -13,6 +13,8 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
   let latestSparkleStep = -1;
   let activePointerId = null;
   let progress = 0;
+  const tapThresholdMs = 220;
+  let suppressNextClick = false;
 
   const block = (e) => e.preventDefault();
   ['contextmenu', 'selectstart', 'dragstart'].forEach((ev) => {
@@ -108,15 +110,38 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     hint.textContent = 'ปล่อยแล้วรีเซ็ตนะคั้บ กดค้างใหม่เพื่อเติมหัวใจ';
   }
 
+  function addTapProgress() {
+    if (unlocked || holding || gate.classList.contains('done')) return;
+    setProgress(progress + 0.2);
+    latestSparkleStep = -1;
+    spawnSparkle();
+    hint.textContent = `เติมแล้ว ${Math.round(progress * 100)}% กดเพิ่มได้อีกนะ`;
+    if (progress >= 1) finishUnlock();
+  }
+
   function handlePointerDown(e) {
     if (!e.isPrimary) return;
     activePointerId = e.pointerId;
     button.setPointerCapture?.(e.pointerId);
+    suppressNextClick = false;
     startHold(e);
   }
 
   function handlePointerStop(e) {
     if (activePointerId !== null && e.pointerId !== activePointerId) return;
+    const wasHolding = holding;
+    const holdDurationMs = performance.now() - startAt;
+
+    if (wasHolding && holdDurationMs <= tapThresholdMs) {
+      holding = false;
+      activePointerId = null;
+      button.classList.remove('holding');
+      stopTick();
+      addTapProgress();
+      suppressNextClick = true;
+      return;
+    }
+
     stopHold();
   }
 
@@ -124,13 +149,13 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
   button.addEventListener('pointerup', handlePointerStop);
   button.addEventListener('pointercancel', handlePointerStop);
   button.addEventListener('lostpointercapture', handlePointerStop);
-  button.addEventListener('click', () => {
-    if (unlocked || holding || gate.classList.contains('done')) return;
-    setProgress(progress + 0.2);
-    latestSparkleStep = -1;
-    spawnSparkle();
-    hint.textContent = `เติมแล้ว ${Math.round(progress * 100)}% กดเพิ่มได้อีกนะ`;
-    if (progress >= 1) finishUnlock();
+  button.addEventListener('click', (e) => {
+    if (suppressNextClick) {
+      suppressNextClick = false;
+      return;
+    }
+    if (e.detail !== 0) return;
+    addTapProgress();
   });
 
   button.addEventListener('touchstart', block, { passive: false });
