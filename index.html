@@ -1,3 +1,12 @@
+<!-- ===== คำอธิบายไฟล์ HTML (ภาษาไทย) : index.html =====
+     หน้าที่หลัก:
+     - เป็นโครงสร้างหน้า (layout + semantic) และจุด mount สำหรับสคริปต์
+     จุดที่มักต้องแก้ร่วมกัน:
+     - id/class ที่ถูกใช้ใน JS และ CSS
+     - ปุ่ม/ลิงก์นำทางที่เชื่อมกับระบบเปลี่ยนหน้า
+     หมายเหตุ:
+     - หากย้าย element ควรตรวจ event และ selector ที่เกี่ยวข้องทุกโมดูล
+     =============================================== -->
 <!DOCTYPE html>
 <html lang="th">
 <head>
@@ -67,6 +76,9 @@
 
   <div class="page active" id="pg-home">
     <div class="page-scroll">
+      <button class="profile-toggle profile-toggle--home" id="profileToggle" aria-label="เปิด My Love Profile" title="My Love Profile">
+        <img src="icons/custom/profile-love.svg" alt="profile" />
+      </button>
       <header class="home-hdr bento-hero">
         <div class="hero-icon-row" aria-hidden="true">
           <span class="hero-icon-bubble">💖</span>
@@ -83,10 +95,6 @@
             <p class="section-tag"><span class="text-highlight">เราอยู่ด้วยกันมาแล้ว</span></p>
             <span class="mini-3d-icon" aria-hidden="true">⏳</span>
           </div>
-
-          <button class="profile-toggle" id="profileToggle" aria-label="ดูข้อมูลเพิ่มเติม">
-            <img src="icons/custom/profile-love.svg" alt="profile" />
-          </button>
 
           <div class="duration-grid only-time">
             <div><strong id="durD">0</strong><small>วัน</small></div>
@@ -226,12 +234,12 @@
   </button>
 
   <nav id="mainNav" class="collapsed">
-    <button class="ni on" data-page="home">🏠<span>หน้าแรก</span></button>
-    <button class="ni" data-page="rain">🌸<span>โปรยรัก</span></button>
-    <button class="ni" data-page="hyper">✨<span>จักรวาล</span></button>
-    <button class="ni" data-page="finger">💝<span>หัวใจ</span></button>
-    <button class="ni" data-link="bear.html">🧸<span>หมี</span></button>
-    <button class="ni" data-link="flower.html">🌼<span>ดอกไม้</span></button>
+    <button class="ni on" data-page="home" title="หน้าแรก">🏠<span>หน้าแรก</span></button>
+    <button class="ni" data-page="rain" title="โปรยรัก">🌸<span>โปรยรัก</span></button>
+    <button class="ni" data-page="hyper" title="จักรวาล">✨<span>จักรวาล</span></button>
+    <button class="ni" data-page="finger" title="ยืนยันหัวใจ">💝<span>หัวใจ</span></button>
+    <button class="ni" data-link="bear.html" title="หน้าหมี">🧸<span>หมี</span></button>
+    <button class="ni" data-link="flower.html" title="ดอกไม้">🌼<span>ดอกไม้</span></button>
   </nav>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>

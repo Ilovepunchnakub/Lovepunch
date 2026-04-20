@@ -1,11 +1,20 @@
-import { qs } from './utils.js';
+// ===== คำอธิบายไฟล์ (ภาษาไทย) : scripts/navigation.js =====
+// หน้าที่หลัก:
+// - ดูแลพฤติกรรม/ตรรกะของฟีเจอร์ตามชื่อไฟล์และโมดูลที่ import
+// - ทำงานร่วมกับ DOM, state ภายใน และ event listener ของหน้า
+// สิ่งที่ควรรู้ก่อนแก้ไข:
+// - หากแก้ชื่อ id/class ใน HTML ต้องแก้ selector ในไฟล์นี้ให้ตรงกัน
+// - หากแก้ flow การเรียกใช้ ควรตรวจผลกระทบกับไฟล์ app.js และ navigation.js
+// - โค้ดส่วนนี้ถูกแยกโมดูลเพื่อให้ debug และปรับปรุงรายฟีเจอร์ได้ง่าย
+// =============================================
+import { qs, randomInt } from './utils.js';
 
 export function createNavigator({ onPage, transitionLoader }) {
   let current = 'home';
   let switching = false;
 
   function closeTransientLayers() {
-    // Ensure modal/backdrop layers never block interactions after page switches.
+    // ปิดเลเยอร์ชั่วคราวที่อาจค้างหลังเปลี่ยนหน้า
     qs('fpPopup')?.classList.remove('show');
     qs('fpPopup')?.setAttribute('aria-hidden', 'true');
     qs('annivOverlay')?.classList.remove('show');
@@ -15,9 +24,11 @@ export function createNavigator({ onPage, transitionLoader }) {
   function applyPage(page) {
     document.dispatchEvent(new CustomEvent('app:close-transient-layers'));
     closeTransientLayers();
+
     document.querySelectorAll('.page').forEach((el) => el.classList.remove('active'));
     qs(`pg-${page}`).classList.add('active');
     document.querySelectorAll('.ni').forEach((el) => el.classList.toggle('on', el.dataset.page === page));
+
     current = page;
     onPage(page);
   }
@@ -32,8 +43,10 @@ export function createNavigator({ onPage, transitionLoader }) {
       if (skipLoader || !transitionLoader) {
         applyPage(page);
       } else {
+        // ให้ Loading สมจริงขึ้น: สุ่มเวลา 3-6 วินาที
+        const randomLoaderMs = randomInt(3000, 6000);
         await transitionLoader.run({
-          minMs: 1500,
+          minMs: randomLoaderMs,
           beforeSwitch: () => applyPage(page)
         });
       }

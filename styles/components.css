@@ -1,3 +1,14 @@
+/* ===== คำอธิบายไฟล์สไตล์ (ภาษาไทย) : styles/components.css =====
+   หน้าที่หลัก:
+   - กำหนดหน้าตา/เลย์เอาต์/แอนิเมชันของส่วนที่ไฟล์นี้รับผิดชอบ
+   - ทำงานร่วมกับ class/id จากไฟล์ HTML และ JS
+   แนวทางแก้ไข:
+   - แก้ทีละบล็อกและทดสอบหน้าที่เกี่ยวข้องทันที
+   - ถ้าแก้ตัวแปรสี/spacing ควรเช็กผลกระทบทั้ง mobile และ desktop
+   - หลีกเลี่ยงการเขียน selector ที่กว้างเกินไปเพื่อลดผลกระทบข้ามหน้า
+   ================================================= */
+/* ไฟล์นี้รวมสไตล์การแสดงผล และแยกตามหน้าที่เพื่อให้ดูแลง่าย */
+
 .home-hdr { text-align: center; margin-bottom: 12px; }
 .home-tag { letter-spacing: 1.4px; color: #8f3d5f; font-size: 11px; font-weight: 800; }
 .home-hdr h2 {
@@ -17,26 +28,28 @@
 .duration-grid strong { display: block; font-size: 24px; color: #fff; text-shadow: 0 2px 3px rgba(75, 13, 41, 0.35); }
 .duration-grid small { font-size: 11px; color: #fff; text-shadow: 0 1px 2px rgba(75, 13, 41, 0.35); }
 .only-time { margin-top: 20px; }
-.since { margin: 12px 0 0; font-size: 12px; opacity: 1; color: #fff; text-shadow: 0 2px 3px rgba(84, 12, 43, 0.38); font-weight: 700; }
+.since { margin: 12px 0 0; font-size: 12px; opacity: 1; color: #5b1e39; text-shadow: none; font-weight: 800; background: rgba(255,255,255,.55); border-radius: 999px; padding: 6px 10px; display: inline-block; }
 
 .profile-toggle {
-  position: absolute;
-  top: 16px;
-  right: 16px;
-  width: 34px;
-  height: 34px;
-  border-radius: 10px;
-  background: #ffffff26;
-  border: 1px solid #ffeff7;
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top));
+  right: 14px;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #ff8abd, #d34782);
+  border: 1px solid #fff3f9;
   display: grid;
   place-items: center;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px);
+  z-index: 120;
 }
 .profile-toggle img {
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   animation: iconWiggle 2.4s ease-in-out infinite;
 }
+.profile-toggle--home[hidden] { display: none; }
 .profile-toggle:focus-visible {
   outline: 2px solid transparent;
   box-shadow:

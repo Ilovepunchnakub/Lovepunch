@@ -1,3 +1,12 @@
+// ===== คำอธิบายไฟล์ (ภาษาไทย) : scripts/home.js =====
+// หน้าที่หลัก:
+// - ดูแลพฤติกรรม/ตรรกะของฟีเจอร์ตามชื่อไฟล์และโมดูลที่ import
+// - ทำงานร่วมกับ DOM, state ภายใน และ event listener ของหน้า
+// สิ่งที่ควรรู้ก่อนแก้ไข:
+// - หากแก้ชื่อ id/class ใน HTML ต้องแก้ selector ในไฟล์นี้ให้ตรงกัน
+// - หากแก้ flow การเรียกใช้ ควรตรวจผลกระทบกับไฟล์ app.js และ navigation.js
+// - โค้ดส่วนนี้ถูกแยกโมดูลเพื่อให้ debug และปรับปรุงรายฟีเจอร์ได้ง่าย
+// =============================================
 import { CFG } from './config.js';
 import { qs, pad, toast } from './utils.js';
 import { createHourCelebration } from './homeCelebrations.js';
@@ -60,6 +69,14 @@ export function createHomeController() {
     qs('profilePanel').classList.remove('show');
   }
 
+  // แสดง/ซ่อนปุ่ม My Love Profile เฉพาะหน้าแรก
+  function setProfileToggleVisibility(visible) {
+    const toggle = qs('profileToggle');
+    if (!toggle) return;
+    toggle.hidden = !visible;
+    toggle.setAttribute('aria-hidden', visible ? 'false' : 'true');
+  }
+
   function fillProfile() {
     mountHomeLoveAnimation(qs('homeTitle'), `สวัสดี${CFG.HER_NAME} 🌸`);
     Object.entries(CFG.PROFILE).forEach(([key, value]) => {
@@ -114,12 +131,14 @@ export function createHomeController() {
   }
 
   function start() {
+    setProfileToggleVisibility(true);
     updateHome();
     clearInterval(timer);
     timer = setInterval(updateHome, 1000);
   }
 
   function stop() {
+    setProfileToggleVisibility(false);
     clearInterval(timer);
     closeProfile();
   }
