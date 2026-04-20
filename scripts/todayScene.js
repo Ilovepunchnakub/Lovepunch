@@ -164,7 +164,7 @@ export function createTodayScene({ navigator }) {
   }
 
   function close({ navigate = true } = {}) {
-    if (navigate && navigator.current() === pageId) navigator.go('cards', { skipLoader: true });
+    if (navigate && navigator.current() === pageId) navigator.go('promise', { skipLoader: true });
     cleanup();
   }
 

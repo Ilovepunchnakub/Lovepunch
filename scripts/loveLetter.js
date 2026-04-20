@@ -98,7 +98,7 @@ export function createLoveLetterPage({ navigator }) {
     detach = () => {};
     if (host) host.innerHTML = '';
     if (navigate && navigator.current() === pageId) {
-      navigator.go('cards', { skipLoader: true });
+      navigator.go('promise', { skipLoader: true });
     }
   }
 
