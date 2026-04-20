@@ -31,6 +31,32 @@
         overflow: hidden;
       }
 
+      .back-home-btn {
+        position: fixed;
+        top: 16px;
+        left: 16px;
+        z-index: 20;
+        min-width: 88px;
+        min-height: 44px;
+        padding: 0 16px;
+        border-radius: 999px;
+        border: 2px solid rgba(255, 255, 255, 0.94);
+        background: linear-gradient(145deg, #ff79b2, #cc3f7a);
+        color: #fff;
+        font-size: 15px;
+        font-weight: 700;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 12px 22px rgba(131, 37, 76, 0.3);
+      }
+
+      .back-home-btn:focus-visible {
+        outline: 3px solid #fff;
+        outline-offset: 2px;
+      }
+
       .wrapper.show-message::after {
         position: absolute;
         content: 'drag the donut and feed the bear';
@@ -333,6 +359,7 @@
     </style>
   </head>
   <body>
+    <a class="back-home-btn" href="./index.html" aria-label="กลับไปหน้าแรก">← กลับ</a>
     <div class="wrapper show-message"></div>
 
     <script>
