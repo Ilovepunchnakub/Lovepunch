@@ -8,6 +8,7 @@ import { createLoveLetterPage } from './loveLetter.js';
 import { createTodayScene } from './todayScene.js';
 import { createDreamScene } from './dreamScene.js';
 import { createThankYouBearPage } from './thankYouBear.js';
+import { createPromisePage } from './promisePage.js';
 import { initEntryGate } from './entryGate.js';
 import { initNavDock } from './navDock.js';
 import { initInteractionEffects } from './effects.js';
@@ -32,12 +33,17 @@ const nav = createNavigator({
     else hyper.stop();
 
     if (page === 'finger') finger.reset();
+
+    if (page === 'promise') {
+      // reserved for promise-page lifecycle hooks
+    }
   }
 });
 const loveLetterPage = createLoveLetterPage({ navigator: nav });
 const todayScene = createTodayScene({ navigator: nav });
 const dreamScene = createDreamScene({ navigator: nav });
 const thankYouBearPage = createThankYouBearPage({ navigator: nav });
+const promisePage = createPromisePage({ navigator: nav });
 
 function bootMainApp() {
   home.init();
@@ -45,7 +51,8 @@ function bootMainApp() {
     onOpenLoveScene: () => loveLetterPage.open(),
     onOpenTodayScene: () => todayScene.open(),
     onOpenDreamScene: () => dreamScene.open(),
-    onOpenThanksScene: () => thankYouBearPage.open()
+    onOpenThanksScene: () => thankYouBearPage.open(),
+    onOpenPromiseScene: () => promisePage.open()
   });
   rain.init();
   hyper.init();
@@ -54,6 +61,7 @@ function bootMainApp() {
   todayScene.init();
   dreamScene.init();
   thankYouBearPage.init();
+  promisePage.init();
   nav.init();
   initNavDock();
   initInteractionEffects();
@@ -68,6 +76,7 @@ document.addEventListener('app:close-transient-layers', () => {
   todayScene.close({ navigate: false });
   dreamScene.close({ navigate: false });
   thankYouBearPage.close({ navigate: false });
+  promisePage.close({ navigate: false });
   home.closeTransientLayers();
 });
 
