@@ -134,6 +134,10 @@ export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีท�
     const opts = { duration: move, easing, opacity: 1 };
     const delta = 150;
     const heartCenterX = sx(-18);
+    const squeezeOffset = {
+      i: 8,
+      u: 14
+    };
 
     return new window.mojs.Timeline().add([
       new window.mojs.Tween({
@@ -210,11 +214,11 @@ export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีท�
         .then({ duration: 300 })
         .then({ duration: 350, x: { to: sx(0) }, easing: easingOut }),
 
-      new window.mojs.Html({ ...opts, el: el.i, x: { 0: sx(34) } })
-        .then({ duration: boom, easing: easingBoom, x: { to: sx(34 + 19) } })
-        .then({ duration: move, easing, x: { to: sx(34 + 19 + 40) } })
-        .then({ duration: boom, easing: easingBoom, x: { to: sx(34 + 19 + 40 + 30) } })
-        .then({ duration: move, easing, x: { to: sx(34 + 19 + 40 + 30 + 30) } }),
+      new window.mojs.Html({ ...opts, el: el.i, x: { 0: sx(34 + squeezeOffset.i) } })
+        .then({ duration: boom, easing: easingBoom, x: { to: sx(34 + 19 + squeezeOffset.i) } })
+        .then({ duration: move, easing, x: { to: sx(34 + 19 + 40 + squeezeOffset.i) } })
+        .then({ duration: boom, easing: easingBoom, x: { to: sx(34 + 19 + 40 + 30 + squeezeOffset.i) } })
+        .then({ duration: move, easing, x: { to: sx(34 + 19 + 40 + 30 + 30 + squeezeOffset.i) } }),
 
       new window.mojs.Html({ ...opts, el: el.l, x: { 0: sx(15) } }),
       new window.mojs.Html({ ...opts, el: el.o, x: { 0: sx(11) } }),
@@ -229,11 +233,11 @@ export function mountHomeLoveAnimation(targetEl, label = 'สวัสดีท�
         .then({ duration: boom, easing: easingBoom, x: { to: sx(-27 - 27) } })
         .then({ duration: move, easing, x: { to: sx(-27 - 27 - 30) } }),
 
-      new window.mojs.Html({ ...opts, el: el.u, x: { 0: sx(-32) } })
-        .then({ duration: boom, easing: easingBoom, x: { to: sx(-32 - 21) } })
-        .then({ duration: move, easing, x: { to: sx(-32 - 21 - 36) } })
-        .then({ duration: boom, easing: easingBoom, x: { to: sx(-32 - 21 - 36 - 31) } })
-        .then({ duration: move, easing, x: { to: sx(-32 - 21 - 36 - 31 - 27) } }),
+      new window.mojs.Html({ ...opts, el: el.u, x: { 0: sx(-32 + squeezeOffset.u) } })
+        .then({ duration: boom, easing: easingBoom, x: { to: sx(-32 - 21 + squeezeOffset.u) } })
+        .then({ duration: move, easing, x: { to: sx(-32 - 21 - 36 + squeezeOffset.u) } })
+        .then({ duration: boom, easing: easingBoom, x: { to: sx(-32 - 21 - 36 - 31 + squeezeOffset.u) } })
+        .then({ duration: move, easing, x: { to: sx(-32 - 21 - 36 - 31 - 27 + squeezeOffset.u) } }),
 
       new window.mojs.Shape({
         parent: el.container,
