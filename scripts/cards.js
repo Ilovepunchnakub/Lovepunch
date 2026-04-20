@@ -38,7 +38,8 @@ function trapDialogFocus(event, dialog) {
 
 export function initCards({ onOpenLoveScene, onOpenTodayScene, onOpenDreamScene, onOpenThanksScene } = {}) {
   const grid = qs('cardsGrid');
-  CFG.CARD_DATA.forEach(([emoji, title, text], idx) => {
+  CFG.CARD_DATA.forEach((item, idx) => {
+    const { id, emoji, title, text } = item;
     const card = document.createElement('button');
     card.className = 'fc';
     card.style.setProperty('--d', `${idx * 40}ms`);
@@ -48,19 +49,19 @@ export function initCards({ onOpenLoveScene, onOpenTodayScene, onOpenDreamScene,
     card.addEventListener('pointerup', () => card.classList.remove('pressing'));
     card.addEventListener('pointerleave', () => card.classList.remove('pressing'));
     card.addEventListener('click', () => {
-      if (title === 'ความรัก' && typeof onOpenLoveScene === 'function') {
+      if (id === 'love' && typeof onOpenLoveScene === 'function') {
         onOpenLoveScene();
         return;
       }
-      if (title === 'วันนี้' && typeof onOpenTodayScene === 'function') {
+      if (id === 'today' && typeof onOpenTodayScene === 'function') {
         onOpenTodayScene();
         return;
       }
-      if (title === 'ความฝัน' && typeof onOpenDreamScene === 'function') {
+      if (id === 'dream' && typeof onOpenDreamScene === 'function') {
         onOpenDreamScene();
         return;
       }
-      if (title.startsWith('ขอบคุณ') && typeof onOpenThanksScene === 'function') {
+      if (id === 'thanks' && typeof onOpenThanksScene === 'function') {
         onOpenThanksScene();
         return;
       }
