@@ -36,6 +36,9 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
   }
 
   if (shouldBypassGate) {
+    // ล้าง skipEntry หลังข้าม gate เพื่อให้การรีเฟรชครั้งถัดไปต้องปลดล็อกใหม่
+    const cleanUrl = `${window.location.pathname}${window.location.hash || ''}`;
+    window.history.replaceState({}, '', cleanUrl);
     gate.classList.remove('show');
     onUnlocked?.();
     return {
