@@ -364,9 +364,6 @@
 .anniv-overlay.show { opacity: 1; pointer-events: auto; }
 .anniv-count-box,
 .anniv-popup {
-  position: absolute;
-  left: 50%;
-  top: 50%;
   width: min(92vw, 540px);
   border-radius: 28px;
   border: 1px solid rgba(255, 255, 255, 0.78);
@@ -376,8 +373,13 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
   text-align: center;
   padding: 24px;
-  transform: translate(-50%, -50%);
   transition: transform .45s ease, opacity .45s ease;
+}
+.anniv-count-box {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
 }
 .anniv-count-box p { margin: 0; color: #a25375; letter-spacing: .2px; }
 .anniv-count-box b {
@@ -391,11 +393,47 @@
 .anniv-count-box small { color: #8f6074; }
 #annivCountdown.pulse { animation: countPulse .62s ease; }
 .anniv-popup {
+  position: absolute;
+  inset: 0;
   display: none;
-  text-align: left;
-  transform: translate(-50%, calc(-50% + 10px)) scale(.985);
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  border-radius: 0;
+  border: 0;
+  padding: clamp(16px, 3vh, 32px) clamp(14px, 4vw, 30px);
+  background:
+    radial-gradient(circle at 12% 16%, rgba(255, 179, 217, 0.3), transparent 35%),
+    radial-gradient(circle at 84% 18%, rgba(173, 210, 255, 0.22), transparent 32%),
+    radial-gradient(circle at 50% 88%, rgba(255, 169, 219, 0.18), transparent 45%),
+    rgba(255, 244, 250, 0.84);
+  box-shadow: none;
+  backdrop-filter: blur(10px) saturate(130%);
+  overflow: hidden;
 }
-.anniv-popup.show { display: block; animation: annivPopupRise .58s cubic-bezier(.2,.8,.2,1) both; }
+.anniv-popup.show { display: grid; place-items: center; animation: annivPopupRise .62s cubic-bezier(.2,.8,.2,1) both; }
+.anniv-popup-shell {
+  position: relative;
+  width: min(92vw, 560px);
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.82);
+  padding: clamp(20px, 4vw, 30px);
+  text-align: left;
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.96), rgba(255, 238, 247, 0.94));
+  box-shadow:
+    0 24px 58px rgba(153, 56, 104, 0.22),
+    inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  animation: popupCardFloat 4.8s ease-in-out infinite;
+}
+.anniv-popup-glow {
+  position: absolute;
+  inset: -30% -20%;
+  background:
+    radial-gradient(circle at 30% 38%, rgba(255, 151, 204, 0.22), transparent 35%),
+    radial-gradient(circle at 66% 62%, rgba(255, 119, 177, 0.18), transparent 40%);
+  animation: annivGlowDrift 6.8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
 .anniv-popup h3 { margin: 0 0 10px; text-align: center; color: #ba3f71; font-size: clamp(30px, 6.6vw, 42px); }
 .anniv-popup p {
   margin: 0;
@@ -407,7 +445,7 @@
   padding: 14px;
   background: linear-gradient(180deg, #fffafe, #fff5fa);
 }
-.anniv-popup small { display: block; margin-top: 10px; text-align: center; color: #8f6074; }
+.anniv-popup small { display: block; margin-top: 12px; text-align: center; color: #8f6074; }
 .anniv-overlay.popup-mode .anniv-count-box {
   opacity: 0;
   transform: translate(-50%, calc(-50% - 20px)) scale(.96);
@@ -420,7 +458,16 @@
 .anniv-overlay.countdown-mode .anniv-popup {
   display: none !important;
 }
-
+.anniv-float {
+  position: absolute;
+  left: 50%;
+  top: 60%;
+  font-size: clamp(18px, 4.5vw, 30px);
+  opacity: 0;
+  animation: annivFloatUp var(--dur, 2100ms) ease-out forwards;
+  animation-delay: var(--delay, 0ms);
+  pointer-events: none;
+}
 body.anniv-focus .page.active .page-scroll,
 body.anniv-focus #mainNav,
 body.anniv-focus #navDockToggle {
