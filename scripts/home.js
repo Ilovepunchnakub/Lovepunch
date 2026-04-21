@@ -61,7 +61,7 @@ export function createHomeController() {
     anniversary.tick(left);
 
     const thYear = CFG.START.getFullYear() + 543;
-    qs('daysSince').textContent = `เริ่มคบกันตั้งแต่ ${CFG.START.getDate()}/${CFG.START.getMonth() + 1}/${thYear}`;
+    qs('daysSince').textContent = `เริ่มคุยกันตั้งแต่ ${CFG.START.getDate()}/${CFG.START.getMonth() + 1}/${thYear}`;
   }
 
   function closeProfile() {
