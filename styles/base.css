@@ -243,15 +243,7 @@ body.profile-open::after {
 }
 
 .entry-heart::before {
-  content: '';
-  position: absolute;
-  inset: 10%;
-  -webkit-mask: url('../icons/custom/entry-heart-solid.svg') center / contain no-repeat;
-  mask: url('../icons/custom/entry-heart-solid.svg') center / contain no-repeat;
-  background: radial-gradient(circle at 50% 48%, rgba(255, 144, 194, 0.16), rgba(255, 116, 178, 0.04) 68%, transparent 76%);
-  filter: blur(4px);
-  z-index: -1;
-  pointer-events: none;
+  content: none;
 }
 
 .entry-heart-frame {

@@ -23,9 +23,7 @@
   inset: 8%;
 }
 .entry-heart::before {
-  inset: 8%;
-  background:
-    radial-gradient(circle at 50% 46%, rgba(255, 166, 210, 0.22), rgba(255, 121, 186, 0.06) 72%, transparent 80%);
+  content: none;
 }
 .entry-heart-frame {
   inset: 0;
