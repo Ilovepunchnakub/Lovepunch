@@ -3,74 +3,20 @@
 // - รวมค่าตั้งต้นหลักของแอป (วันที่เริ่มต้น, โปรไฟล์, ข้อความต่าง ๆ)
 // - จุดเดียวสำหรับปรับ "ข้อความ" โดยไม่ต้องไล่แก้หลายไฟล์
 // วิธีใช้งาน:
-// - แก้ข้อความใน CFG.UI_TEXT และ array ข้อความด้านล่างได้เลย
+// - แก้ข้อความใน scripts/editableText.js เป็นหลักได้เลย
 // =============================================
+import { EDITABLE_TEXT } from './editableText.js';
+
 export const CFG = {
   PIN: '0614',
   START: new Date('2026-03-14T00:24:00'),
-  HER_NAME: 'Punch',
+  HER_NAME: EDITABLE_TEXT.HER_NAME,
 
-  PROFILE: {
-    name: 'Punch Luv💗',
-    age: '23 ปี',
-    birthday: '30 พฤศจิกายน 2546',
-    blood: 'O',
-    hobby: 'ถ่ายรูป / ฟังเพลง / กอด',
-    favorite: 'Cat'
-  },
+  PROFILE: EDITABLE_TEXT.PROFILE,
+  UI_TEXT: EDITABLE_TEXT.UI_TEXT,
+  ENTRY_GATE_TUNING: EDITABLE_TEXT.ENTRY_GATE_TUNING,
 
-  UI_TEXT: {
-    ENTRY_GATE: {
-      idleHint: 'กดค้างหรือแตะเพิ่มได้เลยคั้บเธอ...',
-      loadingHint: 'กำลังยืนยันตัวตนของคนน่ารัก...',
-      resetHint: 'ปล่อยแล้วรีเซ็ตนะคั้บ กดค้างใหม่เพื่อเติมคั้บบ',
-      progressHint: (percent) => `เติมแล้ว ${percent}% กดเพิ่มได้อีกนะ`,
-      doneHint: 'เติมครบ 100% แล้ว'
-    },
-    RAIN: {
-      preparing: 'กำลังเตรียมความรักให้...',
-      ready: 'พร้อมส่งข้อความรอบถัดไปแล้ว',
-      count: (count) => `กดไปแล้ว: ${count} ครั้ง`
-    },
-    FINGER: {
-      holdHint: 'แตะค้างเพื่อสแกนลายนิ้วมือคั้บคนน่ารัก 💓',
-      holdingHint: 'กดค้างไว้... ระบบกำลังตรวจจับลายนิ้วมือคั้บบ',
-      scanningHint: 'กำลังอ่านลายนิ้วมือ...',
-      doneHint: 'ตรวจสอบเสร็จสิ้นแล้ว  ✅',
-      doneMessage: 'สำเร็จ! ระบบยืนยันตัวตนด้วยหัวใจเรียบร้อยคั้บ..💖'
-    }
-  },
-
-  HYPER_MESSAGES: [
-    'You make my heart smile',
-    'All of me loves all of you',
-    'You are my favorite notification',
-    'Happier with you ',
-    'You are the best thing that’s ever been mine',
-    'My heart is and always will be yours อ่านต่อได้ที่',
-    'I fall in love with you over and over again',
-    'Still crushing on you, even though we’re together 💖'
-  ],
-
-  ANNIV_BLESSINGS: [
-    'สุขสันต์วันครบรอบนะคนเก่งของฉัน 💖 ขอบคุณที่เป็นความสบายใจในทุกวัน',
-    'ทุกวินาทีที่มีเธอคือของขวัญล้ำค่าที่สุดสำหรับฉัน รักเธอเสมอ 🌷',
-    'ขอให้เราจับมือกันแบบนี้ไปทุกเทศกาล ทุกฤดู และทุกความฝันเลยนะ ✨'
-  ],
-
-  // ข้อความที่ใช้ในโหมดโปรยข้อความความรัก
-  RAIN_MSGS: [
-    'เธอน่ารักมาก 💕',
-    'คิดถึงเธอ 🌸',
-    'ขอบคุณที่มาเจอกันนะ 💝',
-    'เธอทำให้โลกดูดีขึ้น 🌍',
-    'อยากกอดเธอ 🤗',
-    'อยู่ด้วยกันไปนานๆนะ ✨',
-    'เธอคือเซฟโซนของหัวใจเค้า 🫶',
-    'ทุกวันกับเธอคือของขวัญ 🎁',
-    'อยากอยู่กับเธอทุกวัน ✨',
-    'Miss you 💓',
-    'Luv 🌷',
-    'อย่าไปไหนนะ 🥲'
-  ]
+  HYPER_MESSAGES: EDITABLE_TEXT.HYPER_MESSAGES,
+  ANNIV_BLESSINGS: EDITABLE_TEXT.ANNIV_BLESSINGS,
+  RAIN_MSGS: EDITABLE_TEXT.RAIN_MSGS
 };
