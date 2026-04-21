@@ -124,7 +124,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     holding = true;
     startAt = performance.now() - progress * holdMs;
     latestSparkleStep = -1;
-    hint.textContent = 'กำลังยืนยันตัวตน...';
+    hint.textContent = 'กำลังยืนยันตัวตนของคนน่ารัก...';
     button.classList.add('holding');
     raf = requestAnimationFrame(tick);
   }
@@ -137,7 +137,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     stopTick();
     setProgress(0);
     latestSparkleStep = -1;
-    hint.textContent = 'ปล่อยแล้วรีเซ็ตนะคั้บ กดค้างใหม่เพื่อเติมหัวใจ';
+    hint.textContent = 'ปล่อยแล้วรีเซ็ตนะคั้บ กดค้างใหม่เพื่อเติมคั้บบ';
   }
 
   function addTapProgress() {
