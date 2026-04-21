@@ -79,10 +79,11 @@
   transform: translateY(0) scale(1);
 }
 .anniv-popup {
-  padding: calc(env(safe-area-inset-top) + 10px) 12px calc(env(safe-area-inset-bottom) + 16px);
+  width: min(94vw, 880px);
+  padding: 12px;
 }
 .anniv-popup-shell {
-  width: min(94vw, 560px);
+  width: 100%;
   border-radius: 26px;
 }
 
