@@ -34,7 +34,7 @@ export function createHyperController() {
       if (!active || !runningSequence) return;
       const progress = Math.round((i / loops) * 100);
       ui.setLoading({
-        text: progress < 100 ? 'กำลังเตรียม hyperspace...' : 'พร้อมเข้าสู่เส้นทางของเราแล้ว',
+        text: progress < 100 ? 'กำลังเตรียม...' : 'พร้อมเข้าสู่ World แล้ว',
         progress
       });
       await wait(tick);
@@ -51,7 +51,7 @@ export function createHyperController() {
       return;
     }
 
-    ui.showMessage('เตรียมตัวเข้าสู่ hyperspace ของเรา ✨', {
+    ui.showMessage('เตรียมตัวเข้าสู่ World ของเรา ✨', {
       holdMs: 3000,
       fadeInMs: 850,
       fadeOutMs: 950
