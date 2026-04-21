@@ -16,16 +16,17 @@ import { createLoveLetterPage } from './loveLetter.js';
 import { createTodayScene } from './todayScene.js';
 import { createDreamScene } from './dreamScene.js';
 import { createThankYouBearPage } from './thankYouBear.js';
+import { initEntryGate } from './entryGate.js';
 import { initNavDock } from './navDock.js';
 import { initInteractionEffects } from './effects.js';
-import { createFakePageLoader } from './fakePageLoader.js';
-import { initForcedMusicPrompt } from './forcedMusicPrompt.js';
+import { createFakePageLoader, createEntryCompletionLoader } from './fakePageLoader.js';
 
 const home = createHomeController();
 const rain = createRainController();
 const hyper = createHyperController();
 const finger = createFingerController();
 const transitionLoader = createFakePageLoader();
+const entryCompletionLoader = createEntryCompletionLoader();
 
 const nav = createNavigator({
   transitionLoader,
@@ -44,7 +45,7 @@ const todayScene = createTodayScene({ navigator: nav });
 const dreamScene = createDreamScene({ navigator: nav });
 const thankYouBearPage = createThankYouBearPage({ navigator: nav });
 
-async function bootMainApp() {
+function bootMainApp() {
   home.init();
   rain.init();
   hyper.init();
@@ -56,13 +57,7 @@ async function bootMainApp() {
   nav.init();
   initNavDock();
   initInteractionEffects();
-
-  await transitionLoader.run({
-    minMs: 2600,
-    beforeSwitch: () => nav.go('home', { skipLoader: true })
-  });
-
-  initForcedMusicPrompt();
+  nav.go('home', { skipLoader: true });
 }
 
 document.addEventListener('app:close-transient-layers', () => {
@@ -75,3 +70,9 @@ document.addEventListener('app:close-transient-layers', () => {
 });
 
 bootMainApp();
+initEntryGate({
+  completionLoader: entryCompletionLoader,
+  onUnlocked: () => {
+    document.body.classList.add('unlocked');
+  }
+});

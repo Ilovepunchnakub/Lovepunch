@@ -64,3 +64,7 @@ function createOverlayLoader(overlayId, { buildSegments = false } = {}) {
 export function createFakePageLoader() {
   return createOverlayLoader('globalFakeLoader', { buildSegments: true });
 }
+
+export function createEntryCompletionLoader() {
+  return createOverlayLoader('entryCompletionLoader');
+}

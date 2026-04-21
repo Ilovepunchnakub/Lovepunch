@@ -4,6 +4,43 @@
    - แยกไฟล์จาก base/components เพื่อโครงสร้างแบบ modular
    ================================================= */
 
+/* ---------- Entry Gate polish ---------- */
+.entry-gate-tag {
+  color: #b07a92;
+  font-weight: 800;
+  opacity: .98;
+}
+.entry-gate-card h1 {
+  color: #8a3b62;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.85);
+}
+.entry-gate-sub,
+.entry-gate-hint {
+  color: #8c4c68;
+  font-weight: 800;
+}
+.entry-heart::after {
+  inset: 8%;
+}
+.entry-heart::before {
+  content: none;
+}
+.entry-heart-frame {
+  inset: 0;
+  background:
+    conic-gradient(from 30deg, #fff7fb, #ffd9ea 32%, #ff9ec9 56%, #ffe7f2 84%, #fff7fb 100%);
+  filter:
+    drop-shadow(0 10px 16px rgba(193, 76, 128, 0.24))
+    drop-shadow(0 0 10px rgba(255, 145, 196, 0.35));
+}
+.entry-heart-fill {
+  background:
+    linear-gradient(0deg, rgba(255, 73, 141, 0.96), rgba(255, 174, 216, 0.96)),
+    repeating-linear-gradient(90deg, rgba(255, 119, 177, 0.95) 0 8px, rgba(255, 190, 223, 0.95) 8px 16px),
+    repeating-linear-gradient(0deg, rgba(255, 116, 178, 0.78) 0 8px, rgba(255, 187, 221, 0.42) 8px 16px);
+  filter: contrast(1.16) saturate(1.28);
+}
+
 /* ---------- Home layout readability ---------- */
 .days-card {
   text-align: center;
@@ -101,6 +138,13 @@
 }
 
 @media (max-width: 640px) {
+  .entry-gate-card {
+    width: min(94vw, 560px);
+    padding: 30px 18px 24px;
+  }
+  .entry-heart {
+    width: min(80vw, 360px);
+  }
 }
 
 @keyframes hourRing {
