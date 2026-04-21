@@ -7,6 +7,7 @@
 // - หากแก้ flow การเรียกใช้ ควรตรวจผลกระทบกับไฟล์ app.js และ navigation.js
 // - โค้ดส่วนนี้ถูกแยกโมดูลเพื่อให้ debug และปรับปรุงรายฟีเจอร์ได้ง่าย
 // =============================================
+import { CFG } from './config.js';
 import { qs, wait } from './utils.js';
 import { runFingerScan } from './fingerFlow.js';
 import { loadingMarkup, completeMarkup } from './fingerPopupTemplates.js';
@@ -88,7 +89,7 @@ export function createFingerController() {
       qs('fpPopup').classList.remove('can-close');
       qs('fpZone').classList.remove('scanning');
       qs('fpMsg').textContent = '';
-      qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือคั้บคนน่ารัก 💓';
+      qs('fpHint').textContent = CFG.UI_TEXT.FINGER.holdHint;
       clearHoldVisual();
     }
   }
@@ -157,7 +158,7 @@ export function createFingerController() {
     holdStart = 0;
     qs('fpZone').classList.remove('holding');
     clearHoldVisual();
-    if (state === 'idle') qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือคั้บคนน่ารัก 💗';
+    if (state === 'idle') qs('fpHint').textContent = CFG.UI_TEXT.FINGER.holdHint;
   }
 
   function tickHold(ts) {
@@ -173,7 +174,7 @@ export function createFingerController() {
     if (state !== 'idle' || holdTimer) return;
     holdStart = 0;
     qs('fpZone').classList.add('holding');
-    qs('fpHint').textContent = 'กดค้างไว้... ระบบกำลังตรวจจับลายนิ้วมือคั้บบ';
+    qs('fpHint').textContent = CFG.UI_TEXT.FINGER.holdingHint;
     holdRaf = requestAnimationFrame(tickHold);
     holdTimer = setTimeout(() => {
       holdTimer = null;
@@ -190,7 +191,7 @@ export function createFingerController() {
     cancelHold();
     state = 'idle';
     closeEnabled = false;
-    qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือคั้บคนน่ารัก 💓';
+    qs('fpHint').textContent = CFG.UI_TEXT.FINGER.holdHint;
     qs('fpMsg').textContent = '';
     qs('fpZone').classList.remove('scanning', 'holding');
     clearHoldVisual();
@@ -205,7 +206,7 @@ export function createFingerController() {
     if (state !== 'idle') return;
 
     state = 'scanning';
-    qs('fpHint').textContent = 'กำลังอ่านลายนิ้วมือ...';
+    qs('fpHint').textContent = CFG.UI_TEXT.FINGER.scanningHint;
     qs('fpZone').classList.remove('holding');
     qs('fpZone').classList.add('scanning');
 
@@ -235,8 +236,8 @@ export function createFingerController() {
 
     renderDonePopup();
     qs('fpZone').classList.remove('scanning');
-    qs('fpHint').textContent = 'ตรวจสอบเสร็จสิ้นแล้ว  ✅';
-    qs('fpMsg').textContent = 'สำเร็จ! ระบบยืนยันตัวตนด้วยหัวใจเรียบร้อยคั้บ..💖';
+    qs('fpHint').textContent = CFG.UI_TEXT.FINGER.doneHint;
+    qs('fpMsg').textContent = CFG.UI_TEXT.FINGER.doneMessage;
     state = 'done';
     startDismissCountdown();
   }
