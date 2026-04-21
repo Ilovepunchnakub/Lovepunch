@@ -7,12 +7,15 @@
 // - หากแก้ flow การเรียกใช้ ควรตรวจผลกระทบกับไฟล์ app.js และ navigation.js
 // - โค้ดส่วนนี้ถูกแยกโมดูลเพื่อให้ debug และปรับปรุงรายฟีเจอร์ได้ง่าย
 // =============================================
+import { CFG } from './config.js';
 import { qs, randomInt } from './utils.js';
 
 export function initEntryGate({ onUnlocked, completionLoader }) {
   const gate = qs('entryGate');
   const button = qs('entryHeartBtn');
   const hint = qs('entryHint');
+
+  hint.textContent = CFG.UI_TEXT.ENTRY_GATE.idleHint;
 
   let raf = null;
   let holding = false;
@@ -80,7 +83,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     activePointerId = null;
     button.classList.add('charged');
     navigator.vibrate?.(35);
-    hint.textContent = 'เติมครบ 100% แล้ว';
+    hint.textContent = CFG.UI_TEXT.ENTRY_GATE.doneHint;
 
     gate.classList.add('done');
     completionLoader?.show();
@@ -124,7 +127,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     holding = true;
     startAt = performance.now() - progress * holdMs;
     latestSparkleStep = -1;
-    hint.textContent = 'กำลังยืนยันตัวตนของคนน่ารัก...';
+    hint.textContent = CFG.UI_TEXT.ENTRY_GATE.loadingHint;
     button.classList.add('holding');
     raf = requestAnimationFrame(tick);
   }
@@ -137,7 +140,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     stopTick();
     setProgress(0);
     latestSparkleStep = -1;
-    hint.textContent = 'ปล่อยแล้วรีเซ็ตนะคั้บ กดค้างใหม่เพื่อเติมคั้บบ';
+    hint.textContent = CFG.UI_TEXT.ENTRY_GATE.resetHint;
   }
 
   function addTapProgress() {
@@ -145,7 +148,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     setProgress(progress + 0.2);
     latestSparkleStep = -1;
     spawnSparkle();
-    hint.textContent = `เติมแล้ว ${Math.round(progress * 100)}% กดเพิ่มได้อีกนะ`;
+    hint.textContent = CFG.UI_TEXT.ENTRY_GATE.progressHint(Math.round(progress * 100));
     if (progress >= 1) finishUnlock();
   }
 

@@ -27,13 +27,13 @@ export function createRainController() {
     const btn = qs('rainBtn');
     btn.disabled = true;
     btn.classList.add('loading');
-    qs('rainStatus').textContent = 'กำลังเตรียมความรักให้...';
+    qs('rainStatus').textContent = CFG.UI_TEXT.RAIN.preparing;
     document.body.classList.add('rain-focus');
     await wait(800);
 
     rainCount += 1;
-    qs('rainCount').textContent = `กดไปแล้ว: ${rainCount} ครั้ง`;
-    qs('rainStatus').textContent = 'พร้อมส่งข้อความรอบถัดไปแล้ว';
+    qs('rainCount').textContent = CFG.UI_TEXT.RAIN.count(rainCount);
+    qs('rainStatus').textContent = CFG.UI_TEXT.RAIN.ready;
 
     for (let i = 0; i < 14; i += 1) {
       setTimeout(spawnRain, i * 180);
