@@ -42,7 +42,8 @@ body {
 .profile-panel,
 .fp-popup-card,
 .anniv-count-box,
-.anniv-popup {
+.anniv-popup,
+.entry-gate-card {
   border-radius: var(--bento-radius-xl);
   border: 1px solid var(--bento-stroke);
   background: var(--bento-card-bg);
@@ -61,7 +62,8 @@ body {
 .profile-panel::before,
 .fp-popup-card::before,
 .anniv-count-box::before,
-.anniv-popup::before {
+.anniv-popup::before,
+.entry-gate-card::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -237,6 +239,7 @@ body {
 .rain-box,
 .fp-box,
 .love-play-shell,
+.entry-gate-card,
 .profile-panel {
   backdrop-filter: blur(14px) saturate(120%);
 }

@@ -19,6 +19,20 @@
   <link rel="stylesheet" href="styles/main.css" />
 </head>
 <body>
+  <div id="entryGate" class="entry-gate show" aria-live="polite">
+    <div class="entry-gate-card">
+      <p class="entry-gate-tag">Heart Unloc </p>
+      <h1>My heart is yours</h1>
+      <p class="entry-gate-sub">แตะหัวใจเพื่อเริ่มเลยคั้บ</p>
+      <button id="entryHeartBtn" class="entry-heart" aria-label="Tap heart to start">
+        <span class="entry-heart-icon" aria-hidden="true">
+          <span class="entry-heart-fill"></span>
+        </span>
+        <span class="entry-heart-frame" aria-hidden="true"></span>
+      </button>
+      <p id="entryHint" class="entry-gate-hint">แตะหัวใจหนึ่งครั้ง แล้วไปหน้าหลักกันคั้บ 💖</p>
+    </div>
+  </div>
   <div id="globalFakeLoader" class="fake-loader-overlay" aria-hidden="true" role="status" aria-live="polite">
     <p class="fake-loader-text fake-loader-text--wave" aria-label="Loading">
       <span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span><span>…</span>
@@ -27,11 +41,31 @@
     <div class="fake-loader-cat" data-loader-cat aria-hidden="true"></div>
   </div>
 
-  <div id="forcedMusicModal" class="forced-music-modal" aria-hidden="true">
-    <div class="forced-music-card" role="dialog" aria-modal="true" aria-labelledby="forcedMusicTitle">
-      <h3 id="forcedMusicTitle">ก่อนเริ่มใช้งาน กดเล่นเพลงก่อนนะ 💕</h3>
-      <p>ระบบจะล็อกหน้าจอไว้จนกว่าจะกดปุ่มเล่นเสียง</p>
-      <button id="forcedMusicPlayBtn" class="soft-btn" type="button">▶ เล่นเพลง</button>
+  <div id="entryCompletionLoader" class="entry-completion-loader" aria-hidden="true" role="status" aria-live="polite">
+    <p class="entry-completion-title fake-loader-text--wave" aria-label="Loading">
+      <span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span><span>…</span>
+    </p>
+    <div class="entry-cat" aria-hidden="true">
+      <div class="paw"></div>
+      <div class="paw"></div>
+      <div class="shake">
+        <div class="tail"></div>
+        <div class="main">
+          <div class="head"></div>
+          <div class="body"><div class="leg"></div></div>
+          <div class="face">
+            <div class="mustache_cont"><div class="mustache"></div><div class="mustache"></div></div>
+            <div class="mustache_cont"><div class="mustache"></div><div class="mustache"></div></div>
+            <div class="nose"></div>
+            <div class="eye"></div>
+            <div class="eye"></div>
+            <div class="brow_cont"><div class="brow"></div><div class="brow"></div></div>
+            <div class="brow_cont"><div class="brow"></div><div class="brow"></div></div>
+            <div class="ear_l"><div class="inner"></div></div>
+            <div class="ear_r"><div class="outer"></div><div class="inner"></div></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
