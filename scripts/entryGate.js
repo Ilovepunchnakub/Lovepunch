@@ -15,7 +15,19 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
   const button = qs('entryHeartBtn');
   const hint = qs('entryHint');
 
-  hint.textContent = CFG.UI_TEXT.ENTRY_GATE.idleHint;
+  const entryGateText = CFG.UI_TEXT?.ENTRY_GATE ?? {};
+  const getText = (key, fallback) => {
+    const value = entryGateText[key];
+    return typeof value === 'string' && value.trim() ? value : fallback;
+  };
+  const getProgressHint = (percent) => {
+    const value = entryGateText.progressHint;
+    if (typeof value === 'function') return value(percent);
+    if (typeof value === 'string' && value.trim()) return value;
+    return `เติมแล้ว ${percent}% กดเพิ่มได้อีกนะ`;
+  };
+
+  hint.textContent = getText('idleHint', 'กดค้างหรือแตะเพิ่มได้เลยคั้บเธอ...');
 
   let raf = null;
   let holding = false;
@@ -83,7 +95,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     activePointerId = null;
     button.classList.add('charged');
     navigator.vibrate?.(35);
-    hint.textContent = CFG.UI_TEXT.ENTRY_GATE.doneHint;
+    hint.textContent = getText('doneHint', 'เติมครบ 100% แล้ว');
 
     gate.classList.add('done');
     completionLoader?.show();
@@ -127,7 +139,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     holding = true;
     startAt = performance.now() - progress * holdMs;
     latestSparkleStep = -1;
-    hint.textContent = CFG.UI_TEXT.ENTRY_GATE.loadingHint;
+    hint.textContent = getText('loadingHint', 'กำลังยืนยันตัวตนของคนน่ารัก...');
     button.classList.add('holding');
     raf = requestAnimationFrame(tick);
   }
@@ -140,7 +152,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     stopTick();
     setProgress(0);
     latestSparkleStep = -1;
-    hint.textContent = CFG.UI_TEXT.ENTRY_GATE.resetHint;
+    hint.textContent = getText('resetHint', 'ปล่อยแล้วรีเซ็ตนะคั้บ กดค้างใหม่เพื่อเติมคั้บบ');
   }
 
   function addTapProgress() {
@@ -148,7 +160,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     setProgress(progress + 0.2);
     latestSparkleStep = -1;
     spawnSparkle();
-    hint.textContent = CFG.UI_TEXT.ENTRY_GATE.progressHint(Math.round(progress * 100));
+    hint.textContent = getProgressHint(Math.round(progress * 100));
     if (progress >= 1) finishUnlock();
   }
 
@@ -191,7 +203,6 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     addTapProgress();
   });
 
-  button.addEventListener('touchstart', block, { passive: false });
   button.addEventListener('contextmenu', block);
   button.addEventListener('dragstart', block);
 
@@ -203,6 +214,16 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
   });
 
   if (!window.PointerEvent) {
+    button.addEventListener(
+      'touchstart',
+      (e) => {
+        if (e.touches.length > 1) return;
+        startHold(e);
+      },
+      { passive: false }
+    );
+    window.addEventListener('touchend', stopHold, { passive: true });
+    window.addEventListener('touchcancel', stopHold, { passive: true });
     button.addEventListener('mousedown', startHold);
     window.addEventListener('mouseup', stopHold);
     button.addEventListener('mouseleave', stopHold);
