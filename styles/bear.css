@@ -63,7 +63,7 @@
 
       .wrapper.show-message::after {
         position: absolute;
-        content: 'drag the donut and feed the bear';
+        content: 'ป้อนอาหารหมีให้หน่อยคั้บเธอ หมีหิว!';
         top: 80px;
         font-style: italic;
         color: #fff;
