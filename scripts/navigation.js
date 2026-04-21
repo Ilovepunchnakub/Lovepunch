@@ -7,7 +7,7 @@
 // - หากแก้ flow การเรียกใช้ ควรตรวจผลกระทบกับไฟล์ app.js และ navigation.js
 // - โค้ดส่วนนี้ถูกแยกโมดูลเพื่อให้ debug และปรับปรุงรายฟีเจอร์ได้ง่าย
 // =============================================
-import { qs, randomInt } from './utils.js';
+import { qs, randomInt, wait } from './utils.js';
 
 export function createNavigator({ onPage, transitionLoader }) {
   let current = 'home';
@@ -19,6 +19,16 @@ export function createNavigator({ onPage, transitionLoader }) {
     qs('fpPopup')?.setAttribute('aria-hidden', 'true');
     qs('annivOverlay')?.classList.remove('show');
     document.body.classList.remove('anniv-focus');
+  }
+
+  function clearButtonFocus(targetEl) {
+    // แก้ปัญหา tooltip/สถานะโฟกัสค้างบนมือถือหลังแตะปุ่มนำทาง
+    if (targetEl instanceof HTMLElement) {
+      targetEl.blur();
+    }
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
   }
 
   function applyPage(page) {
@@ -55,12 +65,31 @@ export function createNavigator({ onPage, transitionLoader }) {
     }
   }
 
+  async function goExternal(link) {
+    if (!link || switching) return;
+    switching = true;
+    try {
+      if (!transitionLoader) {
+        window.location.assign(link);
+        return;
+      }
+
+      transitionLoader.show();
+      // หน้า external (หมี/ดอกไม้) จะเห็น loading หลอกก่อนย้ายหน้า
+      await wait(randomInt(1300, 2400));
+      window.location.assign(link);
+    } finally {
+      switching = false;
+    }
+  }
+
   function init() {
     document.querySelectorAll('.ni').forEach((el) => {
       el.addEventListener('click', () => {
         const { page, link } = el.dataset;
+        clearButtonFocus(el);
         if (link) {
-          window.location.assign(link);
+          goExternal(link);
           return;
         }
         go(page);

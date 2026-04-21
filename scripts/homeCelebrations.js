@@ -8,6 +8,7 @@
 // - โค้ดส่วนนี้ถูกแยกโมดูลเพื่อให้ debug และปรับปรุงรายฟีเจอร์ได้ง่าย
 // =============================================
 import { wait } from './utils.js';
+import { spawnHourEffects } from './hourMilestoneFx.js';
 
 export function createHourCelebration() {
   let lock = false;
@@ -21,6 +22,9 @@ export function createHourCelebration() {
     badge.textContent = `ครบ ${hourCount.toLocaleString('th-TH')} ชั่วโมงแล้ว 🎉`;
     cardEl.appendChild(badge);
 
+    // เอฟเฟกต์หลัก: ประกาย + ring + flash เพื่อให้ดู wow มากขึ้น
+    spawnHourEffects(cardEl);
+
     for (let i = 0; i < 18; i += 1) {
       const sparkle = document.createElement('span');
       sparkle.className = 'hour-wow-spark';
@@ -32,7 +36,7 @@ export function createHourCelebration() {
       sparkle.addEventListener('animationend', () => sparkle.remove());
     }
 
-    await wait(2100);
+    await wait(2400);
     badge.classList.add('out');
     await wait(500);
     badge.remove();
