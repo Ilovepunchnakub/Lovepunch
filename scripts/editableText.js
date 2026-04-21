@@ -14,14 +14,6 @@ export const EDITABLE_TEXT = {
   },
 
   UI_TEXT: {
-    ENTRY_GATE: {
-      tag: 'Heart Unloc',
-      title: 'My heart is yours',
-      subtitle: 'แตะหัวใจเพื่อเริ่มเลยคั้บ',
-      buttonAriaLabel: 'Tap heart to start',
-      idleHint: 'แตะหัวใจหนึ่งครั้ง แล้วไปหน้าหลักกันคั้บ 💖',
-      loadingHint: 'กำลังพาเข้าสู่หน้าหลักนะคั้บ...'
-    },
     RAIN: {
       preparing: 'กำลังเตรียมความรักให้...',
       ready: 'พร้อมส่งข้อความรอบถัดไปแล้ว',
