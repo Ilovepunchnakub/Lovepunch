@@ -28,7 +28,7 @@ export function createHourCelebration() {
     for (let i = 0; i < 18; i += 1) {
       const sparkle = document.createElement('span');
       sparkle.className = 'hour-wow-spark';
-      sparkle.textContent = i % 2 === 0 ? '💖' : '✨';
+      sparkle.textContent = i % 2 === 0 ? '💖' : '✨' : '💫' : '💕';
       sparkle.style.setProperty('--x', `${-44 + Math.random() * 88}px`);
       sparkle.style.setProperty('--y', `${-90 - Math.random() * 140}px`);
       sparkle.style.setProperty('--delay', `${i * 20}ms`);
