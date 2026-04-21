@@ -132,10 +132,10 @@
         </section>
 
         <section class="stat-grid bento-card bento-card--stats">
-          <article class="soft-card"><span>📅</span><p>เดือนที่ผ่านมา</p><b id="stM">0 เดือน</b></article>
+          <article class="soft-card"><span>📅</span><p>เดือนที่คุยกันมา</p><b id="stM">0 เดือน</b></article>
           <article class="soft-card"><span>🌙</span><p>คืนที่คิดถึงกัน</p><b id="stN">0 คืน</b></article>
-          <article class="soft-card"><span>☀️</span><p>เช้าที่นึกถึงกัน</p><b id="stMr">0 เช้า</b></article>
-          <article class="soft-card"><span>💗</span><p>หัวใจเต้นเพื่อเธอ</p><b>∞ ครั้ง</b></article>
+          <article class="soft-card"><span>☀️</span><p>เช้าที่คิดถึงกัน</p><b id="stMr">0 เช้า</b></article>
+          <article class="soft-card"><span>💗</span><p>หัวใจเต้นตอนเจอเธอ</p><b>∞ ครั้ง</b></article>
         </section>
       </div>
     </div>
@@ -193,10 +193,10 @@
   <div class="page" id="pg-rain">
     <div class="page-scroll center">
       <section class="soft-card rain-box">
-        <h2>โปรยข้อความหวาน 💝</h2>
-        <p>กดปุ่มแล้วข้อความหวานจะโปรยลงมาแบบไม่บังข้อมูลหลัก</p>
+        <h2>โปรยข้อความในหัวเค้า 💝</h2>
+        <p>กดปุ่มแล้วข้อความจะถูกโปรยลงมาคั้บ</p>
         <button class="soft-btn" id="rainBtn">เริ่มโปรยข้อความ</button>
-        <p id="rainStatus">พร้อมโปรยข้อความหวาน</p>
+        <p id="rainStatus">พร้อมโปรยข้อความ</p>
         <p id="rainCount">กดไปแล้ว: 0 ครั้ง</p>
       </section>
     </div>
@@ -211,8 +211,8 @@
   <div class="page" id="pg-finger">
     <div class="page-scroll center">
       <section class="soft-card fp-box">
-        <h2>ยืนยันตัวตน</h2>
-        <p id="fpHint">แตะค้างเพื่อสแกนลายนิ้วมือ 👆</p>
+        <h2>ยืนยันตัวตนก่อนนะคั้บ</h2>
+        <p id="fpHint">แตะค้างเพื่อสแกนลายนิ้วมือหน่อยคั้บ</p>
         <button class="scan-btn" id="fpZone" aria-label="กดค้างเพื่อสแกนลายนิ้วมือ">
           <span class="scan-btn-ring" aria-hidden="true"></span>
           <img src="icons/custom/fingerprint-scan.svg" class="scan-btn-icon" alt="" draggable="false" />
@@ -232,9 +232,9 @@
 
   <div class="anniv-overlay" id="annivOverlay">
     <div class="anniv-count-box" id="annivCountBox">
-      <p>นับถอยหลังเซอร์ไพรส์วันครบรอบ</p>
+      <p>นับถอยหลังเซอร์ไพรส์</p>
       <b id="annivCountdown">10</b>
-      <small>วินาทีสุดท้ายกำลังเริ่มแล้ว ✨</small>
+      <small>วินาทีสุดท้ายเริ่มแล้ว ✨</small>
     </div>
 
     <div class="anniv-popup" id="annivPopup" role="dialog" aria-modal="true" aria-labelledby="annivPopupTitle" aria-describedby="annivTypedText" tabindex="-1">
@@ -254,17 +254,17 @@
   <nav id="mainNav" class="collapsed">
     <button class="ni on" data-page="home" title="หน้าแรก">  <img src="Iconmap/wired-lineal-63-home-hover-3d-roll.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
       <span>หน้าแรก</span></button>
-    <button class="ni" data-page="rain" title="โปรยรัก">  <img src="Iconmap/wired-lineal-1865-shooting-stars-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
-      <span>โปรยรัก</span></button>
-    <button class="ni" data-page="hyper" title="จักรวาล">  <img src="Iconmap/wired-lineal-1872-small-cute-monster-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
-      <span>จักรวาล</span></button>
+    <button class="ni" data-page="rain" title="โปรยข้อความ">  <img src="Iconmap/wired-lineal-1865-shooting-stars-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
+      <span>โปรยข้อความ</span></button>
+    <button class="ni" data-page="hyper" title="Universe">  <img src="Iconmap/wired-lineal-1872-small-cute-monster-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
+      <span>Universe</span></button>
     <button class="ni" data-page="finger" title="ยืนยันหัวใจ">  <img src="Iconmap/wired-lineal-500-fingerprint-security-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
       <span>หัวใจ</span></button>
     <button class="ni" data-link="bear.html" title="หน้าหมี">  <img src="Iconmap/wired-lineal-1957-maneki-cat-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
       <span>หมี</span></button>
-    <button class="ni" data-link="Valentine Letter/Valentine Letter.html" title="ดอกไม้">
+    <button class="ni" data-link="Valentine Letter/Valentine Letter.html" title="Love">
         <img src="Iconmap/wired-lineal-1704-flower-doodle-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
-      <span>ดอกไม้</span></button>
+      <span>Love</span></button>
   </nav>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
