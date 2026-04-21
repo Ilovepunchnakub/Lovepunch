@@ -88,7 +88,7 @@ export function createFingerController() {
       qs('fpPopup').classList.remove('can-close');
       qs('fpZone').classList.remove('scanning');
       qs('fpMsg').textContent = '';
-      qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือ 👆';
+      qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือคั้บคนน่ารัก 💓';
       clearHoldVisual();
     }
   }
@@ -96,7 +96,7 @@ export function createFingerController() {
   function renderLoadingPopup() {
     closeEnabled = false;
     qs('fpPopup').classList.remove('can-close');
-    qs('fpPopupTitle').textContent = 'กำลังโหลดข้อมูลความลับ';
+    qs('fpPopupTitle').textContent = 'กำลังโหลดข้อมูลความลับของเธอ..ฮ่าๆ';
     qs('fpPopupBody').innerHTML = loadingMarkup();
     qs('fpPopupCard').classList.remove('scan-stage-transition');
     radarFx = createRadarFx(qs('scanRadarCanvas'));
@@ -106,7 +106,7 @@ export function createFingerController() {
   function renderDonePopup() {
     closeEnabled = false;
     qs('fpPopup').classList.remove('can-close');
-    qs('fpPopupTitle').textContent = 'ตรวจสอบเสร็จสิ้น 💖';
+    qs('fpPopupTitle').textContent = 'ตรวจสอบเสร็จสิ้นแล้ว..✅';
     qs('fpPopupBody').innerHTML = completeMarkup();
     const card = qs('fpPopupCard');
     card.classList.remove('scan-stage-transition');
@@ -157,7 +157,7 @@ export function createFingerController() {
     holdStart = 0;
     qs('fpZone').classList.remove('holding');
     clearHoldVisual();
-    if (state === 'idle') qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือ 👆';
+    if (state === 'idle') qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือคั้บคนน่ารัก 💗';
   }
 
   function tickHold(ts) {
@@ -173,7 +173,7 @@ export function createFingerController() {
     if (state !== 'idle' || holdTimer) return;
     holdStart = 0;
     qs('fpZone').classList.add('holding');
-    qs('fpHint').textContent = 'กดค้างไว้... ระบบกำลังตรวจจับลายนิ้วมือ';
+    qs('fpHint').textContent = 'กดค้างไว้... ระบบกำลังตรวจจับลายนิ้วมือคั้บบ';
     holdRaf = requestAnimationFrame(tickHold);
     holdTimer = setTimeout(() => {
       holdTimer = null;
@@ -190,7 +190,7 @@ export function createFingerController() {
     cancelHold();
     state = 'idle';
     closeEnabled = false;
-    qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือ 👆';
+    qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือคั้บคนน่ารัก 💓';
     qs('fpMsg').textContent = '';
     qs('fpZone').classList.remove('scanning', 'holding');
     clearHoldVisual();
@@ -235,8 +235,8 @@ export function createFingerController() {
 
     renderDonePopup();
     qs('fpZone').classList.remove('scanning');
-    qs('fpHint').textContent = 'ตรวจสอบเสร็จสิ้นแล้ว';
-    qs('fpMsg').textContent = 'สำเร็จ! ระบบยืนยันตัวตนด้วยหัวใจเรียบร้อย';
+    qs('fpHint').textContent = 'ตรวจสอบเสร็จสิ้นแล้ว  ✅';
+    qs('fpMsg').textContent = 'สำเร็จ! ระบบยืนยันตัวตนด้วยหัวใจเรียบร้อยคั้บ..💖';
     state = 'done';
     startDismissCountdown();
   }
