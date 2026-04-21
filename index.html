@@ -12,7 +12,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>I Love For You 💕</title>
+  <title>For Punch 💕</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
@@ -21,10 +21,10 @@
 <body>
   <div id="entryGate" class="entry-gate show" aria-live="polite">
     <div class="entry-gate-card">
-      <p class="entry-gate-tag">secure love verification</p>
-      <h1>เติมหัวใจ ให้หน่อยคั้บเธอ ❤️‍🔥</h1>
+      <p class="entry-gate-tag">Heart Unloc </p>
+      <h1>My heart is yours</h1>
       <p class="entry-gate-sub">กดค้างหรือแตะเพิ่มหัวใจให้เต็มคั้บ</p>
-      <button id="entryHeartBtn" class="entry-heart" aria-label="กดค้างหรือแตะเพื่อเติมหัวใจ">
+      <button id="entryHeartBtn" class="entry-heart" aria-label="Press heart...">
         <span class="entry-heart-icon" aria-hidden="true">
           <span class="entry-heart-fill"></span>
         </span>
@@ -77,24 +77,34 @@
 
   <div class="page active" id="pg-home">
     <div class="page-scroll">
-      <button class="profile-toggle profile-toggle--home" id="profileToggle" aria-label="เปิด My Love Profile" title="My Love Profile">
+      <button class="profile-toggle profile-toggle--home" id="profileToggle" aria-label="เปิด My Love Profile" title="Profile Punch">
         <img src="icons/custom/profile-love.svg" alt="profile" />
       </button>
       <header class="home-hdr bento-hero">
         <div class="hero-icon-row" aria-hidden="true">
-          <span class="hero-icon-bubble">💖</span>
-          <span class="hero-icon-bubble">🧸</span>
-          <span class="hero-icon-bubble">🌈</span>
+          <span class="hero-icon-bubble">
+            <img src="planet-saturn-svgrepo-com.png" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
+          </span>
+          <span class="hero-icon-bubble">
+              <img src="planet-svgrepo-com.png" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
+            
+          </span>
+          <span class="hero-icon-bubble">
+              <img src="Cat2.gif.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
+            
+          </span>
         </div>
         <p class="home-tag">✨ FOR YOUR EYES ONLY ✨</p>
-        <h2 id="homeTitle" aria-label="สวัสดีที่รัก 🌸"></h2>
+        <h2 id="homeTitle" aria-label="Hello World Punch 🌎"></h2>
       </header>
 
       <div class="home-bento-grid">
         <section class="days-card soft-card bento-card bento-card--hero">
           <div class="bento-card-topline">
-            <p class="section-tag"><span class="text-highlight">เราอยู่ด้วยกันมาแล้ว</span></p>
-            <span class="mini-3d-icon" aria-hidden="true">⏳</span>
+            <p class="section-tag"><span class="text-highlight">Ionic Bond</span></p>
+            <span class="mini-3d-icon" aria-hidden="true">
+                <img src="hourglass-not-done-svgrepo-com.png" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
+            </span>
           </div>
 
           <div class="duration-grid only-time">
@@ -108,8 +118,10 @@
 
         <section class="soft-card countdown-card bento-card bento-card--sub">
           <div class="bento-card-topline">
-            <p class="section-tag dark"><span class="text-highlight">นับถอยหลังวันครบรอบเดือนถัดไป</span></p>
-            <span class="mini-3d-icon" aria-hidden="true">🎉</span>
+            <p class="section-tag dark"><span class="text-highlight">Countdown to the important day</span></p>
+            <span class="mini-3d-icon" aria-hidden="true">
+                <img src="umbrella-pixelated-svgrepo-com.png" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
+            </span>
           </div>
           <div class="cd-units">
             <div class="cd-unit"><b id="cdD">00</b><small>วัน</small></div>
@@ -131,7 +143,9 @@
 
   <div class="profile-panel" id="profilePanel">
     <div class="profile-head">
-      <h3>My Love Profile</h3>
+      <h3>Profile Punch 
+          <img src="Cat.gif.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
+      </h3>
       <img class="profile-mini-photo" src="assets/images/love-profile-kid-photo.jpeg" alt="my love profile photo" />
     </div>
     <p><b>ชื่อ:</b> <span id="pf-name"></span></p>
@@ -238,12 +252,19 @@
   </button>
 
   <nav id="mainNav" class="collapsed">
-    <button class="ni on" data-page="home" title="หน้าแรก">🏠<span>หน้าแรก</span></button>
-    <button class="ni" data-page="rain" title="โปรยรัก">🌸<span>โปรยรัก</span></button>
-    <button class="ni" data-page="hyper" title="จักรวาล">✨<span>จักรวาล</span></button>
-    <button class="ni" data-page="finger" title="ยืนยันหัวใจ">💝<span>หัวใจ</span></button>
-    <button class="ni" data-link="bear.html" title="หน้าหมี">🧸<span>หมี</span></button>
-    <button class="ni" data-link="Valentine Letter/Valentine Letter.html" title="ดอกไม้">🌼<span>ดอกไม้</span></button>
+    <button class="ni on" data-page="home" title="หน้าแรก">  <img src="wired-lineal-63-home-hover-3d-roll.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
+      <span>หน้าแรก</span></button>
+    <button class="ni" data-page="rain" title="โปรยรัก">  <img src="wired-lineal-1865-shooting-stars-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
+      <span>โปรยรัก</span></button>
+    <button class="ni" data-page="hyper" title="จักรวาล">  <img src="wired-lineal-1872-small-cute-monster-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
+      <span>จักรวาล</span></button>
+    <button class="ni" data-page="finger" title="ยืนยันหัวใจ">  <img src="wired-lineal-500-fingerprint-security-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
+      <span>หัวใจ</span></button>
+    <button class="ni" data-link="bear.html" title="หน้าหมี">  <img src="wired-lineal-1957-maneki-cat-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
+      <span>หมี</span></button>
+    <button class="ni" data-link="Valentine Letter/Valentine Letter.html" title="ดอกไม้">
+        <img src="wired-lineal-1704-flower-doodle-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
+      <span>ดอกไม้</span></button>
   </nav>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
