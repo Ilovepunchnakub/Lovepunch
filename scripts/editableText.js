@@ -17,13 +17,10 @@ export const EDITABLE_TEXT = {
     ENTRY_GATE: {
       tag: 'Heart Unloc',
       title: 'My heart is yours',
-      subtitle: 'กดค้างหรือแตะเพิ่มหัวใจให้เต็มคั้บ',
-      buttonAriaLabel: 'Press heart...',
-      idleHint: 'กดค้างหรือแตะเพิ่มได้เลยคั้บเธอ...',
-      loadingHint: 'กำลังยืนยันตัวตนของคนน่ารัก...',
-      resetHint: 'ปล่อยแล้วยังไม่เต็มน้า ลองกดค้างอีกนิดนะ 💗',
-      progressHint: (percent) => `หัวใจเต็มแล้ว ${percent}% แล้วน้า ✨`,
-      doneHint: 'เติมครบ 100% แล้ว'
+      subtitle: 'แตะหัวใจเพื่อเริ่มเลยคั้บ',
+      buttonAriaLabel: 'Tap heart to start',
+      idleHint: 'แตะหัวใจหนึ่งครั้ง แล้วไปหน้าหลักกันคั้บ 💖',
+      loadingHint: 'กำลังพาเข้าสู่หน้าหลักนะคั้บ...'
     },
     RAIN: {
       preparing: 'กำลังเตรียมความรักให้...',
@@ -39,12 +36,6 @@ export const EDITABLE_TEXT = {
     }
   },
 
-  ENTRY_GATE_TUNING: {
-    holdMs: 2400,
-    tapThresholdMs: 220,
-    tapIncrement: 0.24,
-    sparkleSteps: 14
-  },
 
   HYPER_MESSAGES: [
     'You make my heart smile',
