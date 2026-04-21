@@ -66,8 +66,7 @@
   justify-content: center;
   padding: calc(env(safe-area-inset-top) + 14px) 14px calc(env(safe-area-inset-bottom) + 18px);
 }
-.anniv-count-box,
-.anniv-popup {
+.anniv-count-box {
   position: relative;
   inset: auto;
   left: auto;
@@ -82,7 +81,11 @@
   transform: translateY(0) scale(1);
 }
 .anniv-popup {
-  transform: translateY(10px) scale(.985);
+  padding: calc(env(safe-area-inset-top) + 10px) 12px calc(env(safe-area-inset-bottom) + 16px);
+}
+.anniv-popup-shell {
+  width: min(94vw, 560px);
+  border-radius: 26px;
 }
 
 /* ---------- Hourly celebration wow fx ---------- */

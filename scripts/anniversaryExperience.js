@@ -92,9 +92,25 @@ export function createAnniversaryExperience({ blessings }) {
     }
   }
 
+  function spawnFloatingHearts() {
+    if (!popup) return;
+    const icons = ['💗', '💖', '✨', '🌸'];
+    for (let i = 0; i < 16; i += 1) {
+      const token = document.createElement('span');
+      token.className = 'anniv-float';
+      token.textContent = icons[Math.floor(Math.random() * icons.length)];
+      token.style.setProperty('--x', `${Math.round((Math.random() - 0.5) * 280)}px`);
+      token.style.setProperty('--delay', `${Math.round(Math.random() * 420)}ms`);
+      token.style.setProperty('--dur', `${1900 + Math.round(Math.random() * 1100)}ms`);
+      popup.appendChild(token);
+      setTimeout(() => token.remove(), 3600);
+    }
+  }
+
   async function revealPopup() {
     setStage('popup');
     popup.classList.add('show');
+    spawnFloatingHearts();
     popup.focus();
     await typeText(pickBlessing());
 
@@ -111,6 +127,7 @@ export function createAnniversaryExperience({ blessings }) {
     if (!active || (!unlockedClose && !force)) return;
     overlay.classList.remove('show');
     popup.classList.remove('show');
+    popup.querySelectorAll('.anniv-float').forEach((item) => item.remove());
     setStage('countdown');
     document.body.classList.remove('anniv-focus');
     unbindPopupKeyboard();
