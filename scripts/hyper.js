@@ -12,6 +12,7 @@ import { wait, qs } from './utils.js';
 import { playHyperTimeline } from './hyperTimeline.js';
 import { createHyperThreeBackground } from './hyperThreeBackground.js';
 import { createHyperUiReact } from './hyperUiReact.js';
+import { TEXT_CONTENT } from './siteTextContent.js';
 
 export function createHyperController() {
   let active = false;
@@ -34,7 +35,7 @@ export function createHyperController() {
       if (!active || !runningSequence) return;
       const progress = Math.round((i / loops) * 100);
       ui.setLoading({
-        text: progress < 100 ? 'กำลังเตรียม hyperspace...' : 'พร้อมเข้าสู่เส้นทางของเราแล้ว',
+        text: progress < 100 ? TEXT_CONTENT.app.hyper.loadingPreparing : TEXT_CONTENT.app.hyper.loadingReady,
         progress
       });
       await wait(tick);
@@ -51,7 +52,7 @@ export function createHyperController() {
       return;
     }
 
-    ui.showMessage('เตรียมตัวเข้าสู่ hyperspace ของเรา ✨', {
+    ui.showMessage(TEXT_CONTENT.app.hyper.intro, {
       holdMs: 3000,
       fadeInMs: 850,
       fadeOutMs: 950

@@ -134,8 +134,8 @@
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes annivPopupRise {
-  from { opacity: 0; transform: translateY(18px) scale(.97); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 18px)) scale(.97); }
+  to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
 }
 @keyframes popupCardFloat {
   0%, 100% { transform: translateY(0); }
@@ -167,4 +167,66 @@
 @keyframes scanPulseIcon {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.06); }
+}
+
+.fx-cursor {
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 9999;
+  font-size: 20px;
+}
+
+@media (pointer: fine) {
+  body { cursor: none; }
+}
+
+.click-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  animation: clickParticleFly var(--dur) cubic-bezier(.22,.61,.36,1) forwards;
+}
+
+.click-ripple {
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9990;
+  background: rgba(255,110,180,0.35);
+  border: 2px solid rgba(255,110,180,0.7);
+  transform: translate(-50%,-50%) scale(0);
+  animation: clickRippleOut var(--dur-ms, 600ms) ease-out forwards;
+}
+
+.click-msg {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9997;
+  font-family: 'Itim', sans-serif;
+  font-size: 1.1rem;
+  color: #ff6eb4;
+  animation: clickMsgFly 1s ease-out forwards;
+  white-space: nowrap;
+}
+
+@keyframes clickParticleFly {
+  0% { transform: translate(0,0) scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--dy)) scale(0) rotate(var(--rot)); opacity: 0; }
+}
+
+@keyframes clickRippleOut {
+  0% { transform: translate(-50%,-50%) scale(0); opacity: 0.6; }
+  100% { transform: translate(-50%,-50%) scale(6); opacity: 0; }
+}
+
+@keyframes clickMsgFly {
+  0% { transform: translateY(0) scale(0.8); opacity: 0; }
+  20% { transform: translateY(-10px) scale(1.1); opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(-50px) scale(0.9); opacity: 0; }
 }
