@@ -20,7 +20,6 @@ import { initEntryGate } from './entryGate.js';
 import { initNavDock } from './navDock.js';
 import { initInteractionEffects } from './effects.js';
 import { createFakePageLoader, createEntryCompletionLoader } from './fakePageLoader.js';
-import { applySectionTexts } from './siteTextContent.js';
 
 const home = createHomeController();
 const rain = createRainController();
@@ -47,7 +46,6 @@ const dreamScene = createDreamScene({ navigator: nav });
 const thankYouBearPage = createThankYouBearPage({ navigator: nav });
 
 function bootMainApp() {
-  applySectionTexts();
   home.init();
   rain.init();
   hyper.init();
