@@ -8,17 +8,9 @@
 // - โค้ดส่วนนี้ถูกแยกโมดูลเพื่อให้ debug และปรับปรุงรายฟีเจอร์ได้ง่าย
 // =============================================
 import { wait } from './utils.js';
+import { TEXT_CONTENT } from './siteTextContent.js';
 
-const PHASES = [
-  'เชื่อมต่อคลังข้อมูลหัวใจ...',
-  'ถอดรหัสลายนิ้วมือชั้นที่ 1',
-  'สแกนความถี่ชีพจรแห่งความทรงจำ',
-  'ซิงก์คีย์ลับกับเซิร์ฟเวอร์ Soul-Link',
-  'วิเคราะห์รอยยิ้มและค่าความอบอุ่น',
-  'ยืนยันความปลอดภัยระดับ Heart Shield',
-  'ค้นหาข้อมูลพิเศษของคนสำคัญ',
-  'เตรียมผลสรุปสุดท้าย'
-];
+const PHASES = TEXT_CONTENT.app.finger.phases;
 
 export async function runFingerScan({ onStep }) {
   const totalMs = 4800;
