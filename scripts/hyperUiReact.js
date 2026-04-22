@@ -10,17 +10,18 @@
 import React from 'https://esm.sh/react@18.3.1';
 import { createRoot } from 'https://esm.sh/react-dom@18.3.1/client';
 import { AnimatePresence, motion } from 'https://esm.sh/framer-motion@11.2.10';
+import { TEXT_CONTENT } from './siteTextContent.js';
 
 const { useEffect, useMemo, useState } = React;
 
 const baseState = {
   mode: 'idle',
-  message: 'กดเริ่มเดินทาง แล้วออกท่องไปในจักรวาลของเรา ✨',
+  message: TEXT_CONTENT.app.hyper.uiIdleMessage,
   messageKey: 0,
   done: false,
-  doneText: 'จบข้อความแล้ว กดเริ่มเพื่อเล่นซ้ำได้',
+  doneText: TEXT_CONTENT.app.hyper.uiDoneText,
   finaleKey: 0,
-  loadingText: 'กำลังเตรียม hyperspace...',
+  loadingText: TEXT_CONTENT.app.hyper.loadingPreparing,
   loadingProgress: 0,
   messageTiming: {
     holdMs: 5600,
@@ -96,7 +97,7 @@ function HyperOverlay({ state, onStart, onFinaleFinish }) {
           exit: { opacity: 0, y: -10, scale: 0.96 },
           transition: { duration: 0.35 }
         },
-        React.createElement('button', { className: 'soft-btn hyper-start-btn', onClick: onStart }, 'เริ่มเดินทาง')
+        React.createElement('button', { className: 'soft-btn hyper-start-btn', onClick: onStart }, TEXT_CONTENT.app.hyper.uiStartButton)
       ),
       state.mode === 'loading' && React.createElement(
         motion.div,
@@ -127,7 +128,7 @@ function HyperOverlay({ state, onStart, onFinaleFinish }) {
           ),
           React.createElement('b', { className: 'hyper-loading-percent' }, `${state.loadingProgress}%`)
         ),
-        React.createElement('small', { className: 'hyper-loading-log' }, `โหลดระบบนำทาง ${state.loadingProgress}%`)
+        React.createElement('small', { className: 'hyper-loading-log' }, TEXT_CONTENT.app.hyper.uiLoadingLog(state.loadingProgress))
       ),
       state.mode === 'message' && React.createElement(
         motion.div,
@@ -207,14 +208,14 @@ function HyperFinale({ onFinish }) {
     React.createElement(
       'div',
       { className: 'hyper-finale-overlay' },
-      React.createElement('h2', { className: `hyper-finale-title${titleVisible ? ' show' : ''}` }, 'Love Forever'),
+      React.createElement('h2', { className: `hyper-finale-title${titleVisible ? ' show' : ''}` }, TEXT_CONTENT.app.hyper.uiFinalTitle),
       React.createElement(
         'button',
         {
           className: `soft-btn hyper-finale-end-btn${ready ? ' show' : ''}`,
           onClick: () => onFinish?.()
         },
-        'กดเพื่อจบ'
+        TEXT_CONTENT.app.hyper.uiFinalButton
       )
     )
   );

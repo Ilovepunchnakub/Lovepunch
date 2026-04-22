@@ -13,6 +13,7 @@ import { createHourCelebration } from './homeCelebrations.js';
 import { createAnniversaryExperience } from './anniversaryExperience.js';
 import { attachSecretTapTest } from './homeSecretTests.js';
 import { mountHomeLoveAnimation } from './homeLoveAnimation.js';
+import { TEXT_CONTENT } from './siteTextContent.js';
 
 export function createHomeController() {
   let timer;
@@ -44,9 +45,9 @@ export function createHomeController() {
       lastHourMilestone = totalHours;
     }
 
-    qs('stM').textContent = `${Math.floor(dayFloor / 30)} เดือน`;
-    qs('stN').textContent = `${totalDays} คืน`;
-    qs('stMr').textContent = `${totalDays} เช้า`;
+    qs('stM').textContent = TEXT_CONTENT.app.home.monthStat(Math.floor(dayFloor / 30));
+    qs('stN').textContent = TEXT_CONTENT.app.home.nightStat(totalDays);
+    qs('stMr').textContent = TEXT_CONTENT.app.home.morningStat(totalDays);
 
     const d = CFG.START.getDate();
     let next = new Date(now.getFullYear(), now.getMonth(), d, CFG.START.getHours(), CFG.START.getMinutes(), CFG.START.getSeconds());
@@ -61,38 +62,41 @@ export function createHomeController() {
     anniversary.tick(left);
 
     const thYear = CFG.START.getFullYear() + 543;
-    qs('daysSince').textContent = `เริ่มคบกันตั้งแต่ ${CFG.START.getDate()}/${CFG.START.getMonth() + 1}/${thYear}`;
+    qs('daysSince').textContent = TEXT_CONTENT.app.home.daysSince(CFG.START.getDate(), CFG.START.getMonth() + 1, thYear);
   }
 
   function closeProfile() {
     document.body.classList.remove('profile-open');
     qs('profilePanel').classList.remove('show');
+    const toggle = qs('profileToggle');
+    if (toggle) toggle.checked = false;
   }
 
   // แสดง/ซ่อนปุ่ม My Love Profile เฉพาะหน้าแรก
   function setProfileToggleVisibility(visible) {
-    const toggle = qs('profileToggle');
-    if (!toggle) return;
-    toggle.hidden = !visible;
-    toggle.setAttribute('aria-hidden', visible ? 'false' : 'true');
+    const toggleWrap = qs('profileToggleWrap');
+    if (!toggleWrap) return;
+    toggleWrap.hidden = !visible;
+    toggleWrap.setAttribute('aria-hidden', visible ? 'false' : 'true');
   }
 
   function fillProfile() {
-    mountHomeLoveAnimation(qs('homeTitle'), `สวัสดี${CFG.HER_NAME} 🌸`);
+    mountHomeLoveAnimation(qs('homeTitle'), TEXT_CONTENT.app.home.greeting(CFG.HER_NAME));
     Object.entries(CFG.PROFILE).forEach(([key, value]) => {
       const el = qs(`pf-${key}`);
       if (el) el.textContent = value;
     });
 
-    qs('profileToggle').addEventListener('click', (e) => {
+    qs('profileToggle').addEventListener('change', (e) => {
       e.stopPropagation();
-      const opened = document.body.classList.toggle('profile-open');
+      const opened = Boolean(e.target?.checked);
+      document.body.classList.toggle('profile-open', opened);
       qs('profilePanel').classList.toggle('show', opened);
     });
 
     document.addEventListener('pointerdown', (e) => {
       if (!document.body.classList.contains('profile-open')) return;
-      if (e.target.closest('#profilePanel') || e.target.closest('#profileToggle')) return;
+      if (e.target.closest('#profilePanel') || e.target.closest('#profileToggleWrap')) return;
       closeProfile();
     });
   }
@@ -104,13 +108,13 @@ export function createHomeController() {
     detachDurationSecret = attachSecretTapTest({
       element: durationCard,
       onTrigger: () => {
-        toast('ปลดล็อกเอฟเฟกต์สำเร็จ ✨');
+        toast(TEXT_CONTENT.app.home.toastFxUnlocked);
         hourCelebration.show(durationCard, 1);
       },
       onProgress: ({ count, target }) => {
         if (!count || count >= target) return;
         if (count === 1 || count % 3 === 0) {
-          toast(`ทดสอบเอฟเฟกต์: ${count}/${target}`);
+          toast(TEXT_CONTENT.app.home.toastFxTest(count, target));
         }
       }
     });
@@ -118,13 +122,13 @@ export function createHomeController() {
     detachCountdownSecret = attachSecretTapTest({
       element: countdownCard,
       onTrigger: () => {
-        toast('เริ่มนับถอยหลังทดสอบแล้ว 💫');
+        toast(TEXT_CONTENT.app.home.toastCountdownStart);
         anniversary.playTestCountdown();
       },
       onProgress: ({ count, target }) => {
         if (!count || count >= target) return;
         if (count === 1 || count % 3 === 0) {
-          toast(`ทดสอบนับถอยหลัง: ${count}/${target}`);
+          toast(TEXT_CONTENT.app.home.toastCountdownTest(count, target));
         }
       }
     });
