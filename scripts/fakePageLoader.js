@@ -15,7 +15,6 @@ function createOverlayLoader(overlayId, { buildSegments = false } = {}) {
   const overlay = qs(overlayId);
   const cat = overlay?.querySelector('[data-loader-cat]');
   let lockCount = 0;
-  let lastVisible = false;
 
   if (buildSegments && cat && cat.children.length === 0) {
     for (let i = 0; i < SEGMENT_COUNT; i += 1) {
@@ -32,16 +31,6 @@ function createOverlayLoader(overlayId, { buildSegments = false } = {}) {
     const show = lockCount > 0;
     overlay.classList.toggle('show', show);
     overlay.setAttribute('aria-hidden', show ? 'false' : 'true');
-
-    if (show !== lastVisible) {
-      lastVisible = show;
-      document.dispatchEvent(new CustomEvent('app:loader-visibility', {
-        detail: {
-          visible: show,
-          id: overlayId
-        }
-      }));
-    }
   }
 
   function show() {
