@@ -8,7 +8,6 @@
 // - โค้ดส่วนนี้ถูกแยกโมดูลเพื่อให้ debug และปรับปรุงรายฟีเจอร์ได้ง่าย
 // =============================================
 import { wait } from './utils.js';
-import { TEXT_CONTENT } from './siteTextContent.js';
 
 export function createAnniversaryExperience({ blessings }) {
   const overlay = document.getElementById('annivOverlay');
@@ -76,7 +75,7 @@ export function createAnniversaryExperience({ blessings }) {
   }
 
   function pickBlessing() {
-    return blessings[Math.floor(Math.random() * blessings.length)] || TEXT_CONTENT.app.anniversary.blessingFallback;
+    return blessings[Math.floor(Math.random() * blessings.length)] || 'สุขสันต์วันครบรอบนะคนเก่งของฉัน 💕';
   }
 
   function setStage(stage) {
@@ -116,12 +115,12 @@ export function createAnniversaryExperience({ blessings }) {
     await typeText(pickBlessing());
 
     for (let i = 3; i >= 1; i -= 1) {
-      exit.textContent = TEXT_CONTENT.app.anniversary.closeIn(i);
+      exit.textContent = `แตะที่ไหนก็ได้เพื่อปิด (พร้อมใน ${i} วินาที)`;
       await wait(1000);
     }
 
     unlockedClose = true;
-    exit.textContent = TEXT_CONTENT.app.anniversary.closeReady;
+    exit.textContent = 'แตะที่ไหนก็ได้เพื่อกลับสู่หน้าแรก 💫';
   }
 
   function close({ force = false, restoreFocus = true } = {}) {
@@ -141,7 +140,7 @@ export function createAnniversaryExperience({ blessings }) {
   async function runCountdownAndPopup() {
     popup.classList.remove('show');
     text.textContent = '';
-    exit.textContent = TEXT_CONTENT.app.anniversary.prepareText;
+    exit.textContent = 'เตรียมแสดงข้อความ...';
 
     const activeEl = document.activeElement;
     if (activeEl instanceof HTMLElement) popupInvoker = activeEl;

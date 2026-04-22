@@ -9,7 +9,6 @@
 // =============================================
 import { CFG } from './config.js';
 import { qs, wait } from './utils.js';
-import { TEXT_CONTENT } from './siteTextContent.js';
 
 export function createRainController() {
   let rainCount = 0;
@@ -28,13 +27,13 @@ export function createRainController() {
     const btn = qs('rainBtn');
     btn.disabled = true;
     btn.classList.add('loading');
-    qs('rainStatus').textContent = TEXT_CONTENT.app.rain.statusPreparing;
+    qs('rainStatus').textContent = 'กำลังเตรียมความรักให้...';
     document.body.classList.add('rain-focus');
     await wait(800);
 
     rainCount += 1;
-    qs('rainCount').textContent = TEXT_CONTENT.app.rain.countLabel(rainCount);
-    qs('rainStatus').textContent = TEXT_CONTENT.app.rain.statusReadyNext;
+    qs('rainCount').textContent = `กดไปแล้ว: ${rainCount} ครั้ง`;
+    qs('rainStatus').textContent = 'พร้อมส่งข้อความรอบถัดไปแล้ว';
 
     for (let i = 0; i < 14; i += 1) {
       setTimeout(spawnRain, i * 180);
