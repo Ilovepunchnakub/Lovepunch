@@ -11,7 +11,6 @@ import { qs, wait } from './utils.js';
 import { runFingerScan } from './fingerFlow.js';
 import { loadingMarkup, completeMarkup } from './fingerPopupTemplates.js';
 import { createRadarFx } from './fingerRadarFx.js';
-import { TEXT_CONTENT } from './siteTextContent.js';
 
 export function createFingerController() {
   let state = 'idle';
@@ -89,7 +88,7 @@ export function createFingerController() {
       qs('fpPopup').classList.remove('can-close');
       qs('fpZone').classList.remove('scanning');
       qs('fpMsg').textContent = '';
-      qs('fpHint').textContent = TEXT_CONTENT.app.finger.hintIdle;
+      qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือ 👆';
       clearHoldVisual();
     }
   }
@@ -97,7 +96,7 @@ export function createFingerController() {
   function renderLoadingPopup() {
     closeEnabled = false;
     qs('fpPopup').classList.remove('can-close');
-    qs('fpPopupTitle').textContent = TEXT_CONTENT.app.finger.popupLoadingTitle;
+    qs('fpPopupTitle').textContent = 'กำลังโหลดข้อมูลความลับ';
     qs('fpPopupBody').innerHTML = loadingMarkup();
     qs('fpPopupCard').classList.remove('scan-stage-transition');
     radarFx = createRadarFx(qs('scanRadarCanvas'));
@@ -107,7 +106,7 @@ export function createFingerController() {
   function renderDonePopup() {
     closeEnabled = false;
     qs('fpPopup').classList.remove('can-close');
-    qs('fpPopupTitle').textContent = TEXT_CONTENT.app.finger.popupDoneTitle;
+    qs('fpPopupTitle').textContent = 'ตรวจสอบเสร็จสิ้น 💖';
     qs('fpPopupBody').innerHTML = completeMarkup();
     const card = qs('fpPopupCard');
     card.classList.remove('scan-stage-transition');
@@ -120,13 +119,13 @@ export function createFingerController() {
     const countdown = qs('fpCountdown');
     for (let remain = 3; remain >= 1; remain -= 1) {
       if (!countdown) return;
-      countdown.textContent = TEXT_CONTENT.app.finger.dismissIn(remain);
+      countdown.textContent = `แตะจอเพื่อปิดได้ใน ${remain} วิ...`;
       await wait(1000);
     }
 
     closeEnabled = true;
     qs('fpPopup').classList.add('can-close');
-    if (countdown) countdown.textContent = TEXT_CONTENT.app.finger.dismissReady;
+    if (countdown) countdown.textContent = 'แตะตรงไหนก็ได้เพื่อปิดหน้าต่างนี้';
   }
 
   function updateHoldVisual(progress) {
@@ -158,7 +157,7 @@ export function createFingerController() {
     holdStart = 0;
     qs('fpZone').classList.remove('holding');
     clearHoldVisual();
-    if (state === 'idle') qs('fpHint').textContent = TEXT_CONTENT.app.finger.hintIdle;
+    if (state === 'idle') qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือ 👆';
   }
 
   function tickHold(ts) {
@@ -174,7 +173,7 @@ export function createFingerController() {
     if (state !== 'idle' || holdTimer) return;
     holdStart = 0;
     qs('fpZone').classList.add('holding');
-    qs('fpHint').textContent = TEXT_CONTENT.app.finger.hintHolding;
+    qs('fpHint').textContent = 'กดค้างไว้... ระบบกำลังตรวจจับลายนิ้วมือ';
     holdRaf = requestAnimationFrame(tickHold);
     holdTimer = setTimeout(() => {
       holdTimer = null;
@@ -191,7 +190,7 @@ export function createFingerController() {
     cancelHold();
     state = 'idle';
     closeEnabled = false;
-    qs('fpHint').textContent = TEXT_CONTENT.app.finger.hintIdle;
+    qs('fpHint').textContent = 'แตะค้างเพื่อสแกนลายนิ้วมือ 👆';
     qs('fpMsg').textContent = '';
     qs('fpZone').classList.remove('scanning', 'holding');
     clearHoldVisual();
@@ -206,7 +205,7 @@ export function createFingerController() {
     if (state !== 'idle') return;
 
     state = 'scanning';
-    qs('fpHint').textContent = TEXT_CONTENT.app.finger.hintReading;
+    qs('fpHint').textContent = 'กำลังอ่านลายนิ้วมือ...';
     qs('fpZone').classList.remove('holding');
     qs('fpZone').classList.add('scanning');
 
@@ -236,8 +235,8 @@ export function createFingerController() {
 
     renderDonePopup();
     qs('fpZone').classList.remove('scanning');
-    qs('fpHint').textContent = TEXT_CONTENT.app.finger.hintDone;
-    qs('fpMsg').textContent = TEXT_CONTENT.app.finger.msgDone;
+    qs('fpHint').textContent = 'ตรวจสอบเสร็จสิ้นแล้ว';
+    qs('fpMsg').textContent = 'สำเร็จ! ระบบยืนยันตัวตนด้วยหัวใจเรียบร้อย';
     state = 'done';
     startDismissCountdown();
   }

@@ -10,7 +10,6 @@
 import { qs } from './utils.js';
 import { renderLoveLetter } from './loveLetter/template.js';
 import { LOVE_LETTER_CONTENT } from './loveLetter/content.js';
-import { TEXT_CONTENT } from './siteTextContent.js';
 
 export function createLoveLetterPage({ navigator }) {
   const pageId = 'love-play';
@@ -70,7 +69,7 @@ export function createLoveLetterPage({ navigator }) {
     const onYes = () => {
       title.textContent = LOVE_LETTER_CONTENT.titleAccepted;
       cat.src = 'assets/images/love-letter/cat-dance.svg';
-      cat.alt = TEXT_CONTENT.app.loveLetter.catDanceAlt;
+      cat.alt = 'แมวกำลังเต้น';
       buttons.classList.add('is-gone');
       letterWindow.classList.add('final');
       finalText.hidden = false;

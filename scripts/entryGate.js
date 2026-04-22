@@ -8,7 +8,6 @@
 // - โค้ดส่วนนี้ถูกแยกโมดูลเพื่อให้ debug และปรับปรุงรายฟีเจอร์ได้ง่าย
 // =============================================
 import { qs, randomInt } from './utils.js';
-import { TEXT_CONTENT } from './siteTextContent.js';
 
 export function initEntryGate({ onUnlocked, completionLoader }) {
   const gate = qs('entryGate');
@@ -81,7 +80,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     activePointerId = null;
     button.classList.add('charged');
     navigator.vibrate?.(35);
-    hint.textContent = TEXT_CONTENT.app.entryGate.hintCompleted;
+    hint.textContent = 'เติมครบ 100% แล้ว';
 
     gate.classList.add('done');
     completionLoader?.show();
@@ -125,7 +124,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     holding = true;
     startAt = performance.now() - progress * holdMs;
     latestSparkleStep = -1;
-    hint.textContent = TEXT_CONTENT.app.entryGate.hintLoading;
+    hint.textContent = 'กำลังยืนยันตัวตน...';
     button.classList.add('holding');
     raf = requestAnimationFrame(tick);
   }
@@ -138,7 +137,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     stopTick();
     setProgress(0);
     latestSparkleStep = -1;
-    hint.textContent = TEXT_CONTENT.app.entryGate.hintReset;
+    hint.textContent = 'ปล่อยแล้วรีเซ็ตนะคั้บ กดค้างใหม่เพื่อเติมหัวใจ';
   }
 
   function addTapProgress() {
@@ -146,7 +145,7 @@ export function initEntryGate({ onUnlocked, completionLoader }) {
     setProgress(progress + 0.2);
     latestSparkleStep = -1;
     spawnSparkle();
-    hint.textContent = TEXT_CONTENT.app.entryGate.hintProgress(Math.round(progress * 100));
+    hint.textContent = `เติมแล้ว ${Math.round(progress * 100)}% กดเพิ่มได้อีกนะ`;
     if (progress >= 1) finishUnlock();
   }
 
