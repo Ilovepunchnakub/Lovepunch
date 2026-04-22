@@ -8,6 +8,7 @@
 // - โค้ดส่วนนี้ถูกแยกโมดูลเพื่อให้ debug และปรับปรุงรายฟีเจอร์ได้ง่าย
 // =============================================
 import { qs } from './utils.js';
+import { TEXT_CONTENT } from './siteTextContent.js';
 
 const markup = `
 <svg class="today-game-svg" id="todayGameSvg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 400" overflow="visible">
@@ -20,10 +21,10 @@ const markup = `
   <clipPath id="mask"><polygon opacity=".5" points="0,0 1500,0 1500,200 970,290 950,240 925,220 875,280 890,295 920,310 0,350" pointer-events="none"/></clipPath>
   <g class="arrows" clip-path="url(#mask)" pointer-events="none"></g>
   <g class="feedback" opacity="0" transform="translate(318, 130) rotate(0)">
-    <text id="todayFeedbackText" x="0" y="0" fill="#F4531C" font-size="72" font-style="italic" font-weight="900" letter-spacing="2">LOVE YOU</text>
+    <text id="todayFeedbackText" x="0" y="0" fill="#F4531C" font-size="72" font-style="italic" font-weight="900" letter-spacing="2">${TEXT_CONTENT.app.today.feedbackLove}</text>
   </g>
 </svg>
-<span class="today-game-hint">Draw back an arrow and launch it!</span>`;
+<span class="today-game-hint">${TEXT_CONTENT.app.today.hint}</span>`;
 
 export function createTodayScene({ navigator }) {
   const pageId = 'today';
@@ -124,13 +125,13 @@ export function createTodayScene({ navigator }) {
         const dy = intersection.y - target.y;
         showMessage(
           Math.sqrt(dx * dx + dy * dy) < 7
-            ? { text: 'LOVE YOU', color: '#F4531C', size: 72, x: 292, y: 108, rotation: 0 }
-            : { text: 'HIT!', color: '#ffcc00', size: 82, x: 430, y: 112, rotation: 10 }
+            ? { text: TEXT_CONTENT.app.today.feedbackLove, color: '#F4531C', size: 72, x: 292, y: 108, rotation: 0 }
+            : { text: TEXT_CONTENT.app.today.feedbackHit, color: '#ffcc00', size: 82, x: 430, y: 112, rotation: 10 }
         );
       }
     };
 
-    const onMiss = () => showMessage({ text: 'MISS YOU', color: '#b7bbc2', size: 62, x: 256, y: 196, rotation: 0 });
+    const onMiss = () => showMessage({ text: TEXT_CONTENT.app.today.feedbackMiss, color: '#b7bbc2', size: 62, x: 256, y: 196, rotation: 0 });
 
     const loose = () => {
       window.removeEventListener('pointermove', aim);
