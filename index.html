@@ -12,7 +12,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title data-text-key="PAGE_TITLE">For Punch 💕</title>
+  <title>For Punch 💕</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
@@ -21,23 +21,23 @@
 <body>
   <div id="entryGate" class="entry-gate show" aria-live="polite">
     <div class="entry-gate-card">
-      <p class="entry-gate-tag" data-text-key="ENTRY_TAG">Heart Unlock</p>
-      <h1 data-text-key="ENTRY_TITLE">My heart is yours</h1>
-      <p class="entry-gate-sub" data-text-key="ENTRY_SUB">กดค้างหรือแตะเพิ่มหัวใจให้เต็มคั้บ</p>
+      <p class="entry-gate-tag">Heart Unloc </p>
+      <h1>My heart is yours</h1>
+      <p class="entry-gate-sub">กดค้างหรือแตะเพิ่มหัวใจให้เต็มคั้บ</p>
       <button id="entryHeartBtn" class="entry-heart" aria-label="Press heart...">
         <span class="entry-heart-icon" aria-hidden="true">
           <span class="entry-heart-fill"></span>
         </span>
         <span class="entry-heart-frame" aria-hidden="true"></span>
       </button>
-      <p id="entryHint" class="entry-gate-hint" data-text-key="ENTRY_HINT_IDLE">กดค้างหรือแตะเพิ่มได้เลยคั้บเธอ...</p>
+      <p id="entryHint" class="entry-gate-hint">กดค้างหรือแตะเพิ่มได้เลยคั้บเธอ...</p>
     </div>
   </div>
   <div id="globalFakeLoader" class="fake-loader-overlay" aria-hidden="true" role="status" aria-live="polite">
     <p class="fake-loader-text fake-loader-text--wave" aria-label="Loading">
       <span>L</span><span>o</span><span>a</span><span>d</span><span>i</span><span>n</span><span>g</span><span>…</span>
     </p>
-    <p class="fake-loader-sub" data-text-key="LOADER_SUB">แมวน้อยกำลังพาเธอไปนะคั้บ...</p>
+    <p class="fake-loader-sub">แมวน้อยกำลังพาเธอไปนะคั้บ...</p>
     <div class="fake-loader-cat" data-loader-cat aria-hidden="true"></div>
   </div>
 
@@ -77,15 +77,9 @@
 
   <div class="page active" id="pg-home">
     <div class="page-scroll">
-      <div class="profile-toggle-wrap profile-toggle--home" id="profileToggleWrap" title="Profile Punch">
-        <input id="profileToggle" class="profile-toggle-input" type="checkbox" aria-label="เปิด/ปิด My Love Profile" />
-        <label class="profile-toggle-heart" for="profileToggle" aria-hidden="true">
-          <i class="left"></i>
-          <i class="right"></i>
-          <i class="bottom"></i>
-          <span class="round"></span>
-        </label>
-      </div>
+      <button class="profile-toggle profile-toggle--home" id="profileToggle" aria-label="เปิด My Love Profile" title="Profile Punch">
+        <img src="icons/custom/profile-love.svg" alt="profile" />
+      </button>
       <header class="home-hdr bento-hero">
         <div class="hero-icon-row" aria-hidden="true">
           <span class="hero-icon-bubble">
@@ -100,14 +94,14 @@
             
           </span>
         </div>
-        <p class="home-tag" data-text-key="HOME_HERO_TAG">✨ FOR YOUR EYES ONLY ✨</p>
+        <p class="home-tag">✨ FOR YOUR EYES ONLY ✨</p>
         <h2 id="homeTitle" aria-label="Hello World Punch 🌎"></h2>
       </header>
 
       <div class="home-bento-grid">
         <section class="days-card soft-card bento-card bento-card--hero">
           <div class="bento-card-topline">
-            <p class="section-tag"><span class="text-highlight" data-text-key="HOME_CARD_TITLE">Ionic Bond</span></p>
+            <p class="section-tag"><span class="text-highlight">Ionic Bond</span></p>
             <span class="mini-3d-icon" aria-hidden="true">
                 <img src="Iconmap/hourglass-not-done-svgrepo-com.png" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
             </span>
@@ -124,7 +118,7 @@
 
         <section class="soft-card countdown-card bento-card bento-card--sub">
           <div class="bento-card-topline">
-            <p class="section-tag dark"><span class="text-highlight" data-text-key="HOME_COUNTDOWN_TITLE">Countdown to the important day</span></p>
+            <p class="section-tag dark"><span class="text-highlight">Countdown to the important day</span></p>
             <span class="mini-3d-icon" aria-hidden="true">
                 <img src="Iconmap/umbrella-pixelated-svgrepo-com.png" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
             </span>
@@ -138,10 +132,10 @@
         </section>
 
         <section class="stat-grid bento-card bento-card--stats">
-          <article class="soft-card"><span>📅</span><p data-text-key="STATS_MONTHS_LABEL">เดือนที่ผ่านมา</p><b id="stM">0 เดือน</b></article>
-          <article class="soft-card"><span>🌙</span><p data-text-key="STATS_NIGHTS_LABEL">คืนที่คิดถึงกัน</p><b id="stN">0 คืน</b></article>
-          <article class="soft-card"><span>☀️</span><p data-text-key="STATS_MORNINGS_LABEL">เช้าที่นึกถึงกัน</p><b id="stMr">0 เช้า</b></article>
-          <article class="soft-card"><span>💗</span><p data-text-key="STATS_HEART_LABEL">หัวใจเต้นเพื่อเธอ</p><b>∞ ครั้ง</b></article>
+          <article class="soft-card"><span>📅</span><p>เดือนที่ผ่านมา</p><b id="stM">0 เดือน</b></article>
+          <article class="soft-card"><span>🌙</span><p>คืนที่คิดถึงกัน</p><b id="stN">0 คืน</b></article>
+          <article class="soft-card"><span>☀️</span><p>เช้าที่นึกถึงกัน</p><b id="stMr">0 เช้า</b></article>
+          <article class="soft-card"><span>💗</span><p>หัวใจเต้นเพื่อเธอ</p><b>∞ ครั้ง</b></article>
         </section>
       </div>
     </div>
@@ -149,22 +143,22 @@
 
   <div class="profile-panel" id="profilePanel">
     <div class="profile-head">
-      <h3 data-text-key="PROFILE_TITLE">Profile Punch 
+      <h3>Profile Punch 
           <img src="Iconmap/Cat.gif.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
       </h3>
       <img class="profile-mini-photo" src="assets/images/love-profile-kid-photo.jpeg" alt="my love profile photo" />
     </div>
-    <p><b data-text-key="PROFILE_LABEL_NAME">ชื่อ:</b> <span id="pf-name"></span></p>
-    <p><b data-text-key="PROFILE_LABEL_AGE">อายุ:</b> <span id="pf-age"></span></p>
-    <p><b data-text-key="PROFILE_LABEL_BIRTHDAY">วันเกิด:</b> <span id="pf-birthday"></span></p>
-    <p><b data-text-key="PROFILE_LABEL_BLOOD">กรุ๊ปเลือด:</b> <span id="pf-blood"></span></p>
-    <p><b data-text-key="PROFILE_LABEL_HOBBY">งานอดิเรก:</b> <span id="pf-hobby"></span></p>
-    <p><b data-text-key="PROFILE_LABEL_FAVORITE">ของโปรด:</b> <span id="pf-favorite"></span></p>
+    <p><b>ชื่อ:</b> <span id="pf-name"></span></p>
+    <p><b>อายุ:</b> <span id="pf-age"></span></p>
+    <p><b>วันเกิด:</b> <span id="pf-birthday"></span></p>
+    <p><b>กรุ๊ปเลือด:</b> <span id="pf-blood"></span></p>
+    <p><b>งานอดิเรก:</b> <span id="pf-hobby"></span></p>
+    <p><b>ของโปรด:</b> <span id="pf-favorite"></span></p>
   </div>
 
   <div class="page" id="pg-today">
     <div class="today-page-shell">
-      <button id="todayClose" class="scene-close-btn close-expand" aria-label="กลับหน้าแรก" data-close-label="ปิด"><span class="sign">↩</span><span class="text" data-text-key="TODAY_CLOSE">ปิด</span></button>
+      <button id="todayClose" class="scene-close-btn" aria-label="กลับหน้าแรก">ปิด ✕</button>
       <div id="todayGameRoot" class="today-game-root"></div>
     </div>
   </div>
@@ -172,14 +166,14 @@
 
   <div class="page" id="pg-thanks">
     <div class="thanks-page-shell">
-      <button id="thanksBearClose" class="scene-close-btn close-expand" aria-label="กลับหน้าแรก" data-close-label="ปิด"><span class="sign">↩</span><span class="text" data-text-key="THANKS_CLOSE">ปิด</span></button>
+      <button id="thanksBearClose" class="scene-close-btn" aria-label="กลับหน้าแรก">ปิด ✕</button>
       <div id="thanksBearRoot" class="thanks-bear-root"></div>
     </div>
   </div>
 
   <div class="page" id="pg-dream">
     <div class="dream-page-shell">
-      <button id="dreamClose" class="scene-close-btn close-expand" aria-label="กลับหน้าแรก" data-close-label="ปิด"><span class="sign">↩</span><span class="text" data-text-key="DREAM_CLOSE">ปิด</span></button>
+      <button id="dreamClose" class="scene-close-btn" aria-label="กลับหน้าแรก">ปิด ✕</button>
       <div id="dreamSceneRoot" class="dream-scene-root"></div>
     </div>
   </div>
@@ -187,11 +181,11 @@
   <div class="page" id="pg-love-play">
     <div class="page-scroll center love-play-page love-letter-page">
       <section class="soft-card love-play-shell love-letter-shell">
-        <button id="lovePlayClose" class="love-play-close close-expand" aria-label="ปิดหน้าเลิฟเลตเตอร์" data-close-label="ปิด"><span class="sign">↩</span><span class="text">ปิด</span></button>
-        <h2 data-text-key="LOVE_LETTER_PAGE_TITLE">ความรัก 💕</h2>
-        <p class="love-play-guide" data-text-key="LOVE_LETTER_PAGE_GUIDE">ซีน Love Letter: แตะที่ซองจดหมาย แล้วเลือกคำตอบได้เลยน้า</p>
+        <button id="lovePlayClose" class="love-play-close" aria-label="ปิดหน้าเลิฟเลตเตอร์">ปิด ✕</button>
+        <h2>ความรัก 💕</h2>
+        <p class="love-play-guide">ซีน Love Letter: แตะที่ซองจดหมาย แล้วเลือกคำตอบได้เลยน้า</p>
         <div id="lovePlayWrap" class="love-play-wrap love-letter-wrap"></div>
-        <small data-text-key="LOVE_LETTER_PAGE_TIP">เคล็ดลับ: กด Esc (คอม) หรือปุ่มปิด เพื่อกลับหน้าแรก</small>
+        <small>เคล็ดลับ: กด Esc (คอม) หรือปุ่มปิด เพื่อกลับหน้าแรก</small>
       </section>
     </div>
   </div>
@@ -199,10 +193,10 @@
   <div class="page" id="pg-rain">
     <div class="page-scroll center">
       <section class="soft-card rain-box">
-        <h2 data-text-key="RAIN_TITLE">โปรยข้อความหวาน 💝</h2>
-        <p data-text-key="RAIN_DESC">กดปุ่มแล้วข้อความหวานจะโปรยลงมาแบบไม่บังข้อมูลหลัก</p>
-        <button class="soft-btn" id="rainBtn" data-text-key="RAIN_BUTTON">เริ่มโปรยข้อความ</button>
-        <p id="rainStatus" data-text-key="RAIN_STATUS_READY">พร้อมโปรยข้อความหวาน</p>
+        <h2>โปรยข้อความหวาน 💝</h2>
+        <p>กดปุ่มแล้วข้อความหวานจะโปรยลงมาแบบไม่บังข้อมูลหลัก</p>
+        <button class="soft-btn" id="rainBtn">เริ่มโปรยข้อความ</button>
+        <p id="rainStatus">พร้อมโปรยข้อความหวาน</p>
         <p id="rainCount">กดไปแล้ว: 0 ครั้ง</p>
       </section>
     </div>
@@ -217,8 +211,8 @@
   <div class="page" id="pg-finger">
     <div class="page-scroll center">
       <section class="soft-card fp-box">
-        <h2 data-text-key="FINGER_TITLE">ยืนยันตัวตน</h2>
-        <p id="fpHint" data-text-key="FINGER_HINT_IDLE">แตะค้างเพื่อสแกนลายนิ้วมือ 👆</p>
+        <h2>ยืนยันตัวตน</h2>
+        <p id="fpHint">แตะค้างเพื่อสแกนลายนิ้วมือ 👆</p>
         <button class="scan-btn" id="fpZone" aria-label="กดค้างเพื่อสแกนลายนิ้วมือ">
           <span class="scan-btn-ring" aria-hidden="true"></span>
           <img src="icons/custom/fingerprint-scan.svg" class="scan-btn-icon" alt="" draggable="false" />
@@ -238,17 +232,17 @@
 
   <div class="anniv-overlay" id="annivOverlay">
     <div class="anniv-count-box" id="annivCountBox">
-      <p data-text-key="ANNIV_COUNTDOWN_TITLE">นับถอยหลังเซอร์ไพรส์วันครบรอบ</p>
+      <p>นับถอยหลังเซอร์ไพรส์วันครบรอบ</p>
       <b id="annivCountdown">10</b>
-      <small data-text-key="ANNIV_COUNTDOWN_SUBTITLE">วินาทีสุดท้ายกำลังเริ่มแล้ว ✨</small>
+      <small>วินาทีสุดท้ายกำลังเริ่มแล้ว ✨</small>
     </div>
 
     <div class="anniv-popup" id="annivPopup" role="dialog" aria-modal="true" aria-labelledby="annivPopupTitle" aria-describedby="annivTypedText" tabindex="-1">
       <div class="anniv-popup-glow" aria-hidden="true"></div>
       <div class="anniv-popup-shell">
-        <h3 id="annivPopupTitle" tabindex="-1" data-text-key="ANNIV_POPUP_TITLE">Happy Anniversary 💞</h3>
+        <h3 id="annivPopupTitle" tabindex="-1">Happy Anniversary 💞</h3>
         <p id="annivTypedText"></p>
-        <small id="annivExitHint" data-text-key="ANNIV_PREPARE_TEXT">เตรียมแสดงข้อความ...</small>
+        <small id="annivExitHint">เตรียมแสดงข้อความ...</small>
       </div>
     </div>
   </div>
@@ -259,33 +253,19 @@
 
   <nav id="mainNav" class="collapsed">
     <button class="ni on" data-page="home" title="หน้าแรก">  <img src="Iconmap/wired-lineal-63-home-hover-3d-roll.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
-      <span data-text-key="NAV_HOME">หน้าแรก</span></button>
+      <span>หน้าแรก</span></button>
     <button class="ni" data-page="rain" title="โปรยรัก">  <img src="Iconmap/wired-lineal-1865-shooting-stars-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
-      <span data-text-key="NAV_RAIN">โปรยรัก</span></button>
+      <span>โปรยรัก</span></button>
     <button class="ni" data-page="hyper" title="จักรวาล">  <img src="Iconmap/wired-lineal-1872-small-cute-monster-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
-      <span data-text-key="NAV_HYPER">จักรวาล</span></button>
+      <span>จักรวาล</span></button>
     <button class="ni" data-page="finger" title="ยืนยันหัวใจ">  <img src="Iconmap/wired-lineal-500-fingerprint-security-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
-      <span data-text-key="NAV_FINGER">หัวใจ</span></button>
+      <span>หัวใจ</span></button>
     <button class="ni" data-link="bear.html" title="หน้าหมี">  <img src="Iconmap/wired-lineal-1957-maneki-cat-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
-      <span data-text-key="NAV_BEAR">หมี</span></button>
+      <span>หมี</span></button>
     <button class="ni" data-link="Valentine Letter/Valentine Letter.html" title="ดอกไม้">
         <img src="Iconmap/wired-lineal-1704-flower-doodle-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
-      <span data-text-key="NAV_FLOWER">ดอกไม้</span></button>
+      <span>ดอกไม้</span></button>
   </nav>
-
-
-  <audio id="bgmAudio" aria-hidden="true"></audio>
-
-  <button id="bgmQuickToggle" class="bgm-quick-toggle" hidden type="button" aria-label="สลับเพลงพื้นหลัง">🎵 ON</button>
-
-
-  <div class="bgm-gate" id="bgmGate" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="bgmGateTitle">
-    <div class="bgm-gate-card">
-      <h3 id="bgmGateTitle" data-text-key="BGM_GATE_TITLE">เปิดเพลงพื้นหลัง 🎵</h3>
-      <p data-text-key="BGM_GATE_DESC">เพื่อประสบการณ์เต็มรูปแบบ กรุณากดปุ่มด้านล่างเพื่อเปิดเพลงพื้นหลัง</p>
-      <button id="bgmEnableBtn" class="soft-btn" type="button" data-text-key="BGM_GATE_BUTTON">เปิดเพลงตอนนี้</button>
-    </div>
-  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
   <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/MorphSVGPlugin.min.js"></script>
