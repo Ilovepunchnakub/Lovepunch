@@ -1,0 +1,194 @@
+/* ===== คำอธิบายไฟล์สไตล์ (ภาษาไทย) : styles/love-letter.css =====
+   หน้าที่หลัก:
+   - กำหนดหน้าตา/เลย์เอาต์/แอนิเมชันของส่วนที่ไฟล์นี้รับผิดชอบ
+   - ทำงานร่วมกับ class/id จากไฟล์ HTML และ JS
+   แนวทางแก้ไข:
+   - แก้ทีละบล็อกและทดสอบหน้าที่เกี่ยวข้องทันที
+   - ถ้าแก้ตัวแปรสี/spacing ควรเช็กผลกระทบทั้ง mobile และ desktop
+   - หลีกเลี่ยงการเขียน selector ที่กว้างเกินไปเพื่อลดผลกระทบข้ามหน้า
+   ================================================= */
+/* ไฟล์นี้รวมสไตล์การแสดงผล และแยกตามหน้าที่เพื่อให้ดูแลง่าย */
+
+.love-letter-wrap {
+  border: 0;
+  border-radius: 20px;
+  background: transparent;
+  box-shadow: none;
+  min-height: min(68vh, 560px);
+}
+
+.love-letter {
+  position: relative;
+  width: 100%;
+  min-height: min(68vh, 560px);
+  border-radius: 20px;
+  overflow: hidden;
+  background: url('../assets/images/love-letter/heart-bg.svg') center/cover no-repeat;
+}
+
+.ll-envelope-screen,
+.ll-letter-screen {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+
+.ll-envelope-screen {
+  cursor: pointer;
+  transition: opacity .3s ease, visibility .3s ease;
+}
+
+.ll-envelope-screen.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.ll-envelope-img {
+  width: clamp(148px, 42vw, 250px);
+  animation: ll-pulse 1.5s infinite;
+}
+
+.ll-envelope-text {
+  margin: 10px 0 0;
+  color: #fff;
+  font-size: clamp(22px, 4.8vw, 38px);
+  text-shadow: 0 6px 20px rgba(99, 39, 77, .45);
+}
+
+.ll-letter-screen {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .35s ease;
+  padding: clamp(8px, 2vw, 20px);
+}
+
+.ll-letter-screen.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.ll-letter-window {
+  width: min(94vw, 760px);
+  min-height: min(60vh, 470px);
+  background: url('../assets/images/love-letter/window.svg') center/100% 100% no-repeat;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(88px, 15vw, 140px) clamp(10px, 3vw, 30px) clamp(28px, 5vw, 40px);
+  transform: scale(1.15);
+  opacity: 0;
+  transition: transform .55s ease, opacity .55s ease;
+}
+
+.ll-letter-window.open {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.ll-title {
+  margin: 0;
+  font-size: clamp(22px, 4.6vw, 42px);
+}
+
+.ll-cat {
+  width: clamp(130px, 29vw, 260px);
+  margin: 4px 0 12px;
+  transition: width .35s ease;
+}
+
+.ll-letter-window.final .ll-cat { width: clamp(110px, 23vw, 190px); }
+
+.ll-buttons {
+  display: flex;
+  justify-content: center;
+  gap: clamp(12px, 4vw, 30px);
+  align-items: center;
+}
+
+.ll-buttons.is-gone { display: none; }
+
+.ll-btn {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+
+.ll-btn img { width: clamp(86px, 20vw, 122px); display: block; }
+
+.ll-yes.ll-pop { animation: ll-yes-pop .28s ease; }
+
+.ll-no {
+  transition: transform .28s cubic-bezier(.22, .61, .36, 1.12);
+}
+
+.ll-final-text {
+  margin: 8px 0 0;
+  font-size: clamp(15px, 3.6vw, 24px);
+  line-height: 1.38;
+  padding: 10px 14px;
+  border-radius: 12px;
+  background: rgba(255, 240, 240, .85);
+  max-width: min(92%, 460px);
+}
+
+.ll-final-text.is-show {
+  animation: ll-fade-up .45s ease both;
+}
+
+.ll-shake {
+  animation: ll-shake .45s ease;
+}
+
+@keyframes ll-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+}
+
+@keyframes ll-yes-pop {
+  0% { transform: scale(.92); }
+  100% { transform: scale(1); }
+}
+
+@keyframes ll-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes ll-shake {
+  0%, 100% { transform: scale(1) translateX(0); }
+  20% { transform: scale(1.01) translateX(-3px); }
+  40% { transform: scale(1.01) translateX(3px); }
+  60% { transform: scale(1.01) translateX(-2px); }
+  80% { transform: scale(1.01) translateX(2px); }
+}
+
+@media (max-width: 420px) {
+  .love-letter-shell {
+    width: 96vw;
+    padding: 14px 10px 12px;
+  }
+
+  .love-letter-shell .love-play-guide {
+    font-size: 13px;
+    margin-bottom: 8px;
+  }
+
+  .love-letter-wrap,
+  .love-letter {
+    min-height: min(62vh, 470px);
+    border-radius: 16px;
+  }
+
+  .ll-letter-window {
+    padding-top: clamp(84px, 24vw, 108px);
+    min-height: min(54vh, 360px);
+  }
+
+  .ll-envelope-text { font-size: clamp(18px, 5.2vw, 24px); }
+}

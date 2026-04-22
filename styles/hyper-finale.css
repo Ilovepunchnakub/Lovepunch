@@ -1,0 +1,159 @@
+/* ===== คำอธิบายไฟล์สไตล์ (ภาษาไทย) : styles/hyper-finale.css =====
+   หน้าที่หลัก:
+   - กำหนดหน้าตา/เลย์เอาต์/แอนิเมชันของส่วนที่ไฟล์นี้รับผิดชอบ
+   - ทำงานร่วมกับ class/id จากไฟล์ HTML และ JS
+   แนวทางแก้ไข:
+   - แก้ทีละบล็อกและทดสอบหน้าที่เกี่ยวข้องทันที
+   - ถ้าแก้ตัวแปรสี/spacing ควรเช็กผลกระทบทั้ง mobile และ desktop
+   - หลีกเลี่ยงการเขียน selector ที่กว้างเกินไปเพื่อลดผลกระทบข้ามหน้า
+   ================================================= */
+/* ไฟล์นี้รวมสไตล์การแสดงผล และแยกตามหน้าที่เพื่อให้ดูแลง่าย */
+
+.hyper-love-finale {
+  --finale-scale: 0.9;
+  width: min(92vw, 860px);
+  min-height: min(70vh, 760px);
+  position: relative;
+  pointer-events: auto;
+  overflow: hidden;
+  border-radius: 24px;
+  background: radial-gradient(circle at 50% 46%, rgba(234, 128, 176, 0.08), rgba(0, 0, 0, 0) 58%);
+}
+
+.hyper-love-field {
+  position: absolute;
+  inset: 0;
+  transform: scale(var(--finale-scale));
+  transform-origin: center;
+}
+
+.hyper-love-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -225px 0 0 -225px;
+}
+
+.hyper-love-word {
+  color: #ea80b0;
+  font-size: 1.4rem;
+  transform: translateY(-100%) rotateZ(-30deg);
+  text-shadow: 0 0 10px #fff;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.hyper-love-horizontal {
+  animation: hyperHorizontal 10000ms infinite alternate ease-in-out;
+  animation-delay: calc(var(--i, 1) * -300ms);
+}
+
+.hyper-love-vertical {
+  animation: hyperVertical 20000ms infinite linear;
+  animation-delay: calc(var(--i, 1) * -300ms);
+}
+
+.hyper-finale-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  z-index: 3;
+  padding: max(14px, env(safe-area-inset-top)) 24px max(14px, env(safe-area-inset-bottom));
+}
+
+.hyper-finale-title {
+  margin: 0;
+  color: #fff;
+  text-shadow: 0 0 14px #ea80b0;
+  font-size: clamp(2rem, 6vw, 3.6rem);
+  letter-spacing: 0.08em;
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 1.9s ease, transform 1.9s ease;
+}
+
+.hyper-finale-title.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hyper-finale-end-btn {
+  margin-top: auto;
+  margin-bottom: 6px;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+}
+
+.hyper-finale-end-btn.show {
+  pointer-events: auto;
+  animation: hyperFinalButtonIn .48s ease forwards;
+}
+
+@media (max-width: 900px) {
+  .hyper-love-finale {
+    --finale-scale: 0.82;
+    width: min(95vw, 760px);
+    min-height: 64vh;
+  }
+}
+
+@media (max-width: 560px) {
+  .hyper-love-finale {
+    --finale-scale: 0.72;
+    width: min(98vw, 620px);
+    min-height: 58vh;
+    border-radius: 20px;
+  }
+
+  .hyper-finale-overlay {
+    padding-top: clamp(16px, 5vh, 38px);
+    padding-bottom: clamp(16px, 4vh, 28px);
+  }
+
+  .hyper-finale-title {
+    font-size: clamp(1.8rem, 10vw, 2.5rem);
+  }
+}
+
+@keyframes hyperFinalTitleIn {
+  from { opacity: .2; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hyperFinalButtonIn {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hyperHorizontal {
+  from { transform: translateX(0px); }
+  to { transform: translateX(450px); }
+}
+
+@keyframes hyperVertical {
+  0% { transform: translateY(180px); }
+  10% { transform: translateY(45px); }
+  15% { transform: translateY(4.5px); }
+  18% { transform: translateY(0px); }
+  20% { transform: translateY(4.5px); }
+  22% { transform: translateY(34.61538px); }
+  24% { transform: translateY(64.28571px); }
+  25% { transform: translateY(112.5px); }
+  26% { transform: translateY(64.28571px); }
+  28% { transform: translateY(34.61538px); }
+  30% { transform: translateY(4.5px); }
+  32% { transform: translateY(0px); }
+  35% { transform: translateY(4.5px); }
+  40% { transform: translateY(45px); }
+  50% { transform: translateY(180px); }
+  71% { transform: translateY(428.57143px); }
+  72.5% { transform: translateY(441.17647px); }
+  75% { transform: translateY(450px); }
+  77.5% { transform: translateY(441.17647px); }
+  79% { transform: translateY(428.57143px); }
+  100% { transform: translateY(180px); }
+}
