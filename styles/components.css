@@ -364,7 +364,6 @@
 .anniv-overlay.show { opacity: 1; pointer-events: auto; }
 .anniv-count-box,
 .anniv-popup {
-  box-sizing: border-box;
   width: min(92vw, 540px);
   border-radius: 28px;
   border: 1px solid rgba(255, 255, 255, 0.78);
@@ -408,7 +407,6 @@
     0 26px 60px rgba(68, 19, 44, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.9);
   overflow: hidden;
-  max-height: min(88dvh, 760px);
   transform: translate(-50%, -50%);
 }
 .anniv-popup.show { display: block; animation: annivPopupRise .62s cubic-bezier(.2,.8,.2,1) both; }
@@ -621,14 +619,6 @@ body.anniv-focus #navDockToggle {
   }
 }
 
-
-
-@media (orientation: portrait) and (max-width: 768px) {
-  .anniv-popup {
-    width: min(96vw, 880px);
-    padding: 14px;
-  }
-}
 
 @media (max-width: 640px) {
   .profile-panel {
