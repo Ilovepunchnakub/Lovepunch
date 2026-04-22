@@ -1,0 +1,26 @@
+<!-- ===== คำอธิบายไฟล์ HTML (ภาษาไทย) : bear.html =====
+     หน้าที่หลัก:
+     - เป็นโครงสร้างหน้า (layout + semantic) และจุด mount สำหรับสคริปต์
+     จุดที่มักต้องแก้ร่วมกัน:
+     - id/class ที่ถูกใช้ใน JS และ CSS
+     - ปุ่ม/ลิงก์นำทางที่เชื่อมกับระบบเปลี่ยนหน้า
+     หมายเหตุ:
+     - หากย้าย element ควรตรวจ event และ selector ที่เกี่ยวข้องทุกโมดูล
+     =============================================== -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Interactive hungry bear</title>
+    <link rel="stylesheet" href="styles/bear.css" />
+  
+  </head>
+  <body>
+    <a class="back-home-btn" href="./index.html?skipEntry=1" aria-label="กลับไปหน้าแรก">← กลับหน้าแรก</a>
+    <div class="wrapper show-message"></div>
+
+    <script src="scripts/bear.js"></script>
+  
+  </body>
+</html>
