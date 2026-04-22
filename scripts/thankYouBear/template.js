@@ -1,0 +1,46 @@
+// ===== คำอธิบายไฟล์ (ภาษาไทย) : scripts/thankYouBear/template.js =====
+// หน้าที่หลัก:
+// - ดูแลพฤติกรรม/ตรรกะของฟีเจอร์ตามชื่อไฟล์และโมดูลที่ import
+// - ทำงานร่วมกับ DOM, state ภายใน และ event listener ของหน้า
+// สิ่งที่ควรรู้ก่อนแก้ไข:
+// - หากแก้ชื่อ id/class ใน HTML ต้องแก้ selector ในไฟล์นี้ให้ตรงกัน
+// - หากแก้ flow การเรียกใช้ ควรตรวจผลกระทบกับไฟล์ app.js และ navigation.js
+// - โค้ดส่วนนี้ถูกแยกโมดูลเพื่อให้ debug และปรับปรุงรายฟีเจอร์ได้ง่าย
+// =============================================
+export function renderThankYouBear() {
+  return `
+    <div class="lp-wrapper lp-show-message" data-thanks-wrapper>
+      <div class="lp-bear lp-object" data-thanks-bear>
+        <div class="lp-ears">
+          <div class="lp-inner-ears">
+            <div class="lp-ear lp-round"></div>
+            <div class="lp-ear lp-round"></div>
+          </div>
+        </div>
+        <div class="lp-face">
+          <div class="lp-inner-face">
+            <div class="lp-eye"></div>
+            <div class="lp-nose"></div>
+            <div class="lp-eye"></div>
+          </div>
+          <div class="lp-cheeks">
+            <div class="lp-cheek-wrapper lp-flex-center"></div>
+            <div class="lp-mouth-wrapper lp-flex-center"></div>
+            <div class="lp-cheek-wrapper lp-flex-center"></div>
+          </div>
+        </div>
+        <div class="lp-limbs">
+          <div class="lp-hands">
+            <div class="lp-hand"></div>
+            <div class="lp-hand lp-flip"></div>
+          </div>
+          <div class="lp-feet">
+            <div class="lp-foot lp-round"></div>
+            <div class="lp-foot lp-round"></div>
+          </div>
+        </div>
+      </div>
+      <div class="lp-food lp-donut lp-object" data-donut></div>
+    </div>
+  `;
+}
