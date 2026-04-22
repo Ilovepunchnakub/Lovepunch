@@ -20,6 +20,8 @@ import { initEntryGate } from './entryGate.js';
 import { initNavDock } from './navDock.js';
 import { initInteractionEffects } from './effects.js';
 import { createFakePageLoader, createEntryCompletionLoader } from './fakePageLoader.js';
+import { applySectionTexts } from './siteTextContent.js';
+import { createBackgroundMusicManager } from './backgroundMusic.js';
 
 const home = createHomeController();
 const rain = createRainController();
@@ -27,6 +29,11 @@ const hyper = createHyperController();
 const finger = createFingerController();
 const transitionLoader = createFakePageLoader();
 const entryCompletionLoader = createEntryCompletionLoader();
+const bgm = createBackgroundMusicManager({
+  src: 'assets/audio/bg-home-loop.mp3',
+  targetVolume: 0.42,
+  fadeInMs: 1600
+});
 
 const nav = createNavigator({
   transitionLoader,
@@ -46,6 +53,7 @@ const dreamScene = createDreamScene({ navigator: nav });
 const thankYouBearPage = createThankYouBearPage({ navigator: nav });
 
 function bootMainApp() {
+  applySectionTexts();
   home.init();
   rain.init();
   hyper.init();
@@ -57,7 +65,9 @@ function bootMainApp() {
   nav.init();
   initNavDock();
   initInteractionEffects();
+  bgm.init();
   nav.go('home', { skipLoader: true });
+  bgm.syncPlayback();
 }
 
 document.addEventListener('app:close-transient-layers', () => {
@@ -74,5 +84,6 @@ initEntryGate({
   completionLoader: entryCompletionLoader,
   onUnlocked: () => {
     document.body.classList.add('unlocked');
+    bgm.markUnlocked();
   }
 });
