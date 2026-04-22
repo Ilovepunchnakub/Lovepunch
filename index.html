@@ -94,14 +94,14 @@
             
           </span>
         </div>
-        <p class="home-tag">✨ FOR YOUR EYES ONLY ✨</p>
+        <p class="home-tag" data-text-key="HOME_HERO_TAG">✨ FOR YOUR EYES ONLY ✨</p>
         <h2 id="homeTitle" aria-label="Hello World Punch 🌎"></h2>
       </header>
 
       <div class="home-bento-grid">
         <section class="days-card soft-card bento-card bento-card--hero">
           <div class="bento-card-topline">
-            <p class="section-tag"><span class="text-highlight">Ionic Bond</span></p>
+            <p class="section-tag"><span class="text-highlight" data-text-key="HOME_CARD_TITLE">Ionic Bond</span></p>
             <span class="mini-3d-icon" aria-hidden="true">
                 <img src="Iconmap/hourglass-not-done-svgrepo-com.png" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
             </span>
@@ -118,7 +118,7 @@
 
         <section class="soft-card countdown-card bento-card bento-card--sub">
           <div class="bento-card-topline">
-            <p class="section-tag dark"><span class="text-highlight">Countdown to the important day</span></p>
+            <p class="section-tag dark"><span class="text-highlight" data-text-key="HOME_COUNTDOWN_TITLE">Countdown to the important day</span></p>
             <span class="mini-3d-icon" aria-hidden="true">
                 <img src="Iconmap/umbrella-pixelated-svgrepo-com.png" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
             </span>
@@ -132,10 +132,10 @@
         </section>
 
         <section class="stat-grid bento-card bento-card--stats">
-          <article class="soft-card"><span>📅</span><p>เดือนที่ผ่านมา</p><b id="stM">0 เดือน</b></article>
-          <article class="soft-card"><span>🌙</span><p>คืนที่คิดถึงกัน</p><b id="stN">0 คืน</b></article>
-          <article class="soft-card"><span>☀️</span><p>เช้าที่นึกถึงกัน</p><b id="stMr">0 เช้า</b></article>
-          <article class="soft-card"><span>💗</span><p>หัวใจเต้นเพื่อเธอ</p><b>∞ ครั้ง</b></article>
+          <article class="soft-card"><span>📅</span><p data-text-key="STATS_MONTHS_LABEL">เดือนที่ผ่านมา</p><b id="stM">0 เดือน</b></article>
+          <article class="soft-card"><span>🌙</span><p data-text-key="STATS_NIGHTS_LABEL">คืนที่คิดถึงกัน</p><b id="stN">0 คืน</b></article>
+          <article class="soft-card"><span>☀️</span><p data-text-key="STATS_MORNINGS_LABEL">เช้าที่นึกถึงกัน</p><b id="stMr">0 เช้า</b></article>
+          <article class="soft-card"><span>💗</span><p data-text-key="STATS_HEART_LABEL">หัวใจเต้นเพื่อเธอ</p><b>∞ ครั้ง</b></article>
         </section>
       </div>
     </div>
@@ -193,10 +193,10 @@
   <div class="page" id="pg-rain">
     <div class="page-scroll center">
       <section class="soft-card rain-box">
-        <h2>โปรยข้อความหวาน 💝</h2>
-        <p>กดปุ่มแล้วข้อความหวานจะโปรยลงมาแบบไม่บังข้อมูลหลัก</p>
-        <button class="soft-btn" id="rainBtn">เริ่มโปรยข้อความ</button>
-        <p id="rainStatus">พร้อมโปรยข้อความหวาน</p>
+        <h2 data-text-key="RAIN_TITLE">โปรยข้อความหวาน 💝</h2>
+        <p data-text-key="RAIN_DESC">กดปุ่มแล้วข้อความหวานจะโปรยลงมาแบบไม่บังข้อมูลหลัก</p>
+        <button class="soft-btn" id="rainBtn" data-text-key="RAIN_BUTTON">เริ่มโปรยข้อความ</button>
+        <p id="rainStatus" data-text-key="RAIN_STATUS_READY">พร้อมโปรยข้อความหวาน</p>
         <p id="rainCount">กดไปแล้ว: 0 ครั้ง</p>
       </section>
     </div>
@@ -211,8 +211,8 @@
   <div class="page" id="pg-finger">
     <div class="page-scroll center">
       <section class="soft-card fp-box">
-        <h2>ยืนยันตัวตน</h2>
-        <p id="fpHint">แตะค้างเพื่อสแกนลายนิ้วมือ 👆</p>
+        <h2 data-text-key="FINGER_TITLE">ยืนยันตัวตน</h2>
+        <p id="fpHint" data-text-key="FINGER_HINT_IDLE">แตะค้างเพื่อสแกนลายนิ้วมือ 👆</p>
         <button class="scan-btn" id="fpZone" aria-label="กดค้างเพื่อสแกนลายนิ้วมือ">
           <span class="scan-btn-ring" aria-hidden="true"></span>
           <img src="icons/custom/fingerprint-scan.svg" class="scan-btn-icon" alt="" draggable="false" />
@@ -232,17 +232,17 @@
 
   <div class="anniv-overlay" id="annivOverlay">
     <div class="anniv-count-box" id="annivCountBox">
-      <p>นับถอยหลังเซอร์ไพรส์วันครบรอบ</p>
+      <p data-text-key="ANNIV_COUNTDOWN_TITLE">นับถอยหลังเซอร์ไพรส์วันครบรอบ</p>
       <b id="annivCountdown">10</b>
-      <small>วินาทีสุดท้ายกำลังเริ่มแล้ว ✨</small>
+      <small data-text-key="ANNIV_COUNTDOWN_SUBTITLE">วินาทีสุดท้ายกำลังเริ่มแล้ว ✨</small>
     </div>
 
     <div class="anniv-popup" id="annivPopup" role="dialog" aria-modal="true" aria-labelledby="annivPopupTitle" aria-describedby="annivTypedText" tabindex="-1">
       <div class="anniv-popup-glow" aria-hidden="true"></div>
       <div class="anniv-popup-shell">
-        <h3 id="annivPopupTitle" tabindex="-1">Happy Anniversary 💞</h3>
+        <h3 id="annivPopupTitle" tabindex="-1" data-text-key="ANNIV_POPUP_TITLE">Happy Anniversary 💞</h3>
         <p id="annivTypedText"></p>
-        <small id="annivExitHint">เตรียมแสดงข้อความ...</small>
+        <small id="annivExitHint" data-text-key="ANNIV_PREPARE_TEXT">เตรียมแสดงข้อความ...</small>
       </div>
     </div>
   </div>
@@ -266,6 +266,17 @@
         <img src="Iconmap/wired-lineal-1704-flower-doodle-hover-pinch.gif" width="24" height="24" style="vertical-align: middle; flex-shrink: 0;mix-blend-mode: multiply;background-color: transparent;">
       <span>ดอกไม้</span></button>
   </nav>
+
+
+  <audio id="bgmAudio" aria-hidden="true"></audio>
+
+  <div class="bgm-gate" id="bgmGate" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="bgmGateTitle">
+    <div class="bgm-gate-card">
+      <h3 id="bgmGateTitle">เปิดเพลงพื้นหลัง 🎵</h3>
+      <p>เพื่อประสบการณ์เต็มรูปแบบ กรุณากดปุ่มด้านล่างเพื่อเปิดเพลงพื้นหลัง</p>
+      <button id="bgmEnableBtn" class="soft-btn" type="button">เปิดเพลงตอนนี้</button>
+    </div>
+  </div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.1/TweenMax.min.js"></script>
   <script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/16327/MorphSVGPlugin.min.js"></script>
