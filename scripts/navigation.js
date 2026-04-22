@@ -41,7 +41,6 @@ export function createNavigator({ onPage, transitionLoader }) {
 
     current = page;
     onPage(page);
-    document.dispatchEvent(new CustomEvent('app:page-change', { detail: { page } }));
   }
 
   async function go(page, { skipLoader = false } = {}) {
